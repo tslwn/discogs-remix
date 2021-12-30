@@ -1,6 +1,6 @@
 import type { Session } from 'remix';
-import { discogsEnv } from './env';
-import { sessionGetOrError } from './sessions';
+import { discogsEnv } from './env.server';
+import { sessionGetOrError } from './sessions.server';
 
 function requestTokenAuthorizationHeader(
   consumerKey: string,

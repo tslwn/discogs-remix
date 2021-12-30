@@ -1,8 +1,8 @@
 import { useLoaderData } from 'remix';
 import type { DataFunctionArgs } from '@remix-run/server-runtime';
 import Layout from '~/components/Layout';
-import { clientFactory } from '~/lib/client';
-import { getSession } from '~/lib/sessions';
+import { clientFactory } from '~/lib/client.server';
+import { getSession } from '~/lib/sessions.server';
 
 interface RouteParams {
   username: string;

@@ -1,8 +1,8 @@
 import { redirect } from 'remix';
 import type { LoaderFunction } from 'remix';
-import { fetchAccessToken } from '~/lib/auth';
-import { commitSession, getSession } from '~/lib/sessions';
-import { clientFactory } from '~/lib/client';
+import { fetchAccessToken } from '~/lib/auth.server';
+import { clientFactory } from '~/lib/client.server';
+import { commitSession, getSession } from '~/lib/sessions.server';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'));

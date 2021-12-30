@@ -6,9 +6,8 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
-  useLoaderData,
 } from 'remix';
-import type { LinksFunction, LoaderFunction } from 'remix';
+import type { LinksFunction } from 'remix';
 import RouteChangeAnnouncement from '~/components/RouteChangeAnnouncement';
 import appStyleUrl from '~/styles/app.css';
 
@@ -37,13 +36,6 @@ export default function App() {
   );
 }
 
-export const loader: LoaderFunction = async () => {
-  return {
-    ENV: {},
-    data: '',
-  };
-};
-
 function Document({
   children,
   title,
@@ -51,8 +43,6 @@ function Document({
   children: React.ReactNode;
   title?: string;
 }) {
-  const data = useLoaderData();
-
   return (
     <html lang="en">
       <head>
@@ -66,13 +56,6 @@ function Document({
         {children}
         <RouteChangeAnnouncement />
         <ScrollRestoration />
-        {data && data.ENV && (
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
-            }}
-          />
-        )}
         <Scripts />
         {process.env.NODE_ENV === 'development' && <LiveReload />}
       </body>

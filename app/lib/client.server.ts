@@ -1,7 +1,7 @@
 import { Discojs } from 'discojs';
 import { Session } from 'remix';
-import { discogsEnv } from './env';
-import { sessionGetOrError } from './sessions';
+import { discogsEnv } from './env.server';
+import { sessionGetOrError } from './sessions.server';
 
 export function clientFactory(session: Session) {
   const { consumerKey, consumerSecret, userAgent } = discogsEnv();
