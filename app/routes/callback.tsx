@@ -1,7 +1,8 @@
 import { redirect } from 'remix';
 import type { LoaderFunction } from 'remix';
-import { fetchFactory, fetchAccessToken } from '~/lib/auth';
+import { fetchAccessToken } from '~/lib/auth';
 import { commitSession, getSession } from '~/lib/sessions';
+import { clientFactory } from '~/lib/client';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'));
@@ -12,13 +13,11 @@ export const loader: LoaderFunction = async ({ request }) => {
     session.set('oauth_access_token', token);
     session.set('oauth_access_token_secret', tokenSecret);
 
-    const fetch = fetchFactory(session);
+    const client = clientFactory(session);
 
-    const { username }: { username: string } = await (
-      await fetch('oauth/identity')
-    ).json();
+    const identity = await client.getIdentity();
 
-    session.set('username', username);
+    session.set('username', identity.username);
 
     return redirect('/', {
       headers: { 'Set-Cookie': await commitSession(session) },

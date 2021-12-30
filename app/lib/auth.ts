@@ -120,47 +120,6 @@ export async function fetchAccessToken(session: Session, url: string) {
   };
 }
 
-function authorizationHeader(
-  consumerKey: string,
-  consumerSecret: string,
-  accessToken: string,
-  accessTokenSecret: string
-) {
-  const header = `OAuth oauth_consumer_key="${consumerKey}",oauth_nonce="${Date.now()}",oauth_token="${accessToken}",oauth_signature="${consumerSecret}&${accessTokenSecret}",oauth_signature_method="PLAINTEXT",oauth_timestamp="${Date.now()}"`;
-  return header;
-}
-
-export const DISCOGS_API_URL = 'https://api.discogs.com';
-
-export function fetchFactory(session: Session) {
-  const { consumerKey, consumerSecret } = discogsEnv();
-
-  const accessToken = sessionGetOrError(session, 'oauth_access_token');
-
-  const accessTokenSecret = sessionGetOrError(
-    session,
-    'oauth_access_token_secret'
-  );
-
-  return async function (input: RequestInfo, init?: RequestInit) {
-    return fetch(
-      typeof input === 'string' ? `${DISCOGS_API_URL}/${input}` : input,
-      {
-        ...init,
-        headers: {
-          ...init?.headers,
-          Authorization: authorizationHeader(
-            consumerKey,
-            consumerSecret,
-            accessToken,
-            accessTokenSecret
-          ),
-        },
-      }
-    );
-  };
-}
-
 export function isAuthenticated(session: Session) {
   return (
     session.has('oauth_access_token') &&
