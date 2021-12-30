@@ -2,6 +2,15 @@ import React from 'react';
 import ReactPlayer from 'react-player/youtube';
 import useElementSize from '~/hooks/useElementSize';
 
+function initialProgress() {
+  return {
+    loaded: 0,
+    loadedSeconds: 0,
+    played: 0,
+    playedSeconds: 0,
+  };
+}
+
 interface Video {
   title: string;
   description: string;
@@ -19,14 +28,21 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
 
   const [index, setIndex] = React.useState(0);
 
+  const video = videos[index];
+
   const [playing, setPlaying] = React.useState(false);
+
+  const [progress, setProgress] = React.useState(initialProgress());
 
   return (
     <div ref={playerRef}>
       <ReactPlayer
         height={0}
+        onProgress={(value) => {
+          setProgress(value);
+        }}
         playing={playing}
-        url={videos[index].uri}
+        url={video.uri}
         width={playerWidth}
       />
       <div className="flex items-center justify-center mb-2">
@@ -35,6 +51,7 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
           disabled={index === 0}
           onClick={() => {
             setIndex((prev) => (prev > 0 ? prev - 1 : 0));
+            setProgress(initialProgress());
           }}
         >
           <ArrowLeftIcon className="h-5 w-5" />
@@ -60,17 +77,31 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
             setIndex((prev) =>
               prev < videos.length - 1 ? prev + 1 : videos.length - 1
             );
+            setProgress(initialProgress());
           }}
         >
           <ArrowRightIcon className="h-5 w-5" />
         </button>
       </div>
+      <div className="bg-gray-100 h-1 mb-2 w-full">
+        <div
+          className="bg-gray-300 h-1"
+          style={{ width: `${progress.loaded * 100}%` }}
+        >
+          <div
+            className="bg-black h-1"
+            style={{ width: `${progress.played * 100}%` }}
+          ></div>
+        </div>
+      </div>
       <div className="text-center text-sm">
         <h3
-          className="overflow-hidden text-ellipsis whitespace-nowrap"
+          className="hover:underline overflow-hidden text-ellipsis whitespace-nowrap"
           style={{ width: playerWidth }}
         >
-          {videos[index].title}
+          <a href={video.uri} rel="noreferrer" target="_blank">
+            {video.title}
+          </a>
         </h3>
         <p>
           {index + 1} / {videos.length}

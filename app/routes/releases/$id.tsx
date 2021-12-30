@@ -1,9 +1,10 @@
 import { useLoaderData } from 'remix';
 import type { DataFunctionArgs } from '@remix-run/server-runtime';
 import Layout from '~/components/Layout';
+import YouTubePlayer from '~/components/YouTubePlayer';
 import { clientFactory } from '~/lib/client.server';
 import { getSession } from '~/lib/sessions.server';
-import YouTubePlayer from '~/components/YouTubePlayer';
+import { isVideoAvailable } from '~/lib/youtube.server';
 
 interface RouteParams {
   id: number;
@@ -22,7 +23,22 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
     throw new Error('Expected release ID parameter');
   }
 
-  return client.getRelease(params.id);
+  const release = await client.getRelease(params.id);
+
+  // remove videos that are no longer available
+  const videos = [];
+
+  if (release.videos !== undefined) {
+    for (const video of release.videos) {
+      if (await isVideoAvailable(video.uri)) {
+        videos.push(video);
+      }
+    }
+  }
+
+  release.videos = videos;
+
+  return release;
 };
 
 export default function Route() {

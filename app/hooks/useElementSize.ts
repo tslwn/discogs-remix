@@ -26,7 +26,7 @@ export default function useElementSize<T extends HTMLElement>(): [
 
   useEventListener('resize', handleResize);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     handleResize();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref?.offsetHeight, ref?.offsetWidth]);
