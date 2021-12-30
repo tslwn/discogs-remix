@@ -1,24 +1,32 @@
-import { redirect } from 'remix';
-import type { LoaderFunction } from 'remix';
+import { redirect, useLoaderData } from 'remix';
+import type { DataFunctionArgs } from '@remix-run/server-runtime';
 import Layout from '~/components/Layout';
-import { isAuthenticated } from '~/lib/auth';
+import { clientFactory } from '~/lib/client';
 import { getSession } from '~/lib/sessions';
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: DataFunctionArgs) => {
   const session = await getSession(request.headers.get('Cookie'));
 
-  if (!(await isAuthenticated(session))) {
+  const client = clientFactory(session);
+
+  const profileOrResponse = await client.getProfile();
+
+  // not authenticated
+  if (profileOrResponse instanceof Response) {
     return redirect('/auth');
   }
 
-  return null;
+  return profileOrResponse;
 };
 
-export default function Index() {
+export default function Route() {
+  const data =
+    useLoaderData<Exclude<Awaited<ReturnType<typeof loader>>, Response>>();
+
   return (
     <Layout>
-      <div className="p-6">
-        <p>Home</p>
+      <div className="p-4">
+        <p>Hello, {data.username}.</p>
       </div>
     </Layout>
   );

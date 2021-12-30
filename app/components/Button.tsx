@@ -1,6 +1,6 @@
-import * as React from 'react';
+import type { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary';
 };
 
@@ -9,7 +9,7 @@ function Button({
   className,
   variant = 'primary',
   ...props
-}: React.PropsWithChildren<ButtonProps>): React.ReactElement {
+}: PropsWithChildren<ButtonProps>) {
   const variantClassName =
     variant === 'primary'
       ? 'bg-black font-bold hover:bg-gray-800 px-3 py-2 rounded text-sm text-white transition-colors'

@@ -1,20 +1,6 @@
 import type { Session } from 'remix';
-
-function envVar(key: string) {
-  const value = process.env[key];
-  if (value === undefined) {
-    throw new Error(`Environment variable ${key} is undefined`);
-  }
-  return value;
-}
-
-function discogsEnv() {
-  return {
-    consumerKey: envVar('DISCOGS_CONSUMER_KEY'),
-    consumerSecret: envVar('DISCOGS_CONSUMER_SECRET'),
-    userAgent: envVar('DISCOGS_USER_AGENT'),
-  };
-}
+import { discogsEnv } from './env';
+import { sessionGetOrError } from './sessions';
 
 function requestTokenAuthorizationHeader(
   consumerKey: string,
@@ -93,20 +79,12 @@ function requestTokenSearchParams(url: URL) {
   };
 }
 
-function sessionValue(session: Session, key: string) {
-  const value = session.get(key);
-  if (typeof value !== 'string') {
-    throw new Error(`No value ${key} in session cookie`);
-  }
-  return value;
-}
-
 export async function fetchAccessToken(session: Session, url: string) {
   const { consumerKey, consumerSecret, userAgent } = discogsEnv();
 
   const { requestToken, verifier } = requestTokenSearchParams(new URL(url));
 
-  const requestTokenSecret = sessionValue(
+  const requestTokenSecret = sessionGetOrError(
     session,
     'oauth_request_token_secret'
   );
@@ -154,12 +132,15 @@ function authorizationHeader(
 
 export const DISCOGS_API_URL = 'https://api.discogs.com';
 
-export function discogsFetchFactory(session: Session) {
+export function fetchFactory(session: Session) {
   const { consumerKey, consumerSecret } = discogsEnv();
 
-  const accessToken = sessionValue(session, 'oauth_access_token');
+  const accessToken = sessionGetOrError(session, 'oauth_access_token');
 
-  const accessTokenSecret = sessionValue(session, 'oauth_access_token_secret');
+  const accessTokenSecret = sessionGetOrError(
+    session,
+    'oauth_access_token_secret'
+  );
 
   return async function (input: RequestInfo, init?: RequestInit) {
     return fetch(

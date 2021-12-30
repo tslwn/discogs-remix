@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Link } from 'remix';
 
 type ButtonLinkProps = React.ComponentProps<typeof Link> & {

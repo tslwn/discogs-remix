@@ -1,10 +1,6 @@
-import type { PropsWithChildren } from 'react';
 import { Form, Link, useTransition } from 'remix';
-import { HomeIcon, LogoutIcon, UserIcon } from '@heroicons/react/solid';
 
-export default function AuthenticatedLayout({
-  children,
-}: PropsWithChildren<{}>): JSX.Element {
+export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const transition = useTransition();
 
   return (
@@ -12,36 +8,26 @@ export default function AuthenticatedLayout({
       <header>
         <nav className="p-4 shrink">
           <ul>
-            <li className="mb-2">
+            <li className="mb-2 text-right">
               <Link
                 aria-label="Home"
-                className="flex hover:bg-gray-200 items-center p-3 rounded-full"
+                className="hover:text-gray-400 underline"
                 title="Home"
                 to="/"
               >
-                <HomeIcon className="h-5 w-5" />
+                Home
               </Link>
             </li>
-            <li className="mb-2">
-              <Link
-                aria-label="Profile"
-                className="flex hover:bg-gray-200 items-center p-3 rounded-full"
-                title="Profile"
-                to="/profile"
-              >
-                <UserIcon className="h-5 w-5" />
-              </Link>
-            </li>
-            <li>
+            <li className="text-right">
               <Form method="post" action="/signout">
                 <button
                   aria-label="Sign out"
-                  className="flex hover:bg-gray-200  items-center p-3 rounded-full"
+                  className="hover:text-gray-400 underline"
                   disabled={transition.state === 'submitting'}
                   title="Sign out"
                   type="submit"
                 >
-                  <LogoutIcon className="h-5 w-5" />
+                  Sign out
                 </button>
               </Form>
             </li>

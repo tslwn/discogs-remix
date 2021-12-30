@@ -1,6 +1,6 @@
 import { redirect } from 'remix';
 import type { LoaderFunction } from 'remix';
-import { fetchAccessToken } from '~/lib/auth';
+import { fetchFactory, fetchAccessToken } from '~/lib/auth';
 import { commitSession, getSession } from '~/lib/sessions';
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -11,6 +11,14 @@ export const loader: LoaderFunction = async ({ request }) => {
 
     session.set('oauth_access_token', token);
     session.set('oauth_access_token_secret', tokenSecret);
+
+    const fetch = fetchFactory(session);
+
+    const { username }: { username: string } = await (
+      await fetch('oauth/identity')
+    ).json();
+
+    session.set('username', username);
 
     return redirect('/', {
       headers: { 'Set-Cookie': await commitSession(session) },
