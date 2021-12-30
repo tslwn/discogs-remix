@@ -26,6 +26,7 @@
     "react-dom": "^17.0.2",
     "react-hot-toast": "^2.1.1",
     "react-icons": "^4.3.1",
+    "react-player": "^2.9.0",
     "remix": "^1.1.1",
     "remix-seo": "^0.0.3",
     "tiny-invariant": "^1.2.0"

@@ -3,6 +3,7 @@ import type { DataFunctionArgs } from '@remix-run/server-runtime';
 import Layout from '~/components/Layout';
 import { clientFactory } from '~/lib/client.server';
 import { getSession } from '~/lib/sessions.server';
+import YouTubePlayer from '~/components/YouTubePlayer';
 
 interface RouteParams {
   id: number;
@@ -29,9 +30,9 @@ export default function Route() {
 
   const artists = data.artists.reduce(
     (artists, artist) =>
-      [artists, artist.anv !== '' ? artist.anv : artist.name, artist.join].join(
-        ' '
-      ),
+      [artists, artist.anv !== '' ? artist.anv : artist.name, artist.join]
+        .join(' ')
+        .replace(' , ', ', '),
     ''
   );
 
@@ -40,8 +41,8 @@ export default function Route() {
       <div className="p-4 text-center">
         {data.images ? (
           <img
-            alt={`${artists} - ${data.title}`}
-            className="mb-4"
+            alt={`${artists}- ${data.title}`}
+            className="mb-4 mx-auto"
             src={
               data.images?.filter((image) => image.type === 'primary')[0].uri
             }
@@ -49,6 +50,13 @@ export default function Route() {
         ) : null}
         <h1 className="text-xl">{data.title}</h1>
         <h2 className="text-lg">{artists}</h2>
+      </div>
+      <div className="px-4">
+        {data.videos !== undefined && data.videos?.length > 0 ? (
+          <YouTubePlayer videos={data.videos} />
+        ) : (
+          <p className="text-center">No videos.</p>
+        )}
       </div>
     </Layout>
   );
