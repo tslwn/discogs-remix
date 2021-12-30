@@ -4,11 +4,11 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const transition = useTransition();
 
   return (
-    <div className="flex min-h-screen max-w-xl mx-auto">
-      <header>
-        <nav className="p-4 shrink">
-          <ul>
-            <li className="mb-2 text-right">
+    <div className="min-h-screen max-w-xl mx-auto">
+      <header className="border-t border-gray-200 bottom-0 fixed w-full">
+        <nav className="max-w-xl mx-auto p-2">
+          <ul className="flex justify-center w-full">
+            <li className="mr-2">
               <Link
                 aria-label="Home"
                 className="hover:text-gray-400 underline"
@@ -18,7 +18,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
                 Home
               </Link>
             </li>
-            <li className="text-right">
+            <li className="">
               <Form method="post" action="/signout">
                 <button
                   aria-label="Sign out"
@@ -34,7 +34,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
           </ul>
         </nav>
       </header>
-      <main className="border-x border-gray-200 grow">{children}</main>
+      <main className="">{children}</main>
     </div>
   );
 }
