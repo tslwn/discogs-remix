@@ -52,27 +52,33 @@ export default function Route() {
     ''
   );
 
+  const image =
+    data.images?.filter((image) => image.type === 'primary')[0] ??
+    (data.images && data.images[0]);
+
   return (
     <Layout>
-      <div className="p-4 text-center">
-        {data.images ? (
-          <img
-            alt={`${artists}- ${data.title}`}
-            className="mb-4 mx-auto"
-            src={
-              data.images?.filter((image) => image.type === 'primary')[0].uri
-            }
-          ></img>
-        ) : null}
-        <h1 className="text-xl">{data.title}</h1>
-        <h2 className="text-lg">{artists}</h2>
-      </div>
-      <div className="px-4">
-        {data.videos !== undefined && data.videos?.length > 0 ? (
-          <YouTubePlayer videos={data.videos} />
-        ) : (
-          <p className="text-center">No videos</p>
-        )}
+      <div className="p-4">
+        <div className="mb-2">
+          {image !== undefined ? (
+            <img
+              alt={`${artists}- ${data.title}`}
+              className="mb-4 mx-auto"
+              src={image.uri}
+            ></img>
+          ) : null}
+        </div>
+        <div className="mb-2 text-center">
+          <h1 className="text-xl">{data.title}</h1>
+          <h2 className="text-lg">{artists}</h2>
+        </div>
+        <div>
+          {data.videos !== undefined && data.videos?.length > 0 ? (
+            <YouTubePlayer videos={data.videos} />
+          ) : (
+            <p className="text-center">No videos</p>
+          )}
+        </div>
       </div>
     </Layout>
   );

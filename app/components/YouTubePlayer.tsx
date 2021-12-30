@@ -34,6 +34,9 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
 
   const [progress, setProgress] = React.useState(initialProgress());
 
+  const isPreviousDisabled = index <= 0;
+  const isNextDisabled = index >= videos.length - 1;
+
   return (
     <div ref={playerRef}>
       <ReactPlayer
@@ -47,14 +50,16 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
       />
       <div className="flex items-center justify-center mb-2">
         <button
-          className="mr-2"
-          disabled={index === 0}
+          className={'mr-2' + (isPreviousDisabled ? ' cursor-not-allowed' : '')}
+          disabled={isPreviousDisabled}
           onClick={() => {
             setIndex((prev) => (prev > 0 ? prev - 1 : 0));
             setProgress(initialProgress());
           }}
         >
-          <ArrowLeftIcon className="h-5 w-5" />
+          <ArrowLeftIcon
+            className={'h-5 w-5' + (isPreviousDisabled ? ' fill-gray-400' : '')}
+          />
         </button>
         <button
           aria-label={playing ? 'Pause' : 'Play'}
@@ -71,8 +76,8 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
           )}
         </button>
         <button
-          className=""
-          disabled={index === videos.length - 1}
+          className={isNextDisabled ? 'cursor-not-allowed' : undefined}
+          disabled={isNextDisabled}
           onClick={() => {
             setIndex((prev) =>
               prev < videos.length - 1 ? prev + 1 : videos.length - 1
@@ -80,7 +85,9 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
             setProgress(initialProgress());
           }}
         >
-          <ArrowRightIcon className="h-5 w-5" />
+          <ArrowRightIcon
+            className={'h-5 w-5' + (isNextDisabled ? ' fill-gray-400' : '')}
+          />
         </button>
       </div>
       <div className="bg-gray-100 h-1 mb-2 w-full">
