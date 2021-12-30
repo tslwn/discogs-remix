@@ -1,17 +1,17 @@
 import { Form, json, redirect, useLoaderData } from 'remix';
 import type { ActionFunction, LoaderFunction } from 'remix';
 import Button from '~/components/Button';
-import { authorizeUrl, fetchRequestToken } from '~/lib/auth.server';
+import {
+  authorizeUrl,
+  fetchRequestToken,
+  isAuthenticated,
+} from '~/lib/auth.server';
 import { commitSession, getSession } from '~/lib/sessions.server';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'));
 
-  // user is already signed in
-  if (
-    session.has('oauth_access_token') &&
-    session.has('oauth_access_token_secret')
-  ) {
+  if (isAuthenticated(session)) {
     return redirect('/');
   }
 

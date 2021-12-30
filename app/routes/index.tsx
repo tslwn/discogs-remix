@@ -3,20 +3,20 @@ import type { DataFunctionArgs } from '@remix-run/server-runtime';
 import Layout from '~/components/Layout';
 import { clientFactory } from '~/lib/client.server';
 import { getSession } from '~/lib/sessions.server';
+import { isAuthenticated } from '~/lib/auth.server';
 
 export const loader = async ({ request }: DataFunctionArgs) => {
   const session = await getSession(request.headers.get('Cookie'));
 
   const client = clientFactory(session);
 
-  const profileOrResponse = await client.getProfile();
-
-  // not authenticated
-  if (profileOrResponse instanceof Response) {
+  if (!isAuthenticated(session)) {
     return redirect('/auth');
   }
 
-  return profileOrResponse;
+  const profile = await client.getProfile();
+
+  return profile;
 };
 
 export default function Route() {

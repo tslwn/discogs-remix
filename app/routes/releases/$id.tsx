@@ -55,7 +55,7 @@ export default function Route() {
         {data.videos !== undefined && data.videos?.length > 0 ? (
           <YouTubePlayer videos={data.videos} />
         ) : (
-          <p className="text-center">No videos.</p>
+          <p className="text-center">No videos</p>
         )}
       </div>
     </Layout>
