@@ -6,7 +6,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
     <div className="max-w-xl mx-auto">
       <header className="bg-white border-t border-gray-200 bottom-0 fixed w-full">
-        <nav className="w-full">
+        <nav className="max-w-xl">
           <Form
             className="flex justify-center p-2 w-full"
             method="post"
