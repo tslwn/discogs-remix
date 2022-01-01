@@ -8,11 +8,11 @@ import { isAuthenticated } from '~/lib/auth.server';
 export const loader = async ({ request }: DataFunctionArgs) => {
   const session = await getSession(request.headers.get('Cookie'));
 
-  const client = clientFactory(session);
-
   if (!isAuthenticated(session)) {
     return redirect('/auth');
   }
+
+  const client = clientFactory(session);
 
   const profile = await client.getProfile();
 
