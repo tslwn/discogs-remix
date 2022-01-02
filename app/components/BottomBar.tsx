@@ -1,6 +1,6 @@
 import { Link } from 'remix';
-import { QueueItem } from '~/types/queue';
-import NowPlaying from './NowPlaying';
+import type { QueueItem } from '~/types/queue';
+import QueueItemCard from './QueueItemCard';
 
 type BottomBarProps = {
   item: QueueItem | null;
@@ -10,7 +10,7 @@ export default function BottomBar({ item }: BottomBarProps) {
   return (
     <div className="border-t flex flex-none h-20 items-center justify-between px-4">
       {item !== null ? (
-        <NowPlaying item={item} />
+        <QueueItemCard item={item} />
       ) : (
         <div className="flex items-center">No releases in queue.</div>
       )}

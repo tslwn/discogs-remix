@@ -1,9 +1,9 @@
 import { Form, json, useLoaderData, useTransition } from 'remix';
 import type { ActionFunction, LoaderFunction } from 'remix';
 import Page from '~/components/Page';
+import QueueItemCard from '~/components/QueueItemCard';
 import { commitSession, getSession } from '~/lib/sessions.server';
-import { Queue } from '~/types/queue';
-import NowPlaying from '~/components/NowPlaying';
+import type { Queue } from '~/types/queue';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'));
@@ -41,7 +41,7 @@ export default function Route() {
       <ul>
         {data.map((item, index) => (
           <li className="mb-2" key={index}>
-            <NowPlaying
+            <QueueItemCard
               item={item}
               left={<div className="text-md w-3">{index}</div>}
             />

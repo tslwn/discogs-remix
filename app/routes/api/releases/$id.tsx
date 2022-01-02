@@ -1,12 +1,13 @@
 import { Form, json, useLoaderData, useTransition } from 'remix';
 import type { ActionFunction, LoaderFunction } from 'remix';
+import ArtistLinks from '~/components/ArtistLinks';
 import Page from '~/components/Page';
 import { getSessionAndClient } from '~/lib/client.server';
 import { concatenateArtists, primaryOrFirstImage } from '~/lib/release';
 import { commitSession, getSession } from '~/lib/sessions.server';
 import { filterVideos } from '~/lib/videos.server';
-import { Release } from '~/types/discojs';
-import { Queue } from '~/types/queue';
+import type { Release } from '~/types/discojs';
+import type { Queue } from '~/types/queue';
 
 interface RouteParams {
   id: number;
@@ -72,7 +73,9 @@ export default function Route() {
         ) : null}
         <div>
           <h2 className="text-xl">{data.title}</h2>
-          <h3 className="text-md">{artists}</h3>
+          <h3 className="text-md">
+            <ArtistLinks artists={data.artists} />
+          </h3>
         </div>
       </div>
       <div>
