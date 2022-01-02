@@ -25,7 +25,7 @@ export default function ItemCard({
       ) : null}
       <div>
         <div>
-          {typeof title === 'string' ? (
+          {typeof title === 'string' || title === undefined ? (
             <span>{title}</span>
           ) : (
             <Link className="hover:underline" to={title.to}>
@@ -34,7 +34,7 @@ export default function ItemCard({
           )}
         </div>
         <div className="text-xs">
-          {typeof subtitle === 'string' ? (
+          {typeof subtitle === 'string' || subtitle === undefined ? (
             <span>{subtitle}</span>
           ) : (
             <Link className="hover:underline" to={subtitle.to}>
