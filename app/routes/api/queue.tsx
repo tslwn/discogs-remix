@@ -43,7 +43,7 @@ export default function Route() {
           <li className="mb-2" key={index}>
             <QueueItemCard
               item={item}
-              left={<div className="text-md w-3">{index}</div>}
+              left={<div className="text-md w-3">{index + 1}</div>}
             />
           </li>
         ))}

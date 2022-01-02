@@ -43,7 +43,7 @@ export default function Route() {
           <Link className="hover:underline" to={`/api/releases/56898`}>
             Musick To Play In The Dark²
           </Link>{' '}
-          (master)
+          (version)
         </li>
       </ul>
     </div>
