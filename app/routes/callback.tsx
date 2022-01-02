@@ -19,7 +19,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
     session.set('username', identity.username);
 
-    return redirect('/', {
+    return redirect('/api', {
       headers: { 'Set-Cookie': await commitSession(session) },
     });
   } catch (error) {

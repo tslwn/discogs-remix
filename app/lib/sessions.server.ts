@@ -5,7 +5,7 @@ const { commitSession, destroySession, getSession } =
   createCookieSessionStorage({
     cookie: {
       name: '__session',
-      secrets: [],
+      path: '/',
     },
   });
 

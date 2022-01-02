@@ -14,12 +14,14 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function SignoutRoute() {
   return (
-    <div>
+    <div className="text-center">
       <p>Are you sure you want to sign out?</p>
       <Form method="post">
-        <button>Sign out</button>
+        <button className="hover:underline">Sign out</button>
       </Form>
-      <Link to="/">Nope</Link>
+      <Link className="hover:underline" to="/api">
+        Nope
+      </Link>
     </div>
   );
 }
