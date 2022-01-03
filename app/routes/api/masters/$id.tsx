@@ -52,17 +52,36 @@ export default function Route() {
           ></img>
         ) : null}
         <div>
-          <h2 className="text-xl">{master.title}</h2>
-          <h3 className="text-lg">
-            <ArtistLinks artists={master.artists} />
-          </h3>
+          <div>
+            <h2 className="text-xl">
+              <ArtistLinks artists={master.artists} />
+              {' - '}
+              {master.title}
+            </h2>
+          </div>
+          <div className="flex">
+            <div className="flex flex-wrap items-center">
+              <div className="mb-1 mr-3 text-lg">{master.year}</div>
+              {master.genres.map((genre) => (
+                <div className="bg-gray-300 mb-1 mr-1 px-2 py-1 rounded-lg text-xs">
+                  {genre}
+                </div>
+              ))}
+              {master.styles.map((style) => (
+                <div className="bg-gray-200 mb-1 mr-1 px-2 py-1 rounded-lg text-xs">
+                  {style}
+                </div>
+              ))}
+            </div>
+            {/* <div className="w-1/2"></div> */}
+          </div>
         </div>
       </div>
       <div className="border-b border-gray-200 mb-4">
         <Collapsible
           heading="Tracklist"
           panel={
-            <ul>
+            <ul className="mb-2">
               {master.tracklist.map((track) => (
                 <li className="flex justify-between">
                   <span>{track.title}</span>
@@ -77,7 +96,7 @@ export default function Route() {
         <Collapsible
           heading="Versions"
           panel={
-            <table className="table-auto text-left w-full">
+            <table className="mb-2 table-auto text-left w-full">
               <thead>
                 <tr>
                   <th className="font-semibold">Title (Format)</th>

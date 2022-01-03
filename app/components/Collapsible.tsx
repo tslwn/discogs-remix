@@ -9,7 +9,7 @@ interface CollapsibleProps {
 
 export default function Collapsible({ heading, panel }: CollapsibleProps) {
   return (
-    <Disclosure>
+    <Disclosure defaultOpen>
       {({ open }) => (
         <>
           <Disclosure.Button>
