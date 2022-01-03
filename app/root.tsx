@@ -1,3 +1,4 @@
+import NProgress from 'nprogress';
 import {
   Links,
   LiveReload,
@@ -6,16 +7,32 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
+  useTransition,
 } from 'remix';
 import type { LinksFunction } from 'remix';
 import RouteChangeAnnouncement from '~/components/RouteChangeAnnouncement';
-import appStyleUrl from '~/styles/app.css';
+import appStyles from '~/styles/app.css';
+import nProgressStyles from '~/styles/nprogress.css';
+import React from 'react';
 
 export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: appStyleUrl }];
+  return [
+    { rel: 'stylesheet', href: appStyles },
+    { rel: 'stylesheet', href: nProgressStyles },
+  ];
 };
 
 export default function App() {
+  const transition = useTransition();
+
+  React.useEffect(() => {
+    if (transition.state === 'idle') {
+      NProgress.done();
+    } else {
+      NProgress.start();
+    }
+  }, [transition.state]);
+
   return (
     <Document>
       <Layout>
