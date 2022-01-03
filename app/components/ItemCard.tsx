@@ -9,13 +9,15 @@ type ItemCardProps = {
     src?: string;
   };
   left?: React.ReactNode;
+  right?: React.ReactNode;
 };
 
 export default function ItemCard({
+  title,
+  subtitle,
   image,
   left,
-  subtitle,
-  title,
+  right,
 }: ItemCardProps) {
   return (
     <div className="flex items-center">
@@ -39,6 +41,7 @@ export default function ItemCard({
           )}
         </div>
       </div>
+      {right !== undefined ? <div className="ml-4">{right}</div> : null}
     </div>
   );
 }

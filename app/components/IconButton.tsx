@@ -16,7 +16,11 @@ export default function IconButton({ iconProps, ...props }: IconButtonProps) {
       className={clsx(props.className, props.disabled && 'cursor-not-allowed')}
     >
       <Icon
-        className={clsx(iconProps.className, props.disabled && 'fill-gray-400')}
+        className={clsx(
+          iconProps.className,
+          'hover:fill-gray-400',
+          props.disabled && 'fill-gray-400'
+        )}
         icon={iconProps.icon}
       />
     </button>

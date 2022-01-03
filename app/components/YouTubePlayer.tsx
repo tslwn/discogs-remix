@@ -116,15 +116,13 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
           {duration ? formatSeconds(duration) : '--:--'}
         </div>
       </div>
-      <div className="text-center text-xs">
-        <span
-          className="hover:underline overflow-hidden text-ellipsis whitespace-nowrap"
-          style={{ width: playerWidth }}
-        >
-          <a href={video.uri} rel="noreferrer" target="_blank">
-            {video.title} ({index + 1} / {videos.length})
-          </a>
-        </span>
+      <div
+        className="hover:underline mx-auto overflow-hidden text-center text-ellipsis text-xs whitespace-nowrap"
+        style={{ width: playerWidth - 64 }}
+      >
+        <a href={video.uri} rel="noreferrer" target="_blank">
+          {video.title} ({index + 1} / {videos.length})
+        </a>
       </div>
     </div>
   );
