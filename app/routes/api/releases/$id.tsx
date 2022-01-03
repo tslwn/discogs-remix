@@ -1,13 +1,12 @@
-import { Form, json, useLoaderData, useTransition } from 'remix';
-import type { ActionFunction, LoaderFunction } from 'remix';
+import { useLoaderData } from 'remix';
+import type { LoaderFunction } from 'remix';
 import ArtistLinks from '~/components/ArtistLinks';
 import Page from '~/components/Page';
 import { getSessionAndClient } from '~/lib/client.server';
 import { concatenateArtists, primaryOrFirstImage } from '~/lib/release';
-import { commitSession, getSession } from '~/lib/sessions.server';
 import { filterVideos } from '~/lib/videos.server';
 import type { Release } from '~/types/discojs';
-import type { Queue } from '~/types/queue';
+import QueueAddForm from '~/components/QueueAddForm';
 
 interface RouteParams {
   id: number;
@@ -29,69 +28,34 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   return filterVideos(release);
 };
 
-export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
-
-  const id = Number(formData.get('id'));
-  const artists = formData.get('artists') as string;
-  const title = formData.get('title') as string;
-  const src = formData.get('src') as string | undefined;
-
-  const session = await getSession(request.headers.get('Cookie'));
-
-  let queue: Queue = session.get('queue') ?? [];
-
-  queue.push({ id, artists, title, src });
-
-  session.set('queue', queue);
-
-  return json(queue, {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
-  });
-};
-
 export default function Route() {
-  const data = useLoaderData<Release>();
+  const release = useLoaderData<Release>();
 
-  const transition = useTransition();
+  const artists = concatenateArtists(release.artists);
 
-  const artists = concatenateArtists(data.artists);
-
-  const src = primaryOrFirstImage(data.images)?.uri;
+  const src = primaryOrFirstImage(release.images)?.uri;
 
   return (
     <Page>
       <div className="flex mb-4">
         {src !== undefined ? (
           <img
-            alt={`${artists} - ${data.title}`}
+            alt={`${artists} - ${release.title}`}
             className="h-56 w-56 mr-4"
             src={src}
           ></img>
         ) : null}
         <div>
-          <h2 className="text-xl">{data.title}</h2>
+          <h2 className="text-xl">{release.title}</h2>
           <h3 className="text-md">
-            <ArtistLinks artists={data.artists} />
+            <ArtistLinks artists={release.artists} />
           </h3>
         </div>
       </div>
-      <div>
-        <Form method="post">
-          <input hidden id="id" name="id" readOnly value={data.id} />
-          <input hidden id="artists" name="artists" readOnly value={artists} />
-          <input hidden id="title" name="title" readOnly value={data.title} />
-          <input hidden id="src" name="src" readOnly value={src} />
-          <button
-            className="hover:underline"
-            disabled={transition.state === 'submitting'}
-          >
-            Add to queue
-          </button>
-        </Form>
-      </div>
+      <QueueAddForm
+        item={{ id: release.id, artists, title: release.title, src }}
+        text
+      />
     </Page>
   );
 }

@@ -1,4 +1,4 @@
-import { useFetcher, useTransition } from 'remix';
+import { useFetcher } from 'remix';
 import { ClientOnly } from 'remix-utils';
 import { HeartIcon } from '@heroicons/react/solid';
 import Button from '~/components/Button';
@@ -17,8 +17,6 @@ export default function BottomBar({ item, videos }: BottomBarProps) {
   const wantlistFetcher = useFetcher();
 
   const queueNextFetcher = useFetcher();
-
-  const transition = useTransition();
 
   return (
     <div className="border-t flex flex-none h-24 items-center justify-between px-4">
@@ -49,7 +47,7 @@ export default function BottomBar({ item, videos }: BottomBarProps) {
         <queueNextFetcher.Form action="/api/queue/next" method="post">
           <button
             className="hover:underline mr-4"
-            disabled={transition.state === 'submitting'}
+            disabled={queueNextFetcher.state === 'submitting'}
           >
             Next
           </button>
