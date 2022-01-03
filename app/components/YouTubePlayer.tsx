@@ -28,7 +28,7 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
 
   const [index, setIndex] = React.useState(0);
 
-  const video = videos[index];
+  const video = videos.length > 0 ? videos[index] : undefined;
 
   const [playing, setPlaying] = React.useState(false);
 
@@ -56,7 +56,7 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
           setProgress(value);
         }}
         playing={playing}
-        url={video.uri}
+        url={video?.uri}
         width={playerWidth}
       />
       <div className="flex items-center justify-center mb-2">
@@ -101,33 +101,39 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
           <ArrowSmRightIcon className="h-5 w-5" />
         </Button>
       </div>
-      <div className="flex items-center">
-        <div className="mr-2 text-xs w-8">
-          {formatSeconds(progress.playedSeconds)}
-        </div>
-        <div className="bg-gray-100 h-1 w-full">
-          <div
-            className="bg-gray-300 h-1"
-            style={{ width: `${progress.loaded * 100}%` }}
-          >
-            <div
-              className="bg-black h-1"
-              style={{ width: `${progress.played * 100}%` }}
-            ></div>
+      {video !== undefined ? (
+        <>
+          <div className="flex items-center">
+            <div className="mr-2 text-xs w-8">
+              {formatSeconds(progress.playedSeconds)}
+            </div>
+            <div className="bg-gray-100 h-1 w-full">
+              <div
+                className="bg-gray-300 h-1"
+                style={{ width: `${progress.loaded * 100}%` }}
+              >
+                <div
+                  className="bg-black h-1"
+                  style={{ width: `${progress.played * 100}%` }}
+                ></div>
+              </div>
+            </div>
+            <div className="ml-2 text-xs w-8">
+              {duration ? formatSeconds(duration) : '--:--'}
+            </div>
           </div>
-        </div>
-        <div className="ml-2 text-xs w-8">
-          {duration ? formatSeconds(duration) : '--:--'}
-        </div>
-      </div>
-      <div
-        className="hover:underline mx-auto overflow-hidden text-center text-ellipsis text-xs whitespace-nowrap"
-        style={{ width: playerWidth - 64 }}
-      >
-        <a href={video.uri} rel="noreferrer" target="_blank">
-          {video.title} ({index + 1} / {videos.length})
-        </a>
-      </div>
+          <div
+            className="hover:underline mx-auto overflow-hidden text-center text-ellipsis text-xs whitespace-nowrap"
+            style={{ width: playerWidth - 64 }}
+          >
+            <a href={video.uri} rel="noreferrer" target="_blank">
+              {video.title} ({index + 1} / {videos.length})
+            </a>
+          </div>
+        </>
+      ) : (
+        <div className="text-center">No videos for release</div>
+      )}
     </div>
   );
 }

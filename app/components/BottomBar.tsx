@@ -38,7 +38,7 @@ export default function BottomBar({ item, videos }: BottomBarProps) {
           }
         />
       ) : (
-        <div className="flex items-center">No releases in queue.</div>
+        <div className="flex items-center">No releases in queue</div>
       )}
       <ClientOnly>
         {videos !== undefined ? <YouTubePlayer videos={videos} /> : null}
