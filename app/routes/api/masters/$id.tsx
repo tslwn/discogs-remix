@@ -1,13 +1,12 @@
 import clsx from 'clsx';
 import { useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
-import ArtistLinks from '~/components/ArtistLinks';
 import Collapsible from '~/components/Collapsible';
-import Chips from '~/components/Chips';
 import Link from '~/components/Link';
 import Page from '~/components/Page';
+import ReleaseHeading from '~/components/ReleaseHeading';
 import { getSessionAndClient } from '~/lib/client.server';
-import { concatenateArtists, primaryOrFirstImage } from '~/lib/release';
+import { primaryOrFirstImage } from '~/lib/release';
 import type { Master, MasterVersions } from '~/types/discojs';
 
 interface RouteParams {
@@ -39,38 +38,18 @@ export default function Route() {
   const { master, masterVersions } =
     useLoaderData<{ master: Master; masterVersions: MasterVersions }>();
 
-  const artists = concatenateArtists(master.artists);
-
   const src = primaryOrFirstImage(master.images)?.uri;
 
   return (
     <Page>
-      <div className="flex mb-4">
-        {src !== undefined ? (
-          <img
-            alt={`${artists} - ${master.title}`}
-            className="h-56 w-56 mr-4"
-            src={src}
-          ></img>
-        ) : null}
-        <div>
-          <div>
-            <h2 className="text-xl">
-              <ArtistLinks artists={master.artists} />
-              {' - '}
-              {master.title}
-            </h2>
-          </div>
-          <div className="flex">
-            <div className="flex flex-wrap items-center">
-              <div className="mb-1 mr-3 text-lg">{master.year}</div>
-              <Chips chips={master.genres} className="bg-gray-300" />
-              <Chips chips={master.styles} className="bg-gray-200" />
-            </div>
-            {/* <div className="w-1/2"></div> */}
-          </div>
-        </div>
-      </div>
+      <ReleaseHeading
+        artists={master.artists}
+        title={master.title}
+        src={src}
+        year={master.year}
+        genres={master.genres}
+        styles={master.styles}
+      />
       <div className="border-b border-gray-200 mb-4">
         <Collapsible
           heading="Tracklist"

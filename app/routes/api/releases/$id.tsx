@@ -1,13 +1,12 @@
 import { useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
-import ArtistLinks from '~/components/ArtistLinks';
-import Chips from '~/components/Chips';
 import Page from '~/components/Page';
 import QueueAddForm from '~/components/QueueAddForm';
 import { getSessionAndClient } from '~/lib/client.server';
 import { concatenateArtists, primaryOrFirstImage } from '~/lib/release';
 import { filterVideos } from '~/lib/videos.server';
 import type { Release } from '~/types/discojs';
+import ReleaseHeading from '~/components/ReleaseHeading';
 
 interface RouteParams {
   id: number;
@@ -30,42 +29,28 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 };
 
 export default function Route() {
-  const release = useLoaderData<Release>();
+  const { id, artists, title, images, year, genres, styles } =
+    useLoaderData<Release>();
 
-  const artists = concatenateArtists(release.artists);
-
-  const src = primaryOrFirstImage(release.images)?.uri;
+  const src = primaryOrFirstImage(images)?.uri;
 
   return (
     <Page>
-      <div className="flex mb-4">
-        {src !== undefined ? (
-          <img
-            alt={`${artists} - ${release.title}`}
-            className="h-56 w-56 mr-4"
-            src={src}
-          ></img>
-        ) : null}
-        <div>
-          <div>
-            <h2 className="text-xl">
-              <ArtistLinks artists={release.artists} />
-              {' - '}
-              {release.title}
-            </h2>
-          </div>
-          <div className="flex">
-            <div className="flex flex-wrap items-center">
-              <div className="mb-1 mr-3 text-lg">{release.year}</div>
-              <Chips chips={release.genres ?? []} className="bg-gray-300" />
-              <Chips chips={release.styles ?? []} className="bg-gray-200" />
-            </div>
-            {/* <div className="w-1/2"></div> */}
-          </div>
-        </div>
-      </div>
+      <ReleaseHeading
+        artists={artists}
+        title={title}
+        src={src}
+        year={year}
+        genres={genres}
+        styles={styles}
+      />
       <QueueAddForm
-        item={{ id: release.id, artists, title: release.title, src }}
+        item={{
+          id,
+          artists: concatenateArtists(artists),
+          title,
+          src,
+        }}
         text
       />
     </Page>
