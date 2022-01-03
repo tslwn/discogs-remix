@@ -4,7 +4,7 @@ import BottomBar from '~/components/BottomBar';
 import Sidebar from '~/components/Sidebar';
 import { isAuthenticated } from '~/lib/auth.server';
 import { clientFactory } from '~/lib/client.server';
-import { concatenateArtists, primaryOrFirstImage } from '~/lib/release';
+import { formatReleaseArtists, primaryOrFirstImage } from '~/lib/release';
 import { getSession } from '~/lib/sessions.server';
 import { filterVideos } from '~/lib/videos.server';
 import { Release } from '~/types/discojs';
@@ -37,7 +37,7 @@ export default function Route() {
     release !== null
       ? {
           id: release.id,
-          artists: concatenateArtists(release.artists),
+          artists: formatReleaseArtists(release.artists),
           title: release.title,
           src: primaryOrFirstImage(release.images)?.uri,
         }

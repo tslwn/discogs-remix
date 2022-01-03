@@ -1,12 +1,19 @@
+import clsx from 'clsx';
 import { useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
 import Page from '~/components/Page';
 import QueueAddForm from '~/components/QueueAddForm';
 import { getSessionAndClient } from '~/lib/client.server';
-import { concatenateArtists, primaryOrFirstImage } from '~/lib/release';
+import {
+  formatReleaseArtists,
+  formatReleaseFormats,
+  formatReleaseLabels,
+  primaryOrFirstImage,
+} from '~/lib/release';
 import { filterVideos } from '~/lib/videos.server';
 import type { Release } from '~/types/discojs';
 import ReleaseHeading from '~/components/ReleaseHeading';
+import Collapsible from '~/components/Collapsible';
 
 interface RouteParams {
   id: number;
@@ -29,30 +36,58 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 };
 
 export default function Route() {
-  const { id, artists, title, images, year, genres, styles } =
-    useLoaderData<Release>();
+  const release = useLoaderData<Release>();
 
-  const src = primaryOrFirstImage(images)?.uri;
+  const src = primaryOrFirstImage(release.images)?.uri;
 
   return (
     <Page>
       <ReleaseHeading
-        artists={artists}
-        title={title}
+        artists={release.artists}
+        title={release.title}
         src={src}
-        year={year}
-        genres={genres}
-        styles={styles}
+        year={release.year}
+        country={release.country}
+        // TODO: another problem with `discojs` type definitions
+        // @ts-ignore
+        formats={formatReleaseFormats(release.formats)}
+        labels={formatReleaseLabels(release.labels)}
+        genres={release.genres}
+        styles={release.styles}
       />
       <QueueAddForm
         item={{
-          id,
-          artists: concatenateArtists(artists),
-          title,
+          id: release.id,
+          artists: formatReleaseArtists(release.artists),
+          title: release.title,
           src,
         }}
         text
       />
+      <div className="border-b border-gray-200 mb-4">
+        <Collapsible
+          heading="Tracklist"
+          panel={
+            <table className="mb-2 table-fixed w-full">
+              <tbody>
+                {release.tracklist?.map((track) => (
+                  <tr key={`${track.position} ${track.title}`}>
+                    <td className="w-8">{track.position}</td>
+                    <td
+                      className={clsx(
+                        track.type_ !== 'track' && 'font-semibold my-2'
+                      )}
+                    >
+                      {track.title}
+                    </td>
+                    <td className="text-right">{track.duration}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          }
+        />
+      </div>
     </Page>
   );
 }
