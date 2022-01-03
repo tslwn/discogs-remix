@@ -9,7 +9,7 @@ export default function ArtistLinks({ artists }: ArtistsLinksProps) {
   return (
     <>
       {artists.map((artist) => (
-        <>
+        <div className="inline" key={artist.id}>
           <Link className="hover:underline" to={`/api/artists/${artist.id}`}>
             {artist.anv !== '' ? artist.anv : artist.name}
           </Link>
@@ -17,7 +17,7 @@ export default function ArtistLinks({ artists }: ArtistsLinksProps) {
             {artist.join !== ',' ? ' ' : ''}
             {artist.join}{' '}
           </span>
-        </>
+        </div>
       ))}
     </>
   );
