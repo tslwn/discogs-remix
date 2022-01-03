@@ -1,5 +1,5 @@
-import { Link } from 'remix';
 import { ClientOnly } from 'remix-utils';
+import Link from '~/components/Link';
 import QueueItemCard from '~/components/QueueItemCard';
 import YouTubePlayer from '~/components/YouTubePlayer';
 import type { Release } from '~/types/discojs';
@@ -22,9 +22,7 @@ export default function BottomBar({ item, videos }: BottomBarProps) {
         {videos !== undefined ? <YouTubePlayer videos={videos} /> : null}
       </ClientOnly>
       <div className="flex items-center">
-        <Link className="hover:underline" to="/api/queue">
-          Queue
-        </Link>
+        <Link to="/api/queue">Queue</Link>
       </div>
     </div>
   );

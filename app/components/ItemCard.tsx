@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'remix';
+import Link from '~/components/Link';
 
 type ItemCardProps = {
   title: string | { text: string; to: string };
@@ -28,18 +28,14 @@ export default function ItemCard({
           {typeof title === 'string' || title === undefined ? (
             <span>{title}</span>
           ) : (
-            <Link className="hover:underline" to={title.to}>
-              {title.text}
-            </Link>
+            <Link to={title.to}>{title.text}</Link>
           )}
         </div>
         <div className="text-xs">
           {typeof subtitle === 'string' || subtitle === undefined ? (
             <span>{subtitle}</span>
           ) : (
-            <Link className="hover:underline" to={subtitle.to}>
-              {subtitle.text}
-            </Link>
+            <Link to={subtitle.to}>{subtitle.text}</Link>
           )}
         </div>
       </div>

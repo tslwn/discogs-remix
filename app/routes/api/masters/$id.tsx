@@ -1,6 +1,7 @@
-import { Link, useLoaderData } from 'remix';
+import { useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
 import ArtistLinks from '~/components/ArtistLinks';
+import Link from '~/components/Link';
 import Page from '~/components/Page';
 import { getSessionAndClient } from '~/lib/client.server';
 import { concatenateArtists, primaryOrFirstImage } from '~/lib/release';
@@ -72,10 +73,7 @@ export default function Route() {
             {masterVersions.versions.map((version) => (
               <tr key={version.id}>
                 <td>
-                  <Link
-                    className="hover:underline"
-                    to={`/api/releases/${version.id}`}
-                  >
+                  <Link to={`/api/releases/${version.id}`}>
                     {version.title}
                   </Link>{' '}
                   ({version.major_formats})

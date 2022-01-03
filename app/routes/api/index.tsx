@@ -1,5 +1,6 @@
-import { Link, redirect, useLoaderData } from 'remix';
+import { redirect, useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
+import Link from '~/components/Link';
 import { isAuthenticated } from '~/lib/auth.server';
 import { clientFactory } from '~/lib/client.server';
 import { getSession } from '~/lib/sessions.server';
@@ -28,21 +29,14 @@ export default function Route() {
       <p className="mb-2">Try these links:</p>
       <ul className="list-disc ml-4">
         <li>
-          <Link className="hover:underline" to={`/api/artists/660`}>
-            Coil
-          </Link>{' '}
-          (artist)
+          <Link to={`/api/artists/660`}>Coil</Link> (artist)
         </li>
         <li>
-          <Link className="hover:underline" to={`/api/masters/5656`}>
-            Musick To Play In The Dark
-          </Link>{' '}
+          <Link to={`/api/masters/5656`}>Musick To Play In The Dark</Link>{' '}
           (master)
         </li>
         <li>
-          <Link className="hover:underline" to={`/api/releases/56898`}>
-            Musick To Play In The Dark²
-          </Link>{' '}
+          <Link to={`/api/releases/56898`}>Musick To Play In The Dark²</Link>{' '}
           (version)
         </li>
       </ul>

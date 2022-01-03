@@ -1,5 +1,6 @@
-import { Form, Link, redirect } from 'remix';
+import { Form, redirect } from 'remix';
 import type { ActionFunction } from 'remix';
+import Link from '~/components/Link';
 import { destroySession, getSession } from '~/lib/sessions.server';
 
 export const action: ActionFunction = async ({ request }) => {
@@ -19,9 +20,7 @@ export default function SignoutRoute() {
       <Form method="post">
         <button className="hover:underline">Sign out</button>
       </Form>
-      <Link className="hover:underline" to="/api">
-        Nope
-      </Link>
+      <Link to="/api">Nope</Link>
     </div>
   );
 }

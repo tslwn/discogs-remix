@@ -1,4 +1,4 @@
-import { Link } from 'remix';
+import Link from '~/components/Link';
 import type { Release } from '~/types/discojs';
 
 interface ArtistsLinksProps {
@@ -10,7 +10,7 @@ export default function ArtistLinks({ artists }: ArtistsLinksProps) {
     <>
       {artists.map((artist) => (
         <div className="inline" key={artist.id}>
-          <Link className="hover:underline" to={`/api/artists/${artist.id}`}>
+          <Link to={`/api/artists/${artist.id}`}>
             {artist.anv !== '' ? artist.anv : artist.name}
           </Link>
           <span>
