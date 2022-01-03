@@ -1,6 +1,7 @@
 import { useFetcher, useTransition } from 'remix';
 import { ClientOnly } from 'remix-utils';
-import IconButton from '~/components/IconButton';
+import { HeartIcon } from '@heroicons/react/solid';
+import Button from '~/components/Button';
 import Link from '~/components/Link';
 import QueueItemCard from '~/components/QueueItemCard';
 import YouTubePlayer from '~/components/YouTubePlayer';
@@ -27,16 +28,14 @@ export default function BottomBar({ item, videos }: BottomBarProps) {
           right={
             <wantlistFetcher.Form action="/api/wantlist" method="post">
               <input hidden id="id" name="id" readOnly value={item.id} />
-              <IconButton
+              <Button
                 aria-label="Add to wantlist"
                 className="mr-2"
                 disabled={wantlistFetcher.state === 'submitting'}
-                iconProps={{
-                  className: 'h-5 w-5',
-                  icon: 'Heart',
-                }}
                 title="Add to wantlist"
-              />
+              >
+                <HeartIcon className="h-5 w-5" />
+              </Button>
             </wantlistFetcher.Form>
           }
         />

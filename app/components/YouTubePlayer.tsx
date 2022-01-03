@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactPlayer from 'react-player/youtube';
+import {
+  ArrowSmLeftIcon,
+  ArrowSmRightIcon,
+  PauseIcon,
+  PlayIcon,
+} from '@heroicons/react/solid';
+import Button from '~/components/Button';
 import useElementSize from '~/hooks/useElementSize';
 import type { Release } from '~/types/discojs';
-import IconButton from './IconButton';
 
 function initialProgress() {
   return {
@@ -54,40 +60,36 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
         width={playerWidth}
       />
       <div className="flex items-center justify-center mb-2">
-        <IconButton
+        <Button
           aria-label="Previous video"
           className="mr-2"
           disabled={isPreviousDisabled}
-          iconProps={{
-            className: 'h-5 w-5',
-            icon: 'ArrowSmLeft',
-          }}
           onClick={() => {
             setIndex((prev) => (prev > 0 ? prev - 1 : 0));
             setProgress(initialProgress());
           }}
           title="Previous video"
-        />
-        <IconButton
+        >
+          <ArrowSmLeftIcon className="h-5 w-5" />
+        </Button>
+        <Button
           aria-label={playing ? 'Pause video' : 'Play video'}
           className="mr-2"
           disabled={isPlayPauseDisabled}
-          iconProps={{
-            className: 'h-8 w-8',
-            icon: playing ? 'Pause' : 'Play',
-          }}
           onClick={() => {
             setPlaying((prev) => !prev);
           }}
           title={playing ? 'Pause video' : 'Play video'}
-        />
-        <IconButton
+        >
+          {playing ? (
+            <PauseIcon className="h-8 w-8" />
+          ) : (
+            <PlayIcon className="h-8 w-8" />
+          )}
+        </Button>
+        <Button
           aria-label="Next video"
           disabled={isNextDisabled}
-          iconProps={{
-            className: 'h-5 w-5',
-            icon: 'ArrowSmRight',
-          }}
           onClick={() => {
             setIndex((prev) =>
               prev < videos.length - 1 ? prev + 1 : videos.length - 1
@@ -95,7 +97,9 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
             setProgress(initialProgress());
           }}
           title="Next video"
-        />
+        >
+          <ArrowSmRightIcon className="h-5 w-5" />
+        </Button>
       </div>
       <div className="flex items-center">
         <div className="mr-2 text-xs w-8">
