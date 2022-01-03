@@ -1,12 +1,13 @@
 import { useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
 import ArtistLinks from '~/components/ArtistLinks';
+import Chips from '~/components/Chips';
 import Page from '~/components/Page';
+import QueueAddForm from '~/components/QueueAddForm';
 import { getSessionAndClient } from '~/lib/client.server';
 import { concatenateArtists, primaryOrFirstImage } from '~/lib/release';
 import { filterVideos } from '~/lib/videos.server';
 import type { Release } from '~/types/discojs';
-import QueueAddForm from '~/components/QueueAddForm';
 
 interface RouteParams {
   id: number;
@@ -46,10 +47,21 @@ export default function Route() {
           ></img>
         ) : null}
         <div>
-          <h2 className="text-xl">{release.title}</h2>
-          <h3 className="text-md">
-            <ArtistLinks artists={release.artists} />
-          </h3>
+          <div>
+            <h2 className="text-xl">
+              <ArtistLinks artists={release.artists} />
+              {' - '}
+              {release.title}
+            </h2>
+          </div>
+          <div className="flex">
+            <div className="flex flex-wrap items-center">
+              <div className="mb-1 mr-3 text-lg">{release.year}</div>
+              <Chips chips={release.genres ?? []} className="bg-gray-300" />
+              <Chips chips={release.styles ?? []} className="bg-gray-200" />
+            </div>
+            {/* <div className="w-1/2"></div> */}
+          </div>
         </div>
       </div>
       <QueueAddForm

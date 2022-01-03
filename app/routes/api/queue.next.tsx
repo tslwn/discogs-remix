@@ -1,7 +1,7 @@
 import { json } from 'remix';
 import type { ActionFunction } from 'remix';
 import { commitSession, getSession } from '~/lib/sessions.server';
-import { Queue } from '~/types/queue';
+import type { Queue } from '~/types/queue';
 
 export const action: ActionFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'));

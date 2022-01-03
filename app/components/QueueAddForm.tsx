@@ -8,33 +8,14 @@ interface QueueAddProps {
 }
 
 export default function QueueAddForm({ item, text }: QueueAddProps) {
-  const form = {
-    id: `${item.id}-id`,
-    artists: `${item.id}-artists`,
-    title: `${item.id}-title`,
-    src: `${item.id}-src`,
-  };
-
   const fetcher = useFetcher();
 
   return (
     <fetcher.Form action="/api/queue/add" className="inline" method="post">
-      <input hidden id={form.id} name={form.id} readOnly value={item.id} />
-      <input
-        hidden
-        id={form.artists}
-        name={form.artists}
-        readOnly
-        value={item.artists}
-      />
-      <input
-        hidden
-        id={form.title}
-        name={form.title}
-        readOnly
-        value={item.title}
-      />
-      <input hidden id={form.src} name={form.src} readOnly value={item.src} />
+      <input hidden id="id" name="id" readOnly value={item.id} />
+      <input hidden id="artists" name="artists" readOnly value={item.artists} />
+      <input hidden id="title" name="title" readOnly value={item.title} />
+      <input hidden id="src" name="src" readOnly value={item.src} />
       <button
         className="flex hover:underline item-center"
         disabled={fetcher.state === 'submitting'}

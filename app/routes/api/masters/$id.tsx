@@ -1,7 +1,9 @@
+import clsx from 'clsx';
 import { useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
 import ArtistLinks from '~/components/ArtistLinks';
 import Collapsible from '~/components/Collapsible';
+import Chips from '~/components/Chips';
 import Link from '~/components/Link';
 import Page from '~/components/Page';
 import { getSessionAndClient } from '~/lib/client.server';
@@ -62,16 +64,8 @@ export default function Route() {
           <div className="flex">
             <div className="flex flex-wrap items-center">
               <div className="mb-1 mr-3 text-lg">{master.year}</div>
-              {master.genres.map((genre) => (
-                <div className="bg-gray-300 mb-1 mr-1 px-2 py-1 rounded-lg text-xs">
-                  {genre}
-                </div>
-              ))}
-              {master.styles.map((style) => (
-                <div className="bg-gray-200 mb-1 mr-1 px-2 py-1 rounded-lg text-xs">
-                  {style}
-                </div>
-              ))}
+              <Chips chips={master.genres} className="bg-gray-300" />
+              <Chips chips={master.styles} className="bg-gray-200" />
             </div>
             {/* <div className="w-1/2"></div> */}
           </div>
@@ -84,7 +78,13 @@ export default function Route() {
             <ul className="mb-2">
               {master.tracklist.map((track) => (
                 <li className="flex justify-between">
-                  <span>{track.title}</span>
+                  <span
+                    className={clsx(
+                      track.type_ !== 'track' && 'font-semibold my-2'
+                    )}
+                  >
+                    {track.title}
+                  </span>
                   <span>{track.duration}</span>
                 </li>
               ))}
@@ -111,9 +111,10 @@ export default function Route() {
                   <tr key={version.id}>
                     <td>
                       <Link to={`/api/releases/${version.id}`}>
-                        {version.title}
+                        {version.title !== master.title ? version.title : null}{' '}
+                        {version.major_formats}
                       </Link>{' '}
-                      ({version.major_formats})
+                      <span className="text-xs">{version.format}</span>
                     </td>
                     <td>{version.label}</td>
                     <td>{version.catno}</td>
