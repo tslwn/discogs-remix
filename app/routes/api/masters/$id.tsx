@@ -1,8 +1,7 @@
 import { useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
-import { Disclosure } from '@headlessui/react';
 import ArtistLinks from '~/components/ArtistLinks';
+import Collapsible from '~/components/Collapsible';
 import Link from '~/components/Link';
 import Page from '~/components/Page';
 import { getSessionAndClient } from '~/lib/client.server';
@@ -59,56 +58,56 @@ export default function Route() {
           </h3>
         </div>
       </div>
-      <div>
-        <Disclosure>
-          {({ open }) => (
-            <>
-              <Disclosure.Button>
-                <div className="flex items-center mb-4">
-                  <h4 className="mr-2 text-lg">Versions</h4>
-                  {open ? (
-                    <ChevronUpIcon className="h-5 w-5" />
-                  ) : (
-                    <ChevronDownIcon className="h-5 w-5" />
-                  )}
-                </div>
-              </Disclosure.Button>
-              <Disclosure.Panel>
-                <table className="table-auto text-left w-full">
-                  <thead>
-                    <tr>
-                      <th>Title (Format)</th>
-                      <th>Label</th>
-                      <th>Cat #</th>
-                      <th>Country</th>
-                      <th>Year</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {masterVersions.versions.map((version) => (
-                      <tr key={version.id}>
-                        <td>
-                          <Link to={`/api/releases/${version.id}`}>
-                            {version.title}
-                          </Link>{' '}
-                          ({version.major_formats})
-                        </td>
-                        <td>{version.label}</td>
-                        <td>{version.catno}</td>
-                        <td>{version.country}</td>
-                        <td>
-                          {version.released !== '0'
-                            ? version.released
-                            : 'Unknown'}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </Disclosure.Panel>
-            </>
-          )}
-        </Disclosure>
+      <div className="border-b border-gray-200 mb-4">
+        <Collapsible
+          heading="Tracklist"
+          panel={
+            <ul>
+              {master.tracklist.map((track) => (
+                <li className="flex justify-between">
+                  <span>{track.title}</span>
+                  <span>{track.duration}</span>
+                </li>
+              ))}
+            </ul>
+          }
+        />
+      </div>
+      <div className="border-b border-gray-200 mb-4">
+        <Collapsible
+          heading="Versions"
+          panel={
+            <table className="table-auto text-left w-full">
+              <thead>
+                <tr>
+                  <th className="font-semibold">Title (Format)</th>
+                  <th className="font-semibold">Label</th>
+                  <th className="font-semibold">Cat #</th>
+                  <th className="font-semibold">Country</th>
+                  <th className="font-semibold text-right">Year</th>
+                </tr>
+              </thead>
+              <tbody>
+                {masterVersions.versions.map((version) => (
+                  <tr key={version.id}>
+                    <td>
+                      <Link to={`/api/releases/${version.id}`}>
+                        {version.title}
+                      </Link>{' '}
+                      ({version.major_formats})
+                    </td>
+                    <td>{version.label}</td>
+                    <td>{version.catno}</td>
+                    <td>{version.country}</td>
+                    <td className="text-right">
+                      {version.released !== '0' ? version.released : 'Unknown'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          }
+        />
       </div>
     </Page>
   );
