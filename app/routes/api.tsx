@@ -31,15 +31,15 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Route() {
-  const data = useLoaderData<Release | null>();
+  const release = useLoaderData<Release | null>();
 
   const item =
-    data !== null
+    release !== null
       ? {
-          id: data.id,
-          artists: concatenateArtists(data.artists),
-          title: data.title,
-          src: primaryOrFirstImage(data.images)?.uri,
+          id: release.id,
+          artists: concatenateArtists(release.artists),
+          title: release.title,
+          src: primaryOrFirstImage(release.images)?.uri,
         }
       : null;
 
@@ -52,7 +52,7 @@ export default function Route() {
           <Outlet />
         </div>
       </div>
-      <BottomBar item={item} />
+      <BottomBar item={item} videos={release?.videos} />
     </div>
   );
 }

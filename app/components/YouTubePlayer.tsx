@@ -1,13 +1,8 @@
 import React from 'react';
 import ReactPlayer from 'react-player/youtube';
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  PauseIcon,
-  PlayIcon,
-} from '~/components/Icon';
 import useElementSize from '~/hooks/useElementSize';
 import type { Release } from '~/types/discojs';
+import IconButton from './IconButton';
 
 function initialProgress() {
   return {
@@ -23,7 +18,7 @@ interface YouTubePlayerProps {
 }
 
 export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
-  const [playerRef, { width: playerWidth }] = useElementSize();
+  const [containerRef, { width: playerWidth }] = useElementSize();
 
   const [index, setIndex] = React.useState(0);
 
@@ -33,6 +28,14 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
 
   const [progress, setProgress] = React.useState(initialProgress());
 
+  const [duration, setDuration] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    setDuration(
+      progress.played === 0 ? null : progress.playedSeconds / progress.played
+    );
+  }, [progress]);
+
   const isPlayPauseDisabled = videos.length === 0;
 
   const isPreviousDisabled = index <= 0;
@@ -40,7 +43,7 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
   const isNextDisabled = index >= videos.length - 1;
 
   return (
-    <div ref={playerRef}>
+    <div className="px-4 w-1/2" ref={containerRef}>
       <ReactPlayer
         height={0}
         onProgress={(value) => {
@@ -51,74 +54,92 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
         width={playerWidth}
       />
       <div className="flex items-center justify-center mb-2">
-        <button
-          className={'mr-2' + (isPreviousDisabled ? ' cursor-not-allowed' : '')}
+        <IconButton
+          aria-label="Previous video"
+          className="mr-2"
           disabled={isPreviousDisabled}
+          iconProps={{
+            className: 'h-5 w-5',
+            icon: 'ArrowSmLeft',
+          }}
           onClick={() => {
             setIndex((prev) => (prev > 0 ? prev - 1 : 0));
             setProgress(initialProgress());
           }}
-        >
-          <ArrowLeftIcon
-            className={'h-5 w-5' + (isPreviousDisabled ? ' fill-gray-400' : '')}
-          />
-        </button>
-        <button
-          aria-label={playing ? 'Pause' : 'Play'}
-          className={
-            'mr-2' + (isPlayPauseDisabled ? ' cursor-not-allowed' : '')
-          }
+          title="Previous video"
+        />
+        <IconButton
+          aria-label={playing ? 'Pause video' : 'Play video'}
+          className="mr-2"
           disabled={isPlayPauseDisabled}
+          iconProps={{
+            className: 'h-8 w-8',
+            icon: playing ? 'Pause' : 'Play',
+          }}
           onClick={() => {
             setPlaying((prev) => !prev);
           }}
-          title={playing ? 'Pause' : 'Play'}
-        >
-          {playing ? (
-            <PauseIcon className="h-12 w-12" />
-          ) : (
-            <PlayIcon className="h-12 w-12" />
-          )}
-        </button>
-        <button
-          className={isNextDisabled ? 'cursor-not-allowed' : undefined}
+          title={playing ? 'Pause video' : 'Play video'}
+        />
+        <IconButton
+          aria-label="Next video"
           disabled={isNextDisabled}
+          iconProps={{
+            className: 'h-5 w-5',
+            icon: 'ArrowSmRight',
+          }}
           onClick={() => {
             setIndex((prev) =>
               prev < videos.length - 1 ? prev + 1 : videos.length - 1
             );
             setProgress(initialProgress());
           }}
-        >
-          <ArrowRightIcon
-            className={'h-5 w-5' + (isNextDisabled ? ' fill-gray-400' : '')}
-          />
-        </button>
+          title="Next video"
+        />
       </div>
-      <div className="bg-gray-100 h-1 mb-2 w-full">
-        <div
-          className="bg-gray-300 h-1"
-          style={{ width: `${progress.loaded * 100}%` }}
-        >
+      <div className="flex items-center">
+        <div className="mr-2 text-xs w-8">
+          {formatSeconds(progress.playedSeconds)}
+        </div>
+        <div className="bg-gray-100 h-1 w-full">
           <div
-            className="bg-black h-1"
-            style={{ width: `${progress.played * 100}%` }}
-          ></div>
+            className="bg-gray-300 h-1"
+            style={{ width: `${progress.loaded * 100}%` }}
+          >
+            <div
+              className="bg-black h-1"
+              style={{ width: `${progress.played * 100}%` }}
+            ></div>
+          </div>
+        </div>
+        <div className="ml-2 text-xs w-8">
+          {duration ? formatSeconds(duration) : '--:--'}
         </div>
       </div>
-      <div className="text-center text-sm">
-        <h3
+      <div className="text-center text-xs">
+        <span
           className="hover:underline overflow-hidden text-ellipsis whitespace-nowrap"
           style={{ width: playerWidth }}
         >
           <a href={video.uri} rel="noreferrer" target="_blank">
-            {video.title}
+            {video.title} ({index + 1} / {videos.length})
           </a>
-        </h3>
-        <p>
-          {index + 1} / {videos.length}
-        </p>
+        </span>
       </div>
     </div>
   );
+}
+
+function formatSeconds(value: number) {
+  const hours = Math.floor(value / 3600);
+  const minutes = Math.floor((value - hours * 3600) / 60);
+  const seconds = Math.round(value - hours * 3600 - minutes * 60);
+
+  let formatted = '';
+  formatted += hours > 0 ? hours.toString() + ':' : '';
+  formatted += minutes.toString() + ':';
+  formatted += seconds < 10 ? '0' : '';
+  formatted += seconds.toString();
+
+  return formatted;
 }
