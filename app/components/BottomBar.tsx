@@ -13,7 +13,9 @@ type BottomBarProps = {
 };
 
 export default function BottomBar({ item, videos }: BottomBarProps) {
-  const fetcher = useFetcher();
+  const wantlistFetcher = useFetcher();
+
+  const queueNextFetcher = useFetcher();
 
   const transition = useTransition();
 
@@ -23,18 +25,19 @@ export default function BottomBar({ item, videos }: BottomBarProps) {
         <QueueItemCard
           item={item}
           right={
-            <IconButton
-              aria-label="Add to wantlist"
-              className="mr-2"
-              iconProps={{
-                className: 'h-5 w-5',
-                icon: 'Heart',
-              }}
-              onClick={() => {
-                console.log('Add to wantlist', item.id);
-              }}
-              title="Add to wantlist"
-            />
+            <wantlistFetcher.Form action="/api/wantlist" method="post">
+              <input hidden id="id" name="id" readOnly value={item.id} />
+              <IconButton
+                aria-label="Add to wantlist"
+                className="mr-2"
+                disabled={wantlistFetcher.state === 'submitting'}
+                iconProps={{
+                  className: 'h-5 w-5',
+                  icon: 'Heart',
+                }}
+                title="Add to wantlist"
+              />
+            </wantlistFetcher.Form>
           }
         />
       ) : (
@@ -44,14 +47,14 @@ export default function BottomBar({ item, videos }: BottomBarProps) {
         {videos !== undefined ? <YouTubePlayer videos={videos} /> : null}
       </ClientOnly>
       <div className="flex items-center">
-        <fetcher.Form action="/api/queue/next" method="post">
+        <queueNextFetcher.Form action="/api/queue/next" method="post">
           <button
             className="hover:underline mr-4"
             disabled={transition.state === 'submitting'}
           >
             Next
           </button>
-        </fetcher.Form>
+        </queueNextFetcher.Form>
         <Link prefetch="none" to="/api/queue">
           Queue
         </Link>
