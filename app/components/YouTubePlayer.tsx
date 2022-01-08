@@ -75,18 +75,18 @@ export default function YouTubePlayer() {
         </Button>
       </div>
       {video !== undefined ? (
-        <>
+        <div>
           <div className="flex items-center">
             <div className="mr-2 text-xs w-8">
               {formatSeconds(progress.playedSeconds)}
             </div>
-            <div className="bg-neutral-100 h-1 w-full">
+            <div className="bg-neutral-200 h-1 w-full">
               <div
                 className="bg-neutral-300 h-1"
                 style={{ width: `${progress.loaded * 100}%` }}
               >
                 <div
-                  className="bg-black h-1"
+                  className="bg-neutral-900 h-1"
                   style={{ width: `${progress.played * 100}%` }}
                 ></div>
               </div>
@@ -112,9 +112,11 @@ export default function YouTubePlayer() {
               ({index + 1} / {videos.length})
             </span>
           </div>
-        </>
+        </div>
       ) : (
-        <div className="text-center">No videos for release</div>
+        <div className="flex h-9 items-center justify-center text-sm">
+          <span>No videos for release</span>
+        </div>
       )}
     </div>
   );

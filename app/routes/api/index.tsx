@@ -29,6 +29,9 @@ export default function Route() {
       <p className="mb-2">Try these links:</p>
       <ul className="list-disc ml-4">
         <li>
+          <Link to={`/api/labels/3193`}>Threshold House</Link> (label)
+        </li>
+        <li>
           <Link to={`/api/artists/660`}>Coil</Link> (artist)
         </li>
         <li>

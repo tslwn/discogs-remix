@@ -7,7 +7,7 @@ interface TopbarProps {
 
 export default function TopBar({ left, right }: TopbarProps) {
   return (
-    <div className="border-b flex items-center justify-between p-4 top-bar">
+    <div className="flex items-center justify-between p-4 top-bar">
       <div className="flex items-center">{left}</div>
       <div className="flex items-center">{right}</div>
     </div>

@@ -52,7 +52,7 @@ export default function Route() {
           styles={master.styles}
         />
       </div>
-      <div className="border-b border-neutral-200 mb-8">
+      <div className="mb-8">
         <Collapsible
           heading="Tracklist"
           panel={
@@ -73,7 +73,7 @@ export default function Route() {
           }
         />
       </div>
-      <div className="border-b border-neutral-200 mb-8">
+      <div className="mb-8">
         <Collapsible
           heading="Versions"
           panel={

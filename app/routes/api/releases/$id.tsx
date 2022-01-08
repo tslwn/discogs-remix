@@ -55,7 +55,7 @@ export default function Route() {
       <div className="mb-4">
         <AddToQueue item={releaseToItem(release)} text />
       </div>
-      <div className="border-b border-neutral-200 mb-4">
+      <div className="mb-4">
         <Collapsible
           heading="Tracklist"
           panel={
