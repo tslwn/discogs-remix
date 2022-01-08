@@ -9,7 +9,7 @@ export default function IconButton({ children, ...props }: ButtonProps) {
       {...props}
       className={clsx(
         props.className,
-        props.disabled && 'cursor-not-allowed text-gray-400'
+        props.disabled && 'cursor-not-allowed text-neutral-400'
       )}
     >
       {children}

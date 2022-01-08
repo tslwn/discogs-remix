@@ -48,7 +48,7 @@ export default function ReleaseHeading({
             {country !== undefined ? (
               <>
                 <span className="mx-2 ">·</span>
-                <span className="text-gray-500">{country}</span>
+                <span className="text-neutral-500">{country}</span>
               </>
             ) : null}
           </div>
@@ -58,12 +58,12 @@ export default function ReleaseHeading({
             <span className="block">{labels}</span>
           ) : null}
           {formats !== undefined ? (
-            <span className="block mb-2 text-gray-500">{formats}</span>
+            <span className="block mb-2 text-neutral-500">{formats}</span>
           ) : null}
           <div className="flex">
             <div className="flex flex-wrap items-center">
-              <Chips chips={genres} className="bg-gray-300" />
-              <Chips chips={styles} className="bg-gray-200" />
+              <Chips chips={genres} className="bg-neutral-300" />
+              <Chips chips={styles} className="bg-neutral-200" />
             </div>
           </div>
         </div>

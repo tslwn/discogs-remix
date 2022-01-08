@@ -50,15 +50,18 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
 
   return (
     <div className="px-4 w-1/2" ref={containerRef}>
-      <ReactPlayer
-        height={0}
-        onProgress={(value) => {
-          setProgress(value);
-        }}
-        playing={playing}
-        url={video?.uri}
-        width={playerWidth}
-      />
+      <div className="hidden">
+        <ReactPlayer
+          controls={false}
+          height={200}
+          onProgress={(value) => {
+            setProgress(value);
+          }}
+          playing={playing}
+          url={video?.uri}
+          width={200}
+        />
+      </div>
       <div className="flex items-center justify-center mb-2">
         <Button
           aria-label="Previous video"
@@ -107,9 +110,9 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
             <div className="mr-2 text-xs w-8">
               {formatSeconds(progress.playedSeconds)}
             </div>
-            <div className="bg-gray-100 h-1 w-full">
+            <div className="bg-neutral-100 h-1 w-full">
               <div
-                className="bg-gray-300 h-1"
+                className="bg-neutral-300 h-1"
                 style={{ width: `${progress.loaded * 100}%` }}
               >
                 <div

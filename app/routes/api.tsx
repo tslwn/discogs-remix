@@ -44,7 +44,7 @@ export default function Route() {
       : null;
 
   return (
-    <div className="flex flex-col h-screen text-sm">
+    <div className="bg-neutral-50 flex flex-col h-screen text-neutral-900">
       <div className="flex-1 flex overflow-y-hidden">
         <Sidebar />
         <div className="flex flex-1 flex-col">
