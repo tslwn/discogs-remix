@@ -1,7 +1,7 @@
 import { useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
 import Page from '~/components/Page';
-import QueueAddForm from '~/components/QueueAddForm';
+import QueueAddForm from '~/components/forms/QueueAddForm';
 import { getSessionAndClient } from '~/lib/client.server';
 import {
   formatReleaseArtists,
@@ -11,8 +11,8 @@ import {
 } from '~/lib/release';
 import { filterVideos } from '~/lib/videos.server';
 import type { Release } from '~/types/discojs';
-import ReleaseHeading from '~/components/ReleaseHeading';
 import Collapsible from '~/components/Collapsible';
+import ReleaseHeading from '~/components/ReleaseHeading';
 
 interface RouteParams {
   id: number;
