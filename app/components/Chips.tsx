@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 
 interface ChipsProps {
-  chips: string[];
+  chips?: string[];
   className?: string;
 }
 
 export default function Chips({ chips, className }: ChipsProps) {
-  return (
+  return chips !== undefined ? (
     <>
       {chips.map((chip) => (
         <div
@@ -17,5 +17,5 @@ export default function Chips({ chips, className }: ChipsProps) {
         </div>
       ))}
     </>
-  );
+  ) : null;
 }

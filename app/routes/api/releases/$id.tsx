@@ -55,15 +55,17 @@ export default function Route() {
         genres={release.genres}
         styles={release.styles}
       />
-      <QueueAddForm
-        item={{
-          id: release.id,
-          artists: formatReleaseArtists(release.artists),
-          title: release.title,
-          src,
-        }}
-        text
-      />
+      <div className="flex h-16 items-center">
+        <QueueAddForm
+          item={{
+            id: release.id,
+            artists: formatReleaseArtists(release.artists),
+            title: release.title,
+            src,
+          }}
+          text
+        />
+      </div>
       <div className="border-b border-gray-200 mb-4">
         <Collapsible
           heading="Tracklist"

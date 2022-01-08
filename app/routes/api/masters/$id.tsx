@@ -50,7 +50,7 @@ export default function Route() {
         genres={master.genres}
         styles={master.styles}
       />
-      <div className="border-b border-gray-200 mb-4">
+      <div className="border-b border-gray-200 my-4">
         <Collapsible
           heading="Tracklist"
           panel={

@@ -28,7 +28,7 @@ export default function ReleaseHeading({
   styles,
 }: ReleaseHeadingProps) {
   return (
-    <div className="flex mb-4">
+    <div className="flex">
       {src !== undefined ? (
         <img
           alt={`${formatReleaseArtists(artists)} - ${title}`}
@@ -36,37 +36,36 @@ export default function ReleaseHeading({
           src={src}
         ></img>
       ) : null}
-      <div>
-        <div className="mb-2">
-          <h2 className="text-xl">
-            <ArtistLinks artists={artists} />
-            {' - '}
-            {title}
-          </h2>
-        </div>
-        <div className="mb-2">
-          <div className="flex items-baseline">
-            <div className="text-lg">{year}</div>
+      <div className="">
+        <div className="mb-4">
+          <h2 className="font-semibold text-3xl">{title}</h2>
+          <div className="flex items-baseline mb-2 text-lg">
+            <h3>
+              <ArtistLinks artists={artists} />
+            </h3>
+            <span className="mx-2 ">·</span>
+            <span className="">{year}</span>
             {country !== undefined ? (
               <>
-                <div className="mx-2 text-lg">·</div>
-                <div className="text-lg">{country}</div>
+                <span className="mx-2 ">·</span>
+                <span className="text-gray-500">{country}</span>
               </>
             ) : null}
-            {formats !== undefined ? (
-              <div className="ml-2 text-gray-600 text-sm">{formats}</div>
-            ) : null}
           </div>
-          {labels !== undefined ? (
-            <div className="text-sm">{labels}</div>
-          ) : null}
         </div>
-        <div className="flex">
-          <div className="flex flex-wrap items-center">
-            <Chips chips={genres ?? []} className="bg-gray-300" />
-            <Chips chips={styles ?? []} className="bg-gray-200" />
+        <div>
+          {labels !== undefined ? (
+            <span className="block">{labels}</span>
+          ) : null}
+          {formats !== undefined ? (
+            <span className="block mb-2 text-gray-500">{formats}</span>
+          ) : null}
+          <div className="flex">
+            <div className="flex flex-wrap items-center">
+              <Chips chips={genres} className="bg-gray-300" />
+              <Chips chips={styles} className="bg-gray-200" />
+            </div>
           </div>
-          {/* <div className="w-1/2"></div> */}
         </div>
       </div>
     </div>
