@@ -15,6 +15,7 @@ import appStyles from '~/styles/app.css';
 import nProgressStyles from '~/styles/nprogress.css';
 import React from 'react';
 import { QueueProvider } from './contexts/QueueContext';
+import { PlayerProvider } from './contexts/PlayerContext';
 
 export const links: LinksFunction = () => {
   return [
@@ -37,9 +38,11 @@ export default function App() {
   return (
     <Document>
       <QueueProvider>
-        <Layout>
-          <Outlet />
-        </Layout>
+        <PlayerProvider>
+          <Layout>
+            <Outlet />
+          </Layout>
+        </PlayerProvider>
       </QueueProvider>
     </Document>
   );
@@ -96,7 +99,7 @@ export function CatchBoundary() {
   return (
     <Document title={`${caught.status} ${caught.statusText}`}>
       <Layout>
-        <div className="text-center">
+        <div className="p-8 text-center">
           <h1 className="font-semibold text-xl">
             {caught.status}: {caught.statusText}
           </h1>
@@ -111,7 +114,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
   return (
     <Document title="Error">
       <Layout>
-        <div className="text-center">
+        <div className="p-8 text-center">
           <h1 className="font-semibold text-xl">An error occurred</h1>
           <p>{error.message}</p>
         </div>

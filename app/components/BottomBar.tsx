@@ -8,6 +8,7 @@ import WantlistForm from '~/components/forms/WantlistForm';
 import { useQueue } from '~/contexts/QueueContext';
 import type { Release } from '~/types/discojs';
 import { decodeItem } from '~/lib/queue';
+import { usePlayer } from '~/contexts/PlayerContext';
 
 export default function BottomBar() {
   const { queue, dequeue } = useQueue();
@@ -23,11 +24,21 @@ export default function BottomBar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item?.id]);
 
-  const videos = fetcher.data?.videos;
+  const { setDisabled, setVideos } = usePlayer();
+
+  React.useEffect(() => {
+    setDisabled(fetcher.state === 'loading');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetcher.state]);
+
+  React.useEffect(() => {
+    if (fetcher.data) {
+      setVideos(fetcher.data.videos ?? []);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetcher.data]);
 
   const isNextDisabled = fetcher.state === 'loading' || queue.length <= 1;
-
-  const isPlayerDisabled = fetcher.state === 'loading';
 
   const handleNext = () => {
     dequeue();
@@ -43,9 +54,7 @@ export default function BottomBar() {
       ) : (
         <div className="flex items-center">No releases in queue</div>
       )}
-      {videos !== undefined ? (
-        <YouTubePlayer disabled={isPlayerDisabled} videos={videos} />
-      ) : null}
+      <YouTubePlayer />
       <div className="flex items-center">
         <Button className="mr-4" disabled={isNextDisabled} onClick={handleNext}>
           Next

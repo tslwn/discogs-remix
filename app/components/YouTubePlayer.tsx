@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactPlayer from 'react-player/youtube';
 import {
   ArrowSmLeftIcon,
@@ -8,82 +7,27 @@ import {
 } from '@heroicons/react/solid';
 import Button from '~/components/Button';
 import useElementSize from '~/hooks/useElementSize';
-import type { Release } from '~/types/discojs';
+import { usePlayer } from '~/contexts/PlayerContext';
 
-interface Progress {
-  loaded: number;
-  loadedSeconds: number;
-  played: number;
-  playedSeconds: number;
-}
-
-function initialProgress() {
-  return {
-    loaded: 0,
-    loadedSeconds: 0,
-    played: 0,
-    playedSeconds: 0,
-  };
-}
-
-interface YouTubePlayerProps {
-  disabled?: boolean;
-  videos: Exclude<Release['videos'], undefined>;
-}
-
-export default function YouTubePlayer({
-  disabled,
-  videos,
-}: YouTubePlayerProps) {
+export default function YouTubePlayer() {
   const [containerRef, { width: playerWidth }] = useElementSize();
 
-  const [index, setIndex] = React.useState(0);
-
-  const video = videos.length > 0 ? videos[index] : undefined;
-
-  const [playing, setPlaying] = React.useState(false);
-
-  const [progress, setProgress] = React.useState<Progress>(initialProgress());
-
-  const [duration, setDuration] = React.useState<number | null>(null);
-
-  React.useEffect(() => {
-    setDuration(
-      progress.played === 0 ? null : progress.playedSeconds / progress.played
-    );
-  }, [progress]);
-
-  const isPreviousDisabled = disabled ?? index <= 0;
-
-  const isPlayPauseDisabled = disabled ?? videos.length === 0;
-
-  const isNextDisabled = disabled ?? index >= videos.length - 1;
-
-  const handleEnded = () => {
-    if (!isNextDisabled) {
-      setIndex((prev) => prev + 1);
-    }
-  };
-
-  const handleProgress = (value: Progress) => {
-    setProgress(value);
-  };
-
-  const handlePrevious = () => {
-    setIndex((prev) => (prev > 0 ? prev - 1 : 0));
-    setProgress(initialProgress());
-  };
-
-  const handlePlayPause = () => {
-    setPlaying((prev) => !prev);
-  };
-
-  const handleNext = () => {
-    setIndex((prev) =>
-      prev < videos.length - 1 ? prev + 1 : videos.length - 1
-    );
-    setProgress(initialProgress());
-  };
+  const {
+    duration,
+    handleEnded,
+    handleNext,
+    handlePlayPause,
+    handlePrevious,
+    handleProgress,
+    index,
+    isNextDisabled,
+    isPlayPauseDisabled,
+    isPreviousDisabled,
+    playing,
+    progress,
+    video,
+    videos,
+  } = usePlayer();
 
   return (
     <div className="px-4 w-1/2" ref={containerRef}>

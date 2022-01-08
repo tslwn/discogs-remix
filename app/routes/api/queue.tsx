@@ -1,7 +1,10 @@
 import { Tab } from '@headlessui/react';
+import { PauseIcon, PlayIcon } from '@heroicons/react/solid';
+import Button from '~/components/Button';
 import Page from '~/components/Page';
 import QueueItemCard from '~/components/QueueItemCard';
 import TopBar from '~/components/TopBar';
+import { usePlayer } from '~/contexts/PlayerContext';
 import { useQueue } from '~/contexts/QueueContext';
 
 export default function Route() {
@@ -12,6 +15,8 @@ export default function Route() {
   const handleClear = () => {
     clear();
   };
+
+  const { handlePlayPause, isPlayPauseDisabled, playing } = usePlayer();
 
   return (
     <Tab.Group manual>
@@ -43,7 +48,20 @@ export default function Route() {
                   <li className="mb-2" key={nowPlaying.id}>
                     <QueueItemCard
                       item={nowPlaying}
-                      left={<div className="w-5" />}
+                      left={
+                        <Button
+                          aria-label={playing ? 'Pause video' : 'Play video'}
+                          disabled={isPlayPauseDisabled}
+                          onClick={handlePlayPause}
+                          title={playing ? 'Pause video' : 'Play video'}
+                        >
+                          {playing ? (
+                            <PauseIcon className="h-5 w-5" />
+                          ) : (
+                            <PlayIcon className="h-5 w-5" />
+                          )}
+                        </Button>
+                      }
                     />
                   </li>
                 </ul>{' '}
