@@ -24,7 +24,13 @@ export const action: ActionFunction = async ({ request }) => {
 
   let queue: Queue = session.get('queue') ?? [];
 
-  queue.push({ id, artists, title, src });
+  queue.push({
+    id,
+    // can't guarantee UTF-8!
+    artists: encodeURI(artists),
+    title: encodeURI(title),
+    src: encodeURI(src),
+  });
 
   session.set('queue', queue);
 

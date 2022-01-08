@@ -1,13 +1,15 @@
 import { Release } from '~/types/discojs';
 
 export function formatReleaseArtists(artists: Release['artists']) {
-  return artists.reduce(
-    (artists, artist) =>
-      [artists, artist.anv !== '' ? artist.anv : artist.name, artist.join]
-        .join(' ')
-        .replace(' , ', ', '),
-    ''
-  );
+  return artists
+    .reduce(
+      (artists, artist) =>
+        [artists, artist.anv !== '' ? artist.anv : artist.name, artist.join]
+          .join(' ')
+          .replace(' , ', ', '),
+      ''
+    )
+    .trim();
 }
 
 export function formatReleaseFormats(

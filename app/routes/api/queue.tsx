@@ -10,7 +10,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const queue: Queue = session.get('queue') ?? [];
 
-  return queue;
+  return queue.map(({ id, artists, title, src }) => ({
+    id,
+    artists: decodeURI(artists),
+    title: decodeURI(title),
+    src: src !== undefined ? decodeURI(src) : undefined,
+  }));
 };
 
 export const action: ActionFunction = async ({ request }) => {

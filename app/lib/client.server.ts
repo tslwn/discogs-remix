@@ -1,7 +1,7 @@
 import { Discojs } from 'discojs';
 import type { Session } from 'remix';
 import { discogsEnv } from '~/lib/env.server';
-import { getSession, sessionGetOrError } from '~/lib/sessions.server';
+import { getSession } from '~/lib/sessions.server';
 
 export function clientFactory(session: Session) {
   const { consumerKey, consumerSecret, userAgent } = discogsEnv();
@@ -9,8 +9,8 @@ export function clientFactory(session: Session) {
   return new Discojs({
     consumerKey,
     consumerSecret,
-    oAuthToken: sessionGetOrError(session, 'oauth_access_token'),
-    oAuthTokenSecret: sessionGetOrError(session, 'oauth_access_token_secret'),
+    oAuthToken: session.get('oauth_access_token'),
+    oAuthTokenSecret: session.get('oauth_access_token_secret'),
     userAgent,
   });
 }

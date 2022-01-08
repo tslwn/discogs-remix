@@ -39,18 +39,19 @@ export default function ReleaseHeading({
       <div className="">
         <div className="mb-4">
           <h2 className="font-semibold text-3xl">{title}</h2>
-          <div className="flex items-baseline mb-2 text-lg">
+          <div className="mb-2 text-lg">
             <h3>
               <ArtistLinks artists={artists} />
             </h3>
-            <span className="mx-2 ">·</span>
-            <span className="">{year}</span>
-            {country !== undefined ? (
-              <>
-                <span className="mx-2 ">·</span>
-                <span className="text-neutral-500">{country}</span>
-              </>
-            ) : null}
+            <div className="flex items-baseline">
+              <span className="">{year}</span>
+              {country !== undefined ? (
+                <>
+                  <span className="mx-2 ">·</span>
+                  <span className="text-neutral-500">{country}</span>
+                </>
+              ) : null}
+            </div>
           </div>
         </div>
         <div>
