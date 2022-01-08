@@ -10,6 +10,13 @@ import Button from '~/components/Button';
 import useElementSize from '~/hooks/useElementSize';
 import type { Release } from '~/types/discojs';
 
+interface Progress {
+  loaded: number;
+  loadedSeconds: number;
+  played: number;
+  playedSeconds: number;
+}
+
 function initialProgress() {
   return {
     loaded: 0,
@@ -36,7 +43,7 @@ export default function YouTubePlayer({
 
   const [playing, setPlaying] = React.useState(false);
 
-  const [progress, setProgress] = React.useState(initialProgress());
+  const [progress, setProgress] = React.useState<Progress>(initialProgress());
 
   const [duration, setDuration] = React.useState<number | null>(null);
 
@@ -46,11 +53,37 @@ export default function YouTubePlayer({
     );
   }, [progress]);
 
-  const isPlayPauseDisabled = disabled ?? videos.length === 0;
-
   const isPreviousDisabled = disabled ?? index <= 0;
 
+  const isPlayPauseDisabled = disabled ?? videos.length === 0;
+
   const isNextDisabled = disabled ?? index >= videos.length - 1;
+
+  const handleEnded = () => {
+    if (!isNextDisabled) {
+      setIndex((prev) => prev + 1);
+    }
+  };
+
+  const handleProgress = (value: Progress) => {
+    setProgress(value);
+  };
+
+  const handlePrevious = () => {
+    setIndex((prev) => (prev > 0 ? prev - 1 : 0));
+    setProgress(initialProgress());
+  };
+
+  const handlePlayPause = () => {
+    setPlaying((prev) => !prev);
+  };
+
+  const handleNext = () => {
+    setIndex((prev) =>
+      prev < videos.length - 1 ? prev + 1 : videos.length - 1
+    );
+    setProgress(initialProgress());
+  };
 
   return (
     <div className="px-4 w-1/2" ref={containerRef}>
@@ -58,14 +91,8 @@ export default function YouTubePlayer({
         <ReactPlayer
           controls={false}
           height={200}
-          onEnded={() => {
-            if (!isNextDisabled) {
-              setIndex((prev) => prev + 1);
-            }
-          }}
-          onProgress={(value) => {
-            setProgress(value);
-          }}
+          onEnded={handleEnded}
+          onProgress={handleProgress}
           playing={playing}
           url={video?.uri}
           width={200}
@@ -76,10 +103,7 @@ export default function YouTubePlayer({
           aria-label="Previous video"
           className="mr-2"
           disabled={isPreviousDisabled}
-          onClick={() => {
-            setIndex((prev) => (prev > 0 ? prev - 1 : 0));
-            setProgress(initialProgress());
-          }}
+          onClick={handlePrevious}
           title="Previous video"
         >
           <ArrowSmLeftIcon className="h-5 w-5" />
@@ -88,9 +112,7 @@ export default function YouTubePlayer({
           aria-label={playing ? 'Pause video' : 'Play video'}
           className="mr-2"
           disabled={isPlayPauseDisabled}
-          onClick={() => {
-            setPlaying((prev) => !prev);
-          }}
+          onClick={handlePlayPause}
           title={playing ? 'Pause video' : 'Play video'}
         >
           {playing ? (
@@ -102,12 +124,7 @@ export default function YouTubePlayer({
         <Button
           aria-label="Next video"
           disabled={isNextDisabled}
-          onClick={() => {
-            setIndex((prev) =>
-              prev < videos.length - 1 ? prev + 1 : videos.length - 1
-            );
-            setProgress(initialProgress());
-          }}
+          onClick={handleNext}
           title="Next video"
         >
           <ArrowSmRightIcon className="h-5 w-5" />

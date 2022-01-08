@@ -1,3 +1,4 @@
+import { MusicNoteIcon } from '@heroicons/react/solid';
 import React from 'react';
 import Link from '~/components/Link';
 
@@ -23,8 +24,12 @@ export default function ItemCard({
     <div className="flex items-center">
       {left !== undefined ? <div className="mr-4">{left}</div> : null}
       {image.src !== undefined ? (
-        <img alt={image.alt} className="h-14 w-14 mr-4" src={image.src}></img>
-      ) : null}
+        <img alt={image.alt} className="h-14 mr-4 w-14" src={image.src}></img>
+      ) : (
+        <div className="bg-neutral-200 flex h-14 items-center justify-center mr-4 w-14">
+          <MusicNoteIcon className="text-neutral-500 h-5 w-5" />
+        </div>
+      )}
       <div>
         <div>
           {typeof title === 'string' || title === undefined ? (

@@ -1,3 +1,4 @@
+import { MusicNoteIcon } from '@heroicons/react/solid';
 import ArtistLinks from '~/components/ArtistLinks';
 import Chips from '~/components/Chips';
 import { formatReleaseArtists } from '~/lib/release';
@@ -35,7 +36,11 @@ export default function ReleaseHeading({
           className="h-56 w-56 mr-4"
           src={src}
         ></img>
-      ) : null}
+      ) : (
+        <div className="bg-neutral-200 flex h-56 items-center justify-center mr-4 w-56">
+          <MusicNoteIcon className="text-neutral-500 h-5 w-5" />
+        </div>
+      )}
       <div className="">
         <div className="mb-4">
           <h2 className="font-semibold text-3xl">{title}</h2>
