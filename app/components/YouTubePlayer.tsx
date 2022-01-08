@@ -20,10 +20,14 @@ function initialProgress() {
 }
 
 interface YouTubePlayerProps {
+  disabled?: boolean;
   videos: Exclude<Release['videos'], undefined>;
 }
 
-export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
+export default function YouTubePlayer({
+  disabled,
+  videos,
+}: YouTubePlayerProps) {
   const [containerRef, { width: playerWidth }] = useElementSize();
 
   const [index, setIndex] = React.useState(0);
@@ -42,11 +46,11 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
     );
   }, [progress]);
 
-  const isPlayPauseDisabled = videos.length === 0;
+  const isPlayPauseDisabled = disabled ?? videos.length === 0;
 
-  const isPreviousDisabled = index <= 0;
+  const isPreviousDisabled = disabled ?? index <= 0;
 
-  const isNextDisabled = index >= videos.length - 1;
+  const isNextDisabled = disabled ?? index >= videos.length - 1;
 
   return (
     <div className="px-4 w-1/2" ref={containerRef}>
@@ -54,6 +58,11 @@ export default function YouTubePlayer({ videos }: YouTubePlayerProps) {
         <ReactPlayer
           controls={false}
           height={200}
+          onEnded={() => {
+            if (!isNextDisabled) {
+              setIndex((prev) => prev + 1);
+            }
+          }}
           onProgress={(value) => {
             setProgress(value);
           }}

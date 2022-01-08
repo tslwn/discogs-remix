@@ -25,7 +25,9 @@ export default function BottomBar() {
 
   const videos = fetcher.data?.videos;
 
-  const isNextDisabled = queue.length <= 1;
+  const isNextDisabled = fetcher.state === 'loading' || queue.length <= 1;
+
+  const isPlayerDisabled = fetcher.state === 'loading';
 
   const handleNext = () => {
     setQueue((prev) => prev.slice(1));
@@ -41,7 +43,9 @@ export default function BottomBar() {
       ) : (
         <div className="flex items-center">No releases in queue</div>
       )}
-      {videos !== undefined ? <YouTubePlayer videos={videos} /> : null}
+      {videos !== undefined ? (
+        <YouTubePlayer disabled={isPlayerDisabled} videos={videos} />
+      ) : null}
       <div className="flex items-center">
         <Button className="mr-4" disabled={isNextDisabled} onClick={handleNext}>
           Next
