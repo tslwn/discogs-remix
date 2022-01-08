@@ -37,7 +37,7 @@ export default function Route() {
           <Tab.Panel>
             <div className="mb-4 flex justify-between">
               <h2 className="text-xl">Queue</h2>
-              <button onClick={handleClear}>Clear</button>
+              <Button onClick={handleClear}>Clear</Button>
             </div>
             {nowPlaying !== undefined ? (
               <div className="mb-12">

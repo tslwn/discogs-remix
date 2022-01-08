@@ -45,7 +45,7 @@ export default function BottomBar() {
   };
 
   return (
-    <div className="border-t flex flex-none h-24 items-center justify-between px-4">
+    <div className="border-t flex flex-none h-28 items-center justify-between px-4">
       {item !== null ? (
         <QueueItemCard
           item={item}

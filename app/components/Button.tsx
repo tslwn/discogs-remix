@@ -9,6 +9,7 @@ export default function IconButton({ children, ...props }: ButtonProps) {
       {...props}
       className={clsx(
         props.className,
+        'hover:underline',
         props.disabled && 'cursor-not-allowed text-neutral-400'
       )}
     >

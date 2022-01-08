@@ -1,5 +1,6 @@
 import { Form, json, redirect, useLoaderData } from 'remix';
 import type { ActionFunction, LoaderFunction } from 'remix';
+import Button from '~/components/Button';
 import {
   authorizeUrl,
   fetchRequestToken,
@@ -53,7 +54,7 @@ export default function Auth() {
   return (
     <Form className="flex flex-col items-center w-full" method="post">
       <div className="mb-4 text-center">
-        <button>Sign in</button>
+        <Button>Sign in</Button>
       </div>
       <p className="text-red-700 text-xs">{data.error}</p>
     </Form>

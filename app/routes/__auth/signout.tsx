@@ -1,5 +1,6 @@
 import { Form, redirect } from 'remix';
 import type { ActionFunction } from 'remix';
+import Button from '~/components/Button';
 import Link from '~/components/Link';
 import { destroySession, getSession } from '~/lib/sessions.server';
 
@@ -16,9 +17,9 @@ export const action: ActionFunction = async ({ request }) => {
 export default function SignoutRoute() {
   return (
     <div className="text-center">
-      <p>Are you sure you want to sign out?</p>
-      <Form method="post">
-        <button className="hover:underline">Sign out</button>
+      <h2 className="mb-8">Are you sure you want to sign out?</h2>
+      <Form className="mb-4" method="post">
+        <Button>Sign out</Button>
       </Form>
       <Link to="/api">Nope</Link>
     </div>

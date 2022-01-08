@@ -27,7 +27,7 @@ export default function ItemCard({
         {image.src !== undefined ? (
           <img alt={image.alt} src={image.src}></img>
         ) : (
-          <div className="bg-neutral-200 flex items-center justify-center">
+          <div className="bg-neutral-200 flex h-full items-center justify-center">
             <MusicNoteIcon className="text-neutral-500 h-5 w-5" />
           </div>
         )}

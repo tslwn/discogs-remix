@@ -96,12 +96,21 @@ export default function YouTubePlayer() {
             </div>
           </div>
           <div
-            className="hover:underline mx-auto overflow-hidden text-center text-ellipsis text-xs whitespace-nowrap"
+            className="mx-auto overflow-hidden text-center text-ellipsis text-sm whitespace-nowrap"
             style={{ width: playerWidth - 64 }}
           >
-            <a href={video.uri} rel="noreferrer" target="_blank">
-              {video.title} ({index + 1} / {videos.length})
+            <a
+              className="hover:underline"
+              href={video.uri}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {video.title}
             </a>
+            <span>
+              {' '}
+              ({index + 1} / {videos.length})
+            </span>
           </div>
         </>
       ) : (
