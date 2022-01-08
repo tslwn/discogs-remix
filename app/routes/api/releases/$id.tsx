@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import { useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
 import Page from '~/components/Page';
@@ -70,19 +69,21 @@ export default function Route() {
         <Collapsible
           heading="Tracklist"
           panel={
-            <table className="mb-2 table-fixed w-full">
+            <table className="mb-2 table-auto w-full">
               <tbody>
                 {release.tracklist?.map((track) => (
                   <tr key={`${track.position} ${track.title}`}>
-                    <td className="w-8">{track.position}</td>
-                    <td
-                      className={clsx(
-                        track.type_ !== 'track' && 'font-semibold my-2'
-                      )}
-                    >
-                      {track.title}
-                    </td>
-                    <td className="text-right">{track.duration}</td>
+                    {track.type_ !== 'track' ? (
+                      <td className="font-semibold my-2" colSpan={3}>
+                        {track.title}
+                      </td>
+                    ) : (
+                      <>
+                        <td className="w-8">{track.position}</td>
+                        <td>{track.title}</td>
+                        <td className="text-right">{track.duration}</td>
+                      </>
+                    )}
                   </tr>
                 ))}
               </tbody>
