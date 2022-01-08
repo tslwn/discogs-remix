@@ -1,4 +1,5 @@
 import { PlusSmIcon } from '@heroicons/react/solid';
+import Button from '~/components/Button';
 import { useQueue } from '~/contexts/QueueContext';
 import { encodeItem } from '~/lib/queue';
 import { QueueItem } from '~/types/queue';
@@ -10,19 +11,22 @@ interface QueueAddProps {
 }
 
 export default function AddToQueue({ icon, item, text }: QueueAddProps) {
-  const { setQueue } = useQueue();
+  const { queue, setQueue } = useQueue();
+
+  const isDisabled = queue.findIndex(({ id }) => item.id === id) > -1;
 
   const handleClick = () => {
     setQueue((prev) => [...prev, encodeItem(item)]);
   };
 
   return (
-    <button
-      className="flex hover:underline item-center space-x-2"
+    <Button
+      className="flex item-center space-x-2"
+      disabled={isDisabled}
       onClick={handleClick}
     >
       {text === true ? <span>Add to queue</span> : null}
       {icon === true ? <PlusSmIcon className="h-5 w-5" /> : null}
-    </button>
+    </Button>
   );
 }
