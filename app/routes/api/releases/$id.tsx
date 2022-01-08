@@ -3,15 +3,12 @@ import type { LoaderFunction } from 'remix';
 import Page from '~/components/Page';
 import AddToQueue from '~/components/AddToQueue';
 import { getSessionAndClient } from '~/lib/client.server';
-import {
-  formatReleaseArtists,
-  formatReleaseFormats,
-  primaryOrFirstImage,
-} from '~/lib/release';
+import { formatReleaseFormats, primaryOrFirstImage } from '~/lib/release';
 import { filterVideos } from '~/lib/videos.server';
 import type { Release } from '~/types/discojs';
 import Collapsible from '~/components/Collapsible';
 import ReleaseHeading from '~/components/ReleaseHeading';
+import { releaseToItem } from '~/lib/queue';
 
 interface RouteParams {
   id: number;
@@ -40,29 +37,23 @@ export default function Route() {
 
   return (
     <Page>
-      <ReleaseHeading
-        artists={release.artists}
-        title={release.title}
-        src={src}
-        year={release.year}
-        country={release.country}
-        // TODO: another problem with `discojs` type definitions
-        // @ts-ignore
-        formats={formatReleaseFormats(release.formats)}
-        labels={release.labels}
-        genres={release.genres}
-        styles={release.styles}
-      />
-      <div className="flex h-16 items-center">
-        <AddToQueue
-          item={{
-            id: release.id,
-            artists: formatReleaseArtists(release.artists),
-            title: release.title,
-            src,
-          }}
-          text
+      <div className="mb-8">
+        <ReleaseHeading
+          artists={release.artists}
+          title={release.title}
+          src={src}
+          year={release.year}
+          country={release.country}
+          // TODO: another problem with `discojs` type definitions
+          // @ts-ignore
+          formats={formatReleaseFormats(release.formats)}
+          labels={release.labels}
+          genres={release.genres}
+          styles={release.styles}
         />
+      </div>
+      <div className="mb-4">
+        <AddToQueue item={releaseToItem(release)} text />
       </div>
       <div className="border-b border-neutral-200 mb-4">
         <Collapsible

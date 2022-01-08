@@ -42,7 +42,7 @@ export default function ReleaseHeading({
           <MusicNoteIcon className="text-neutral-500 h-5 w-5" />
         </div>
       )}
-      <div className="">
+      <div>
         <div className="mb-4">
           <h2 className="font-semibold text-3xl">{title}</h2>
           <div className="mb-2 text-lg">

@@ -1,3 +1,4 @@
+import { PhotographIcon } from '@heroicons/react/solid';
 import { LoaderFunction, useLoaderData } from 'remix';
 import ItemCard from '~/components/ItemCard';
 import Page from '~/components/Page';
@@ -46,11 +47,15 @@ export default function Route() {
       <div className="flex mb-8">
         {src !== undefined ? (
           <img alt={artist.name} className="h-56 mr-4" src={src}></img>
-        ) : null}
-        <h2 className="text-xl">{artist.name}</h2>
+        ) : (
+          <div className="bg-neutral-200 flex h-56 items-center justify-center mr-4 w-56">
+            <PhotographIcon className="text-neutral-500 h-5 w-5" />
+          </div>
+        )}
+        <h2 className="font-semibold text-3xl">{artist.name}</h2>
       </div>
       <div>
-        <h4 className="mb-4 text-lg">Releases</h4>
+        <h4 className="font-semibold mb-2">Releases</h4>
         <ul>
           {artistReleases.releases.map((release) => {
             const text =
