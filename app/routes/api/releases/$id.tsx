@@ -1,7 +1,7 @@
 import { useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
 import Page from '~/components/Page';
-import QueueAddForm from '~/components/forms/QueueAddForm';
+import AddToQueue from '~/components/AddToQueue';
 import { getSessionAndClient } from '~/lib/client.server';
 import {
   formatReleaseArtists,
@@ -55,7 +55,7 @@ export default function Route() {
         styles={release.styles}
       />
       <div className="flex h-16 items-center">
-        <QueueAddForm
+        <AddToQueue
           item={{
             id: release.id,
             artists: formatReleaseArtists(release.artists),

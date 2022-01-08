@@ -14,6 +14,7 @@ import RouteChangeAnnouncement from '~/components/RouteChangeAnnouncement';
 import appStyles from '~/styles/app.css';
 import nProgressStyles from '~/styles/nprogress.css';
 import React from 'react';
+import { QueueProvider } from './contexts/QueueContext';
 
 export const links: LinksFunction = () => {
   return [
@@ -35,9 +36,11 @@ export default function App() {
 
   return (
     <Document>
-      <Layout>
-        <Outlet />
-      </Layout>
+      <QueueProvider>
+        <Layout>
+          <Outlet />
+        </Layout>
+      </QueueProvider>
     </Document>
   );
 }
@@ -93,10 +96,12 @@ export function CatchBoundary() {
   return (
     <Document title={`${caught.status} ${caught.statusText}`}>
       <Layout>
-        <h1>
-          {caught.status}: {caught.statusText}
-        </h1>
-        {message}
+        <div className="text-center">
+          <h1 className="font-semibold text-xl">
+            {caught.status}: {caught.statusText}
+          </h1>
+          {message}
+        </div>
       </Layout>
     </Document>
   );
@@ -106,8 +111,8 @@ export function ErrorBoundary({ error }: { error: Error }) {
   return (
     <Document title="Error">
       <Layout>
-        <div>
-          <h1>An error occurred.</h1>
+        <div className="text-center">
+          <h1 className="font-semibold text-xl">An error occurred</h1>
           <p>{error.message}</p>
         </div>
       </Layout>

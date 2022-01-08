@@ -1,18 +1,34 @@
-import { ClientOnly } from 'remix-utils';
+import React from 'react';
+import { useFetcher } from 'remix';
+import Button from '~/components/Button';
 import Link from '~/components/Link';
 import QueueItemCard from '~/components/QueueItemCard';
 import YouTubePlayer from '~/components/YouTubePlayer';
+import WantlistForm from '~/components/forms/WantlistForm';
+import { useQueue } from '~/contexts/QueueContext';
 import type { Release } from '~/types/discojs';
-import type { QueueItem } from '~/types/queue';
-import QueueNextForm from './forms/QueueNextForm';
-import WantlistForm from './forms/WantlistForm';
+import { decodeItem } from '~/lib/queue';
 
-type BottomBarProps = {
-  item: QueueItem | null;
-  videos: Release['videos'];
-};
+export default function BottomBar() {
+  const { queue, setQueue } = useQueue();
 
-export default function BottomBar({ item, videos }: BottomBarProps) {
+  const item = queue.length > 0 ? decodeItem(queue[0]) : null;
+
+  const fetcher = useFetcher<Release | null>();
+
+  React.useEffect(() => {
+    if (item !== null) {
+      fetcher.load(`/api/releases/${item.id}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item?.id]);
+
+  const videos = fetcher.data?.videos;
+
+  const handleNext = () => {
+    setQueue((prev) => prev.slice(1));
+  };
+
   return (
     <div className="border-t flex flex-none h-24 items-center justify-between px-4">
       {item !== null ? (
@@ -23,11 +39,11 @@ export default function BottomBar({ item, videos }: BottomBarProps) {
       ) : (
         <div className="flex items-center">No releases in queue</div>
       )}
-      <ClientOnly>
-        {videos !== undefined ? <YouTubePlayer videos={videos} /> : null}
-      </ClientOnly>
+      {videos !== undefined ? <YouTubePlayer videos={videos} /> : null}
       <div className="flex items-center">
-        <QueueNextForm className="mr-4" />
+        <Button className="mr-4" onClick={handleNext}>
+          Next
+        </Button>
         <Link prefetch="none" to="/api/queue">
           Queue
         </Link>

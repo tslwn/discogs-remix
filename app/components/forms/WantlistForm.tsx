@@ -1,6 +1,6 @@
 import { HeartIcon } from '@heroicons/react/outline';
 import { useFetcher } from 'remix';
-import Button from '~/components/button';
+import Button from '~/components/Button';
 
 interface WantlistFormProps {
   className?: string;
