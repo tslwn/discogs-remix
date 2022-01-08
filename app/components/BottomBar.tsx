@@ -10,7 +10,7 @@ import type { Release } from '~/types/discojs';
 import { decodeItem } from '~/lib/queue';
 
 export default function BottomBar() {
-  const { queue, setQueue } = useQueue();
+  const { queue, dequeue } = useQueue();
 
   const item = queue.length > 0 ? decodeItem(queue[0]) : null;
 
@@ -30,7 +30,7 @@ export default function BottomBar() {
   const isPlayerDisabled = fetcher.state === 'loading';
 
   const handleNext = () => {
-    setQueue((prev) => prev.slice(1));
+    dequeue();
   };
 
   return (

@@ -9,7 +9,6 @@ export default function Route() {
       <div className="flex-1 flex overflow-y-hidden">
         <Sidebar />
         <div className="flex flex-1 flex-col">
-          {/* <TopBar left="Left" right="Right" /> */}
           <Outlet />
         </div>
       </div>
