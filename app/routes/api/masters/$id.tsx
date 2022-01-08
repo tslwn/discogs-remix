@@ -42,15 +42,17 @@ export default function Route() {
 
   return (
     <Page>
-      <ReleaseHeading
-        artists={master.artists}
-        title={master.title}
-        src={src}
-        year={master.year}
-        genres={master.genres}
-        styles={master.styles}
-      />
-      <div className="border-b border-neutral-200 my-4">
+      <div className="mb-8">
+        <ReleaseHeading
+          artists={master.artists}
+          title={master.title}
+          src={src}
+          year={master.year}
+          genres={master.genres}
+          styles={master.styles}
+        />
+      </div>
+      <div className="border-b border-neutral-200 mb-8">
         <Collapsible
           heading="Tracklist"
           panel={
@@ -71,7 +73,7 @@ export default function Route() {
           }
         />
       </div>
-      <div className="border-b border-neutral-200 mb-4">
+      <div className="border-b border-neutral-200 mb-8">
         <Collapsible
           heading="Versions"
           panel={

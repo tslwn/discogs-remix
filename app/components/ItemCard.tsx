@@ -23,13 +23,15 @@ export default function ItemCard({
   return (
     <div className="flex items-center">
       {left !== undefined ? <div className="mr-4">{left}</div> : null}
-      {image.src !== undefined ? (
-        <img alt={image.alt} className="h-14 mr-4 w-14" src={image.src}></img>
-      ) : (
-        <div className="bg-neutral-200 flex h-14 items-center justify-center mr-4 w-14">
-          <MusicNoteIcon className="text-neutral-500 h-5 w-5" />
-        </div>
-      )}
+      <div className="h-14 mr-4 overflow-hidden w-14">
+        {image.src !== undefined ? (
+          <img alt={image.alt} src={image.src}></img>
+        ) : (
+          <div className="bg-neutral-200 flex items-center justify-center">
+            <MusicNoteIcon className="text-neutral-500 h-5 w-5" />
+          </div>
+        )}
+      </div>
       <div>
         <div>
           {typeof title === 'string' || title === undefined ? (

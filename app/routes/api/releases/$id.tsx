@@ -6,7 +6,6 @@ import { getSessionAndClient } from '~/lib/client.server';
 import {
   formatReleaseArtists,
   formatReleaseFormats,
-  formatReleaseLabels,
   primaryOrFirstImage,
 } from '~/lib/release';
 import { filterVideos } from '~/lib/videos.server';
@@ -50,7 +49,7 @@ export default function Route() {
         // TODO: another problem with `discojs` type definitions
         // @ts-ignore
         formats={formatReleaseFormats(release.formats)}
-        labels={formatReleaseLabels(release.labels)}
+        labels={release.labels}
         genres={release.genres}
         styles={release.styles}
       />

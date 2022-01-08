@@ -3,6 +3,7 @@ import ArtistLinks from '~/components/ArtistLinks';
 import Chips from '~/components/Chips';
 import { formatReleaseArtists } from '~/lib/release';
 import type { Release } from '~/types/discojs';
+import LabelLinks from './LabelLinks';
 
 interface ReleaseHeadingProps {
   artists: Release['artists'];
@@ -12,7 +13,7 @@ interface ReleaseHeadingProps {
   // TODO: separate master/release (again)?
   country?: string;
   formats?: string;
-  labels?: string;
+  labels?: Release['labels'];
   genres?: string[];
   styles?: string[];
 }
@@ -49,7 +50,7 @@ export default function ReleaseHeading({
               <ArtistLinks artists={artists} />
             </h3>
             <div className="flex items-baseline">
-              <span className="">{year}</span>
+              <span className="">{year !== 0 ? year : 'Unknown'}</span>
               {country !== undefined ? (
                 <>
                   <span className="mx-2 ">·</span>
@@ -60,9 +61,7 @@ export default function ReleaseHeading({
           </div>
         </div>
         <div>
-          {labels !== undefined ? (
-            <span className="block">{labels}</span>
-          ) : null}
+          {labels !== undefined ? <LabelLinks labels={labels} /> : null}
           {formats !== undefined ? (
             <span className="block mb-2 text-neutral-500">{formats}</span>
           ) : null}

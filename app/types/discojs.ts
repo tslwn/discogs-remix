@@ -18,7 +18,13 @@ export type ArtistReleases = _ArtistReleases['pagination'] & {
 
 export type Label = Awaited<ReturnType<typeof client.getLabel>>;
 
-export type LabelReleases = Awaited<ReturnType<typeof client.getLabelReleases>>;
+type _LabelReleases = Awaited<ReturnType<typeof client.getLabelReleases>>;
+
+export type LabelReleases = _LabelReleases['pagination'] & {
+  releases: (_LabelReleases['releases'][number] & {
+    type: 'master' | 'releases';
+  })[];
+};
 
 export type Master = Awaited<ReturnType<typeof client.getMaster>>;
 
