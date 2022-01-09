@@ -1,6 +1,3 @@
-import React from 'react';
-import ReactPlayer from 'react-player/youtube';
-import { useDebouncedCallback } from 'use-debounce';
 import {
   ArrowSmLeftIcon,
   ArrowSmRightIcon,
@@ -10,74 +7,34 @@ import {
   RewindIcon,
 } from '@heroicons/react/solid';
 import useElementSize from '~/hooks/useElementSize';
+import ExternalLink from '~/components/ExternalLink';
 import IconButton from '~/components/IconButton';
 import { usePlayer } from '~/contexts/PlayerContext';
-import ExternalLink from './ExternalLink';
-
-const DEBOUNCE_MS = 50;
-
-const SKIP_SECONDS = 30;
 
 export default function YouTubePlayer() {
   const [containerRef, { width: playerWidth }] = useElementSize();
 
   const {
-    disabled,
     duration,
-    handleEnded,
     handleNext,
     handlePlayPause,
     handlePrevious,
-    handleProgress,
+    handleSkipBackward,
+    handleSkipForward,
     index,
     isNextDisabled,
     isPlayPauseDisabled,
     isPreviousDisabled,
+    isSkipBackwardDisabled,
+    isSkipForwardDisabled,
     playing,
     progress,
     video,
     videos,
   } = usePlayer();
 
-  const playerRef = React.useRef<ReactPlayer>(null);
-
-  const isSkipForwardDisabled = disabled || duration === null;
-
-  const isSkipBackwardDisabled =
-    disabled || duration === null || progress.playedSeconds - SKIP_SECONDS < 0;
-
-  const handleSkipForward = useDebouncedCallback(() => {
-    if (!isSkipForwardDisabled) {
-      const seconds = progress.playedSeconds + SKIP_SECONDS;
-      if (seconds >= duration) {
-        handleNext();
-      } else {
-        playerRef.current?.seekTo(seconds);
-      }
-    }
-  }, DEBOUNCE_MS);
-
-  const handleSkipBackward = useDebouncedCallback(() => {
-    if (!isSkipBackwardDisabled) {
-      const seconds = Math.max(progress.playedSeconds - SKIP_SECONDS, 0);
-      playerRef.current?.seekTo(seconds);
-    }
-  }, DEBOUNCE_MS);
-
   return (
     <div className="px-4 w-1/2" ref={containerRef}>
-      <div className="hidden">
-        <ReactPlayer
-          controls={false}
-          height={200}
-          onEnded={handleEnded}
-          onProgress={handleProgress}
-          playing={playing}
-          ref={playerRef}
-          url={video?.uri}
-          width={200}
-        />
-      </div>
       <div className="flex items-center justify-center mb-2 space-x-2">
         <IconButton
           aria-label="Previous video"

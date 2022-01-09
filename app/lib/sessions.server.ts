@@ -6,6 +6,7 @@ const { commitSession, destroySession, getSession } =
     cookie: {
       name: '__session',
       path: '/',
+      secrets: ['foobar'],
     },
   });
 
