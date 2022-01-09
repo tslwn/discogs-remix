@@ -1,19 +1,28 @@
+import React from 'react';
 import ReactPlayer from 'react-player/youtube';
+import { useDebouncedCallback } from 'use-debounce';
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
+  ArrowSmLeftIcon,
+  ArrowSmRightIcon,
+  FastForwardIcon,
   PauseIcon,
   PlayIcon,
+  RewindIcon,
 } from '@heroicons/react/solid';
 import useElementSize from '~/hooks/useElementSize';
 import IconButton from '~/components/IconButton';
 import { usePlayer } from '~/contexts/PlayerContext';
 import ExternalLink from './ExternalLink';
 
+const DEBOUNCE_MS = 50;
+
+const SKIP_SECONDS = 30;
+
 export default function YouTubePlayer() {
   const [containerRef, { width: playerWidth }] = useElementSize();
 
   const {
+    disabled,
     duration,
     handleEnded,
     handleNext,
@@ -30,6 +39,31 @@ export default function YouTubePlayer() {
     videos,
   } = usePlayer();
 
+  const playerRef = React.useRef<ReactPlayer>(null);
+
+  const isSkipForwardDisabled = disabled || duration === null;
+
+  const isSkipBackwardDisabled =
+    disabled || duration === null || progress.playedSeconds - SKIP_SECONDS < 0;
+
+  const handleSkipForward = useDebouncedCallback(() => {
+    if (!isSkipForwardDisabled) {
+      const seconds = progress.playedSeconds + SKIP_SECONDS;
+      if (seconds >= duration) {
+        handleNext();
+      } else {
+        playerRef.current?.seekTo(seconds);
+      }
+    }
+  }, DEBOUNCE_MS);
+
+  const handleSkipBackward = useDebouncedCallback(() => {
+    if (!isSkipBackwardDisabled) {
+      const seconds = Math.max(progress.playedSeconds - SKIP_SECONDS, 0);
+      playerRef.current?.seekTo(seconds);
+    }
+  }, DEBOUNCE_MS);
+
   return (
     <div className="px-4 w-1/2" ref={containerRef}>
       <div className="hidden">
@@ -39,23 +73,31 @@ export default function YouTubePlayer() {
           onEnded={handleEnded}
           onProgress={handleProgress}
           playing={playing}
+          ref={playerRef}
           url={video?.uri}
           width={200}
         />
       </div>
-      <div className="flex items-center justify-center mb-2">
+      <div className="flex items-center justify-center mb-2 space-x-2">
         <IconButton
           aria-label="Previous video"
-          className="mr-2"
           disabled={isPreviousDisabled}
           onClick={handlePrevious}
           title="Previous video"
         >
-          <ArrowLeftIcon className="h-5 w-5" />
+          <ArrowSmLeftIcon className="h-5 w-5" />
+        </IconButton>
+        <IconButton
+          aria-label="Skip backwards"
+          disabled={isSkipBackwardDisabled}
+          onClick={handleSkipBackward}
+          title="Skip backwards"
+        >
+          <RewindIcon className="h-5 w-5" />
         </IconButton>
         <IconButton
           aria-label={playing ? 'Pause video' : 'Play video'}
-          className="mr-2 p-0"
+          className="p-0"
           disabled={isPlayPauseDisabled}
           onClick={handlePlayPause}
           title={playing ? 'Pause video' : 'Play video'}
@@ -67,12 +109,20 @@ export default function YouTubePlayer() {
           )}
         </IconButton>
         <IconButton
+          aria-label="Skip forwards"
+          disabled={isSkipForwardDisabled}
+          onClick={handleSkipForward}
+          title="Skip forwards"
+        >
+          <FastForwardIcon className="h-5 w-5" />
+        </IconButton>
+        <IconButton
           aria-label="Next video"
           disabled={isNextDisabled}
           onClick={handleNext}
           title="Next video"
         >
-          <ArrowRightIcon className="h-5 w-5" />
+          <ArrowSmRightIcon className="h-5 w-5" />
         </IconButton>
       </div>
       {video !== undefined ? (

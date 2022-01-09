@@ -33,7 +33,8 @@
     "remix": "^1.1.1",
     "remix-seo": "^0.0.3",
     "remix-utils": "^2.4.0",
-    "tiny-invariant": "^1.2.0"
+    "tiny-invariant": "^1.2.0",
+    "use-debounce": "^7.0.1"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.1.1",

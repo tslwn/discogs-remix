@@ -18,6 +18,7 @@ function initialProgress() {
 }
 
 interface PlayerContextValue {
+  disabled: boolean;
   duration: number | null;
   handleEnded: () => void;
   handleNext: () => void;
@@ -92,6 +93,7 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
   };
 
   const value = {
+    disabled,
     duration,
     handleEnded,
     handleNext,
