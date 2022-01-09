@@ -15,16 +15,18 @@ export default function BottomBar() {
 
   const item = queue.length > 0 ? decodeItem(queue[0]) : null;
 
-  const fetcher = useFetcher<Release | null>();
+  const fetcher = useFetcher<{ release: Release } | null>();
+
+  const { setDisabled, setVideos } = usePlayer();
 
   React.useEffect(() => {
     if (item !== null) {
       fetcher.load(`/api/releases/${item.id}`);
+    } else {
+      setVideos([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item?.id]);
-
-  const { setDisabled, setVideos } = usePlayer();
 
   React.useEffect(() => {
     setDisabled(fetcher.state === 'loading');
@@ -32,14 +34,11 @@ export default function BottomBar() {
   }, [fetcher.state]);
 
   React.useEffect(() => {
-    if (item === null) {
-      setVideos([]);
-      // `fetcher` holds on to its data
-    } else if (fetcher.data) {
-      setVideos(fetcher.data.videos ?? []);
+    if (fetcher.data) {
+      setVideos(fetcher.data.release.videos ?? []);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetcher.data, item]);
+  }, [fetcher.data]);
 
   const isNextDisabled = fetcher.state === 'loading' || queue.length <= 1;
 
@@ -49,14 +48,11 @@ export default function BottomBar() {
 
   return (
     <div className="bg-neutral-100 flex flex-none h-28 items-center justify-between px-4">
-      {item !== null ? (
-        <QueueItemCard
-          item={item}
-          right={<WantlistForm className="mr-4" id={item.id} />}
-        />
-      ) : (
-        <div className="flex items-center">No releases in queue</div>
-      )}
+      <div className="w-72">
+        {item !== null ? (
+          <QueueItemCard item={item} right={<WantlistForm id={item.id} />} />
+        ) : null}
+      </div>
       <YouTubePlayer />
       <div className="flex items-center">
         <Button className="mr-4" disabled={isNextDisabled} onClick={handleNext}>

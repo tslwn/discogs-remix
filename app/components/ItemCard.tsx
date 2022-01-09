@@ -1,8 +1,10 @@
 import { MusicNoteIcon } from '@heroicons/react/solid';
+import clsx from 'clsx';
 import React from 'react';
 import Link from '~/components/Link';
 
 type ItemCardProps = {
+  className?: string;
   title: string | { text: string; to: string };
   subtitle: string | { text: string; to: string };
   image: {
@@ -16,6 +18,7 @@ type ItemCardProps = {
 };
 
 export default function ItemCard({
+  className,
   title,
   subtitle,
   image,
@@ -24,7 +27,7 @@ export default function ItemCard({
   visited,
 }: ItemCardProps) {
   return (
-    <div className="flex items-center">
+    <div className={clsx('flex items-center', className)}>
       {left !== undefined ? <div className="mr-4">{left}</div> : null}
       <div className="h-14 mr-4 overflow-hidden w-14">
         {image.src !== undefined ? (

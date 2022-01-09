@@ -109,7 +109,7 @@ export default function YouTubePlayer() {
         </div>
       ) : (
         <div className="flex h-9 items-center justify-center text-sm">
-          <span>No videos for release</span>
+          <span>Nothing in queue</span>
         </div>
       )}
     </div>
