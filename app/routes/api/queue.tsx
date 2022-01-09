@@ -94,7 +94,11 @@ export default function Route() {
                       <li className="mb-2" key={index}>
                         <QueueItemCard
                           item={item}
-                          left={<div className="text-md w-6">{index + 1}</div>}
+                          left={
+                            <div className="text-center text-md w-6">
+                              {index + 1}
+                            </div>
+                          }
                         />
                       </li>
                     ))}
@@ -105,7 +109,7 @@ export default function Route() {
           </Tab.Panel>
           <Tab.Panel>
             <ul>
-              {history.map((item, index) => (
+              {history.reverse().map((item, index) => (
                 <li className="mb-2" key={index}>
                   <QueueItemCard item={item} />
                 </li>

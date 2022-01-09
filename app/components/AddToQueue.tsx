@@ -24,7 +24,9 @@ export default function AddToQueue({ icon, item, text }: QueueAddProps) {
       disabled={isDisabled}
       onClick={handleClick}
     >
-      {text === true ? <span>Add to queue</span> : null}
+      {text === true ? (
+        <span>{!isDisabled ? 'Add to queue' : 'In queue'}</span>
+      ) : null}
       {icon === true ? <PlusSmIcon className="h-5 w-5" /> : null}
     </Button>
   );

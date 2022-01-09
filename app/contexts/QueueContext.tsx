@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { decodeItem, encodeItem } from '~/lib/queue';
 import { Queue, QueueItem } from '~/types/queue';
 
@@ -63,6 +64,8 @@ export function QueueProvider({ children }: React.PropsWithChildren<{}>) {
     dequeue();
     setQueue([]);
   };
+
+  useHotkeys('shift+alt+right', dequeue, [queue]);
 
   const value = {
     queue: queue.map((item) => decodeItem(item)),

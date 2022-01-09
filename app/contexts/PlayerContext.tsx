@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import ReactPlayer from 'react-player/youtube';
 import { useDebouncedCallback } from 'use-debounce';
 import type { Video, Videos } from '~/types/discojs';
@@ -48,6 +49,8 @@ const DEBOUNCE_MS = 50;
 const SKIP_SECONDS = 30;
 
 export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
+  const playerRef = React.useRef<ReactPlayer>(null);
+
   const [disabled, setDisabled] = React.useState(false);
 
   const [videos, setVideos] = React.useState<Videos>([]);
@@ -64,18 +67,26 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
 
   const [progress, setProgress] = React.useState<Progress>(initialProgress());
 
+  const handleProgress = (value: Progress) => {
+    setProgress(value);
+  };
+
   const [duration, setDuration] = React.useState<number | null>(null);
 
-  const isSkipForwardDisabled = disabled || duration === null;
+  React.useEffect(() => {
+    setDuration(playerRef.current?.getDuration() ?? null);
+  }, [index, progress]);
+
+  const isPlayPauseDisabled = disabled || videos.length === 0;
+
+  const isPreviousDisabled = disabled || index <= 0;
+
+  const isNextDisabled = disabled || index >= videos.length - 1;
 
   const isSkipBackwardDisabled =
     disabled || duration === null || progress.playedSeconds - SKIP_SECONDS < 0;
 
-  const isPreviousDisabled = disabled || index <= 0;
-
-  const isPlayPauseDisabled = disabled || videos.length === 0;
-
-  const isNextDisabled = disabled || index >= videos.length - 1;
+  const isSkipForwardDisabled = disabled || duration === null;
 
   const handleEnded = () => {
     if (!isNextDisabled) {
@@ -83,40 +94,25 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
     }
   };
 
-  const handleProgress = (value: Progress) => {
-    setProgress(value);
-  };
-
-  const handlePrevious = useDebouncedCallback(() => {
-    setIndex((prev) => (prev > 0 ? prev - 1 : 0));
-    setProgress(initialProgress());
+  const handlePlayPause = useDebouncedCallback(() => {
+    if (!isPlayPauseDisabled) {
+      setPlaying((prev) => !prev);
+    }
   }, DEBOUNCE_MS);
 
-  const handlePlayPause = useDebouncedCallback(() => {
-    setPlaying((prev) => !prev);
+  const handlePrevious = useDebouncedCallback(() => {
+    if (!isPreviousDisabled) {
+      setIndex((prev) => (prev > 0 ? prev - 1 : 0));
+      setProgress(initialProgress());
+    }
   }, DEBOUNCE_MS);
 
   const handleNext = useDebouncedCallback(() => {
-    setIndex((prev) =>
-      prev < videos.length - 1 ? prev + 1 : videos.length - 1
-    );
-    setProgress(initialProgress());
-  }, DEBOUNCE_MS);
-
-  const playerRef = React.useRef<ReactPlayer>(null);
-
-  React.useEffect(() => {
-    setDuration(playerRef.current?.getDuration() ?? null);
-  }, [videos, playing]);
-
-  const handleSkipForward = useDebouncedCallback(() => {
-    if (!isSkipForwardDisabled) {
-      const seconds = progress.playedSeconds + SKIP_SECONDS;
-      if (seconds >= duration) {
-        handleNext();
-      } else {
-        playerRef.current?.seekTo(seconds);
-      }
+    if (!isNextDisabled) {
+      setIndex((prev) =>
+        prev < videos.length - 1 ? prev + 1 : videos.length - 1
+      );
+      setProgress(initialProgress());
     }
   }, DEBOUNCE_MS);
 
@@ -126,6 +122,23 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
       playerRef.current?.seekTo(seconds);
     }
   }, DEBOUNCE_MS);
+
+  const handleSkipForward = useDebouncedCallback(() => {
+    if (!isSkipForwardDisabled) {
+      const seconds = progress.playedSeconds + SKIP_SECONDS;
+      if (seconds >= duration) {
+        handleNext();
+      } else {
+        playerRef.current?.seekTo(Math.min(seconds, progress.loadedSeconds));
+      }
+    }
+  }, DEBOUNCE_MS);
+
+  useHotkeys('space', handlePlayPause);
+  useHotkeys('alt+left', handlePrevious);
+  useHotkeys('alt+right', handleNext);
+  useHotkeys('left', handleSkipBackward);
+  useHotkeys('right', handleSkipForward);
 
   const value = {
     disabled,
