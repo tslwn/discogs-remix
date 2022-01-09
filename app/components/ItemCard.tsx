@@ -29,7 +29,7 @@ export default function ItemCard({
   return (
     <div className={clsx('flex items-center', className)}>
       {left !== undefined ? <div className="mr-4">{left}</div> : null}
-      <div className="h-14 mr-4 overflow-hidden rounded w-14">
+      <div className="flex h-14 justify-center mr-4 overflow-hidden rounded w-14">
         {image.src !== undefined ? (
           <img alt={image.alt} src={image.src}></img>
         ) : (
@@ -38,7 +38,7 @@ export default function ItemCard({
           </div>
         )}
       </div>
-      <div>
+      <div className="max-w-64 overflow-clip whitespace-nowrap">
         <div>
           {typeof title === 'string' || title === undefined ? (
             <span>{title}</span>

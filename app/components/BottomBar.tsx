@@ -48,7 +48,7 @@ export default function BottomBar() {
 
   return (
     <div className="bg-neutral-100 flex flex-none h-28 items-center justify-between px-4">
-      <div className="w-72">
+      <div className="w-96">
         {item !== null ? (
           <QueueItemCard item={item} right={<WantlistForm id={item.id} />} />
         ) : null}
