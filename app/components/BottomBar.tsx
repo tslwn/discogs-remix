@@ -32,11 +32,14 @@ export default function BottomBar() {
   }, [fetcher.state]);
 
   React.useEffect(() => {
-    if (fetcher.data) {
+    if (item === null) {
+      setVideos([]);
+      // `fetcher` holds on to its data
+    } else if (fetcher.data) {
       setVideos(fetcher.data.videos ?? []);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetcher.data]);
+  }, [fetcher.data, item]);
 
   const isNextDisabled = fetcher.state === 'loading' || queue.length <= 1;
 
