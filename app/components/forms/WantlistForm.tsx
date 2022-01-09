@@ -1,6 +1,6 @@
 import { HeartIcon } from '@heroicons/react/outline';
 import { useFetcher } from 'remix';
-import Button from '~/components/Button';
+import IconButton from '~/components/IconButton';
 
 interface WantlistFormProps {
   className?: string;
@@ -13,13 +13,13 @@ export default function WantlistForm({ className, id }: WantlistFormProps) {
   return (
     <fetcher.Form action="/api/wantlist" className={className} method="post">
       <input hidden id="id" name="id" readOnly value={id} />
-      <Button
+      <IconButton
         aria-label="Add to wantlist"
         disabled={fetcher.state === 'submitting'}
         title="Add to wantlist"
       >
         <HeartIcon className="h-5 w-5" />
-      </Button>
+      </IconButton>
     </fetcher.Form>
   );
 }

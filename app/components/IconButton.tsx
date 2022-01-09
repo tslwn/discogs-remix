@@ -1,18 +1,16 @@
 import clsx from 'clsx';
 import React from 'react';
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+type IconButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export default function Button({ children, ...props }: ButtonProps) {
+export default function IconButton({ children, ...props }: IconButtonProps) {
   return (
     <button
       {...props}
       className={clsx(
-        'bg-neutral-800',
-        !props.disabled && 'hover:bg-neutral-600',
+        !props.disabled && 'hover:text-neutral-600',
         'focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2',
-        'text-white font-semibold',
-        'py-2 px-6 rounded-lg',
+        'p-1 rounded-full',
         props.className,
         props.disabled && 'cursor-not-allowed opacity-50'
       )}

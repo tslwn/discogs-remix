@@ -1,6 +1,7 @@
 import { Tab } from '@headlessui/react';
 import { PauseIcon, PlayIcon } from '@heroicons/react/solid';
 import Button from '~/components/Button';
+import IconButton from '~/components/IconButton';
 import Page from '~/components/Page';
 import QueueItemCard from '~/components/QueueItemCard';
 import TopBar from '~/components/TopBar';
@@ -50,18 +51,19 @@ export default function Route() {
                       <QueueItemCard
                         item={nowPlaying}
                         left={
-                          <Button
+                          <IconButton
                             aria-label={playing ? 'Pause video' : 'Play video'}
+                            className="p-0"
                             disabled={isPlayPauseDisabled}
                             onClick={handlePlayPause}
                             title={playing ? 'Pause video' : 'Play video'}
                           >
                             {playing ? (
-                              <PauseIcon className="h-5 w-5" />
+                              <PauseIcon className="h-6 w-6" />
                             ) : (
-                              <PlayIcon className="h-5 w-5" />
+                              <PlayIcon className="h-6 w-6" />
                             )}
-                          </Button>
+                          </IconButton>
                         }
                       />
                     </li>
@@ -76,7 +78,7 @@ export default function Route() {
                       <li className="mb-2" key={index}>
                         <QueueItemCard
                           item={item}
-                          left={<div className="text-md w-5">{index + 1}</div>}
+                          left={<div className="text-md w-6">{index + 1}</div>}
                         />
                       </li>
                     ))}

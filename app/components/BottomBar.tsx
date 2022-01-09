@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFetcher } from 'remix';
 import Button from '~/components/Button';
-import Link from '~/components/Link';
+import LinkButton from '~/components/LinkButton';
 import QueueItemCard from '~/components/QueueItemCard';
 import YouTubePlayer from '~/components/YouTubePlayer';
 import WantlistForm from '~/components/forms/WantlistForm';
@@ -59,9 +59,9 @@ export default function BottomBar() {
         <Button className="mr-4" disabled={isNextDisabled} onClick={handleNext}>
           Next
         </Button>
-        <Link prefetch="none" to="/api/queue">
+        <LinkButton prefetch="none" to="/api/queue">
           Queue
-        </Link>
+        </LinkButton>
       </div>
     </div>
   );

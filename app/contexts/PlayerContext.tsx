@@ -59,11 +59,11 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
     );
   }, [progress]);
 
-  const isPreviousDisabled = disabled ?? index <= 0;
+  const isPreviousDisabled = disabled || index <= 0;
 
-  const isPlayPauseDisabled = disabled ?? videos.length === 0;
+  const isPlayPauseDisabled = disabled || videos.length === 0;
 
-  const isNextDisabled = disabled ?? index >= videos.length - 1;
+  const isNextDisabled = disabled || index >= videos.length - 1;
 
   const handleEnded = () => {
     if (!isNextDisabled) {

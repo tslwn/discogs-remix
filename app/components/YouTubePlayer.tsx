@@ -1,12 +1,12 @@
 import ReactPlayer from 'react-player/youtube';
 import {
-  ArrowSmLeftIcon,
-  ArrowSmRightIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
   PauseIcon,
   PlayIcon,
 } from '@heroicons/react/solid';
-import Button from '~/components/Button';
 import useElementSize from '~/hooks/useElementSize';
+import IconButton from '~/components/IconButton';
 import { usePlayer } from '~/contexts/PlayerContext';
 
 export default function YouTubePlayer() {
@@ -43,36 +43,36 @@ export default function YouTubePlayer() {
         />
       </div>
       <div className="flex items-center justify-center mb-2">
-        <Button
+        <IconButton
           aria-label="Previous video"
           className="mr-2"
           disabled={isPreviousDisabled}
           onClick={handlePrevious}
           title="Previous video"
         >
-          <ArrowSmLeftIcon className="h-5 w-5" />
-        </Button>
-        <Button
+          <ArrowLeftIcon className="h-5 w-5" />
+        </IconButton>
+        <IconButton
           aria-label={playing ? 'Pause video' : 'Play video'}
-          className="mr-2"
+          className="mr-2 p-0"
           disabled={isPlayPauseDisabled}
           onClick={handlePlayPause}
           title={playing ? 'Pause video' : 'Play video'}
         >
           {playing ? (
-            <PauseIcon className="h-8 w-8" />
+            <PauseIcon className="h-10 w-10" />
           ) : (
-            <PlayIcon className="h-8 w-8" />
+            <PlayIcon className="h-10 w-10" />
           )}
-        </Button>
-        <Button
+        </IconButton>
+        <IconButton
           aria-label="Next video"
           disabled={isNextDisabled}
           onClick={handleNext}
           title="Next video"
         >
-          <ArrowSmRightIcon className="h-5 w-5" />
-        </Button>
+          <ArrowRightIcon className="h-5 w-5" />
+        </IconButton>
       </div>
       {video !== undefined ? (
         <div>
