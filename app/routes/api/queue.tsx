@@ -29,8 +29,8 @@ export default function Route() {
               className={({ selected }) =>
                 clsx(
                   'decoration-2 underline-offset-2',
-                  'focus:outline-none focus:underline hover:underline',
-                  !selected && 'decoration-neutral-300',
+                  'focus:outline-none focus:decoration-neutral-400 focus:text-neutral-400',
+                  'hover:decoration-neutral-400 hover:text-neutral-400',
                   selected && 'underline'
                 )
               }
@@ -41,8 +41,8 @@ export default function Route() {
               className={({ selected }) =>
                 clsx(
                   'decoration-2 underline-offset-2',
-                  'focus:outline-none focus:underline hover:underline',
-                  !selected && 'decoration-neutral-300',
+                  'focus:outline-none focus:decoration-neutral-400 focus:text-neutral-400',
+                  'hover:decoration-neutral-400 hover:text-neutral-400',
                   selected && 'underline'
                 )
               }
@@ -55,7 +55,7 @@ export default function Route() {
       />
       <Page>
         <Tab.Panels>
-          <Tab.Panel>
+          <Tab.Panel className="focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-4 rounded-sm">
             {nowPlaying !== undefined ? (
               <>
                 <div className="mb-12">
@@ -107,7 +107,7 @@ export default function Route() {
               </>
             ) : null}
           </Tab.Panel>
-          <Tab.Panel>
+          <Tab.Panel className="focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-4">
             <ul>
               {history.reverse().map((item, index) => (
                 <li className="mb-2" key={index}>
