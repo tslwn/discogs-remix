@@ -50,13 +50,15 @@ export default function Route() {
   return (
     <Page>
       <div className="flex mb-8">
-        {src !== undefined ? (
-          <img alt={label.name} className="h-56 mr-4" src={src}></img>
-        ) : (
-          <div className="bg-neutral-200 flex h-56 items-center justify-center mr-4 w-56">
-            <PhotographIcon className="text-neutral-500 h-5 w-5" />
-          </div>
-        )}
+        <div className="mr-4 overflow-hidden rounded">
+          {src !== undefined ? (
+            <img alt={label.name} className="h-56" src={src}></img>
+          ) : (
+            <div className="bg-neutral-200 flex h-56 items-center justify-center w-56">
+              <PhotographIcon className="text-neutral-500 h-5 w-5" />
+            </div>
+          )}
+        </div>
         <h2 className="font-semibold text-3xl">{label.name}</h2>
       </div>
       <div>

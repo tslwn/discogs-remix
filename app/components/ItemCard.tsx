@@ -29,7 +29,7 @@ export default function ItemCard({
   return (
     <div className={clsx('flex items-center', className)}>
       {left !== undefined ? <div className="mr-4">{left}</div> : null}
-      <div className="h-14 mr-4 overflow-hidden w-14">
+      <div className="h-14 mr-4 overflow-hidden rounded w-14">
         {image.src !== undefined ? (
           <img alt={image.alt} src={image.src}></img>
         ) : (
