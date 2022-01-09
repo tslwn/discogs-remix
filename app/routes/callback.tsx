@@ -15,9 +15,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 
     const client = clientFactory(session);
 
-    const identity = await client.getIdentity();
+    const profile = await client.getProfile();
 
-    session.set('username', identity.username);
+    session.set('username', profile.username);
+    session.set('curr_abbr', profile.curr_abbr);
 
     return redirect('/api', {
       headers: { 'Set-Cookie': await commitSession(session) },

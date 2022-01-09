@@ -18,25 +18,31 @@ function isRouteParams(params: any): params is RouteParams {
 }
 
 export const loader: LoaderFunction = async ({ params, request }) => {
-  const { client } = await getSessionAndClient(request);
+  const { client, session } = await getSessionAndClient(request);
 
   if (!isRouteParams(params)) {
     throw new Error('Expected master ID parameter');
   }
+
+  const currencyAbbreviation: string = session.get('curr_abbr');
 
   const master = await client.getMaster(params.id);
 
   const masterVersions = await client.getMasterVersions(params.id);
 
   return {
+    currencyAbbreviation,
     master,
     masterVersions,
   };
 };
 
 export default function Route() {
-  const { master, masterVersions } =
-    useLoaderData<{ master: Master; masterVersions: MasterVersions }>();
+  const { currencyAbbreviation, master, masterVersions } = useLoaderData<{
+    currencyAbbreviation: string;
+    master: Master;
+    masterVersions: MasterVersions;
+  }>();
 
   const src = primaryOrFirstImage(master.images)?.uri;
 
@@ -44,12 +50,17 @@ export default function Route() {
     <Page>
       <div className="mb-8">
         <ReleaseHeading
+          id={master.id}
           artists={master.artists}
           title={master.title}
           src={src}
           year={master.year}
           genres={master.genres}
           styles={master.styles}
+          numForSale={master.num_for_sale}
+          lowestPrice={master.lowest_price}
+          currencyAbbreviation={currencyAbbreviation}
+          master
         />
       </div>
       <div className="mb-4">
@@ -59,7 +70,10 @@ export default function Route() {
           panel={
             <ul className="mb-2">
               {master.tracklist.map((track) => (
-                <li className="flex justify-between">
+                <li
+                  className="flex justify-between"
+                  key={`${track.position} ${track.title}`}
+                >
                   <span
                     className={clsx(
                       track.type_ !== 'track' && 'font-semibold my-2'

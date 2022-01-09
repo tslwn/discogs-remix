@@ -8,17 +8,25 @@ interface ArtistsLinksProps {
 export default function ArtistLinks({ artists }: ArtistsLinksProps) {
   return (
     <>
-      {artists.map((artist) => (
-        <div className="inline" key={artist.id}>
-          <Link to={`/api/artists/${artist.id}`} visited>
-            {artist.anv !== '' ? artist.anv : artist.name}
-          </Link>
-          <span>
-            {artist.join !== ',' ? ' ' : ''}
-            {artist.join}{' '}
-          </span>
-        </div>
-      ))}
+      {artists.map((artist) => {
+        const name = artist.anv !== '' ? artist.anv : artist.name;
+        return (
+          <div className="inline" key={artist.id}>
+            {/* various artists */}
+            {artist.id !== 194 ? (
+              <Link to={`/api/artists/${artist.id}`} visited>
+                {name}
+              </Link>
+            ) : (
+              <span>{name}</span>
+            )}
+            <span>
+              {artist.join !== ',' ? ' ' : ''}
+              {artist.join}{' '}
+            </span>
+          </div>
+        );
+      })}
     </>
   );
 }

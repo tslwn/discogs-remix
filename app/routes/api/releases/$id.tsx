@@ -19,19 +19,22 @@ function isRouteParams(params: any): params is RouteParams {
 }
 
 export const loader: LoaderFunction = async ({ params, request }) => {
-  const { client } = await getSessionAndClient(request);
+  const { client, session } = await getSessionAndClient(request);
 
   if (!isRouteParams(params)) {
     throw new Error('Expected release ID parameter');
   }
 
+  const currencyAbbreviation: string = session.get('curr_abbr');
+
   const release = await client.getRelease(params.id);
 
-  return filterVideos(release);
+  return { currencyAbbreviation, release: await filterVideos(release) };
 };
 
 export default function Route() {
-  const release = useLoaderData<Release>();
+  const { currencyAbbreviation, release } =
+    useLoaderData<{ currencyAbbreviation: string; release: Release }>();
 
   const src = primaryOrFirstImage(release.images)?.uri;
 
@@ -39,6 +42,7 @@ export default function Route() {
     <Page>
       <div className="mb-8">
         <ReleaseHeading
+          id={release.id}
           artists={release.artists}
           title={release.title}
           src={src}
@@ -50,6 +54,10 @@ export default function Route() {
           labels={release.labels}
           genres={release.genres}
           styles={release.styles}
+          numForSale={release.num_for_sale}
+          lowestPrice={release.lowest_price}
+          currencyAbbreviation={currencyAbbreviation}
+          master={false}
         />
       </div>
       <div className="mb-4">
