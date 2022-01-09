@@ -11,6 +11,8 @@ type ItemCardProps = {
   };
   left?: React.ReactNode;
   right?: React.ReactNode;
+  // If true, conventional styles are applied to the links.
+  visited?: boolean;
 };
 
 export default function ItemCard({
@@ -19,6 +21,7 @@ export default function ItemCard({
   image,
   left,
   right,
+  visited,
 }: ItemCardProps) {
   return (
     <div className="flex items-center">
@@ -37,14 +40,18 @@ export default function ItemCard({
           {typeof title === 'string' || title === undefined ? (
             <span>{title}</span>
           ) : (
-            <Link to={title.to}>{title.text}</Link>
+            <Link to={title.to} visited={visited}>
+              {title.text}
+            </Link>
           )}
         </div>
         <div className="text-xs">
           {typeof subtitle === 'string' || subtitle === undefined ? (
             <span>{subtitle}</span>
           ) : (
-            <Link to={subtitle.to}>{subtitle.text}</Link>
+            <Link to={subtitle.to} visited={visited}>
+              {subtitle.text}
+            </Link>
           )}
         </div>
       </div>

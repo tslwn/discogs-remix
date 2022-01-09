@@ -3,7 +3,11 @@ import React from 'react';
 
 type IconButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export default function IconButton({ children, ...props }: IconButtonProps) {
+export default function IconButton({
+  children,
+  className,
+  ...props
+}: IconButtonProps) {
   return (
     <button
       {...props}
@@ -11,8 +15,8 @@ export default function IconButton({ children, ...props }: IconButtonProps) {
         !props.disabled && 'hover:text-neutral-600',
         'focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2',
         'p-1 rounded-full',
-        props.className,
-        props.disabled && 'cursor-not-allowed opacity-50'
+        props.disabled && 'cursor-not-allowed opacity-50',
+        className
       )}
     >
       {children}

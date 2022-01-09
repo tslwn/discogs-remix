@@ -1,21 +1,19 @@
 import clsx from 'clsx';
-import { Link as RemixLink } from 'remix';
-import type { LinkProps as RemixLinkProps } from 'remix';
+import React from 'react';
 
-type LinkProps = RemixLinkProps & {
+type ExternalLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   // If true, conventional styles are applied to the link.
   visited?: boolean;
 };
 
-export default function Link({
+export default function ExternalLink({
   children,
   className,
   visited,
   ...props
-}: LinkProps) {
+}: ExternalLinkProps) {
   return (
-    <RemixLink
-      prefetch="intent"
+    <a
       {...props}
       className={clsx(
         visited && 'text-blue-600 visited:text-fuchsia-600',
@@ -23,8 +21,10 @@ export default function Link({
         'focus:outline-none focus:underline hover:underline',
         className
       )}
+      rel="noreferrer"
+      target="_blank"
     >
       {children}
-    </RemixLink>
+    </a>
   );
 }

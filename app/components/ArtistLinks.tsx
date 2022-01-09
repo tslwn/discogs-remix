@@ -10,7 +10,7 @@ export default function ArtistLinks({ artists }: ArtistsLinksProps) {
     <>
       {artists.map((artist) => (
         <div className="inline" key={artist.id}>
-          <Link to={`/api/artists/${artist.id}`}>
+          <Link to={`/api/artists/${artist.id}`} visited>
             {artist.anv !== '' ? artist.anv : artist.name}
           </Link>
           <span>

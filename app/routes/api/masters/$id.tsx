@@ -52,8 +52,9 @@ export default function Route() {
           styles={master.styles}
         />
       </div>
-      <div className="mb-8">
+      <div className="mb-4">
         <Collapsible
+          defaultOpen
           heading="Tracklist"
           panel={
             <ul className="mb-2">
@@ -73,7 +74,7 @@ export default function Route() {
           }
         />
       </div>
-      <div className="mb-8">
+      <div>
         <Collapsible
           heading="Versions"
           panel={
@@ -91,7 +92,7 @@ export default function Route() {
                 {masterVersions.versions.map((version) => (
                   <tr key={version.id}>
                     <td>
-                      <Link to={`/api/releases/${version.id}`}>
+                      <Link to={`/api/releases/${version.id}`} visited>
                         {version.title !== master.title ? version.title : null}{' '}
                         {version.major_formats}
                       </Link>{' '}

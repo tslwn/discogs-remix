@@ -77,6 +77,7 @@ export default function Route() {
                     alt: text,
                     src: release.thumb,
                   }}
+                  visited
                 />
               </li>
             );

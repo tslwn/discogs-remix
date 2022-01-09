@@ -1,5 +1,6 @@
 import { Tab } from '@headlessui/react';
 import { PauseIcon, PlayIcon } from '@heroicons/react/solid';
+import clsx from 'clsx';
 import Button from '~/components/Button';
 import IconButton from '~/components/IconButton';
 import Page from '~/components/Page';
@@ -24,22 +25,37 @@ export default function Route() {
       <TopBar
         left={
           <Tab.List className="space-x-4">
-            <Tab className={({ selected }) => (selected ? 'underline' : '')}>
+            <Tab
+              className={({ selected }) =>
+                clsx(
+                  'decoration-2 underline-offset-2',
+                  'focus:outline-none focus:underline hover:underline',
+                  !selected && 'decoration-neutral-300',
+                  selected && 'underline'
+                )
+              }
+            >
               Queue
             </Tab>
-            <Tab className={({ selected }) => (selected ? 'underline' : '')}>
+            <Tab
+              className={({ selected }) =>
+                clsx(
+                  'decoration-2 underline-offset-2',
+                  'focus:outline-none focus:underline hover:underline',
+                  !selected && 'decoration-neutral-300',
+                  selected && 'underline'
+                )
+              }
+            >
               History
             </Tab>
           </Tab.List>
         }
+        right={<Button onClick={handleClear}>Clear</Button>}
       />
       <Page>
         <Tab.Panels>
           <Tab.Panel>
-            <div className="mb-4 flex justify-between">
-              <h2 className="text-xl">Queue</h2>
-              <Button onClick={handleClear}>Clear</Button>
-            </div>
             {nowPlaying !== undefined ? (
               <>
                 <div className="mb-12">
@@ -88,9 +104,6 @@ export default function Route() {
             ) : null}
           </Tab.Panel>
           <Tab.Panel>
-            <div className="mb-4 flex">
-              <h2 className="text-xl">History</h2>
-            </div>
             <ul>
               {history.map((item, index) => (
                 <li className="mb-2" key={index}>

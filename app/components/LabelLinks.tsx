@@ -10,7 +10,9 @@ export default function LabelLinks({ labels }: LabelLinksProps) {
     <>
       {labels.map((label) => (
         <div className="inline" key={label.id}>
-          <Link to={`/api/labels/${label.id}`}>{label.name}</Link>
+          <Link to={`/api/labels/${label.id}`} visited>
+            {label.name}
+          </Link>
           <span>{` — ${label.catno}`}</span>
         </div>
       ))}

@@ -8,6 +8,7 @@ import {
 import useElementSize from '~/hooks/useElementSize';
 import IconButton from '~/components/IconButton';
 import { usePlayer } from '~/contexts/PlayerContext';
+import ExternalLink from './ExternalLink';
 
 export default function YouTubePlayer() {
   const [containerRef, { width: playerWidth }] = useElementSize();
@@ -99,14 +100,7 @@ export default function YouTubePlayer() {
             className="mx-auto overflow-hidden text-center text-ellipsis text-sm whitespace-nowrap"
             style={{ width: playerWidth - 64 }}
           >
-            <a
-              className="hover:underline"
-              href={video.uri}
-              rel="noreferrer"
-              target="_blank"
-            >
-              {video.title}
-            </a>
+            <ExternalLink href={video.uri}>{video.title}</ExternalLink>
             <span>
               {' '}
               ({index + 1} / {videos.length})

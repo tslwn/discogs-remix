@@ -57,6 +57,7 @@ export default function Route() {
       </div>
       <div className="mb-4">
         <Collapsible
+          defaultOpen
           heading="Tracklist"
           panel={
             <table className="mb-2 table-auto w-full">
