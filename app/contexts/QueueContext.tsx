@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useNavigate } from 'remix';
 import { decodeItem, encodeItem } from '~/lib/queue';
 import { Queue, QueueItem } from '~/types/queue';
 
@@ -65,6 +66,11 @@ export function QueueProvider({ children }: React.PropsWithChildren<{}>) {
     setQueue([]);
   };
 
+  const navigate = useNavigate();
+
+  useHotkeys('q', () => {
+    navigate('/api/queue');
+  });
   useHotkeys('shift+alt+right', dequeue, [queue]);
 
   const value = {

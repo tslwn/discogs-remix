@@ -134,7 +134,10 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
     }
   }, DEBOUNCE_MS);
 
-  useHotkeys('space', handlePlayPause);
+  useHotkeys('space', (event) => {
+    event.preventDefault();
+    handlePlayPause();
+  });
   useHotkeys('alt+left', handlePrevious);
   useHotkeys('alt+right', handleNext);
   useHotkeys('left', handleSkipBackward);
