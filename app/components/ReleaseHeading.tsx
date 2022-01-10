@@ -3,7 +3,6 @@ import ArtistLinks from '~/components/ArtistLinks';
 import Chips from '~/components/Chips';
 import { formatReleaseArtists } from '~/lib/release';
 import type { Release } from '~/types/discojs';
-import ExternalLink from './ExternalLink';
 import LabelLinks from './LabelLinks';
 
 interface ReleaseHeadingProps {
@@ -18,10 +17,6 @@ interface ReleaseHeadingProps {
   labels?: Release['labels'];
   genres?: string[];
   styles?: string[];
-  numForSale: number;
-  lowestPrice: number | null;
-  currencyAbbreviation: string;
-  master: boolean;
 }
 
 export default function ReleaseHeading({
@@ -35,10 +30,6 @@ export default function ReleaseHeading({
   labels,
   genres,
   styles,
-  numForSale,
-  lowestPrice,
-  currencyAbbreviation,
-  master,
 }: ReleaseHeadingProps) {
   return (
     <div className="flex">
@@ -86,29 +77,6 @@ export default function ReleaseHeading({
               </div>
             </div>
           </div>
-        </div>
-        <div>
-          {numForSale > 0 ? (
-            <>
-              <ExternalLink
-                className="font-semibold"
-                href={
-                  master
-                    ? `https://www.discogs.com/sell/list?master_id=${id}`
-                    : `https://www.discogs.com/sell/release/${id}`
-                }
-                visited
-              >
-                {numForSale} for sale
-              </ExternalLink>
-              <span> from </span>
-              <span className="font-semibold text-orange-700">
-                {lowestPrice} {currencyAbbreviation}
-              </span>
-            </>
-          ) : (
-            <span className="font-semibold">None for sale</span>
-          )}
         </div>
       </div>
     </div>

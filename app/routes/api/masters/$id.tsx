@@ -38,7 +38,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 };
 
 export default function Route() {
-  const { currencyAbbreviation, master, masterVersions } = useLoaderData<{
+  const { master, masterVersions } = useLoaderData<{
     currencyAbbreviation: string;
     master: Master;
     masterVersions: MasterVersions;
@@ -57,10 +57,6 @@ export default function Route() {
           year={master.year}
           genres={master.genres}
           styles={master.styles}
-          numForSale={master.num_for_sale}
-          lowestPrice={master.lowest_price}
-          currencyAbbreviation={currencyAbbreviation}
-          master
         />
       </div>
       <div className="mb-4">

@@ -8,6 +8,10 @@ import { filterVideos } from '~/lib/videos.server';
 import type { Release } from '~/types/discojs';
 import Collapsible from '~/components/Collapsible';
 import ReleaseHeading from '~/components/ReleaseHeading';
+import Have from '~/components/release/Have';
+import Want from '~/components/release/Want';
+import Rating from '~/components/release/Rating';
+import ForSale from '~/components/release/ForSale';
 import { releaseToItem } from '~/lib/queue';
 
 interface RouteParams {
@@ -54,10 +58,20 @@ export default function Route() {
           labels={release.labels}
           genres={release.genres}
           styles={release.styles}
-          numForSale={release.num_for_sale}
+        />
+      </div>
+      <div className="flex items-center mb-4 space-x-8">
+        <Have have={release.community.have} />
+        <Want want={release.community.want} />
+        <Rating
+          average={release.community.rating.average}
+          count={release.community.rating.count}
+        />
+        <ForSale
+          currency={currencyAbbreviation}
           lowestPrice={release.lowest_price}
-          currencyAbbreviation={currencyAbbreviation}
-          master={false}
+          numForSale={release.num_for_sale}
+          to={`https://www.discogs.com/sell/release/${release.id}`}
         />
       </div>
       <div className="mb-4">
