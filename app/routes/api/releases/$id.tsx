@@ -1,7 +1,6 @@
 import { useLoaderData } from 'remix';
 import type { LoaderFunction } from 'remix';
 import Page from '~/components/Page';
-import AddToQueue from '~/components/AddToQueue';
 import { getSessionAndClient } from '~/lib/client.server';
 import { formatReleaseFormats, primaryOrFirstImage } from '~/lib/release';
 import { filterVideos } from '~/lib/videos.server';
@@ -12,7 +11,7 @@ import Have from '~/components/release/Have';
 import Want from '~/components/release/Want';
 import Rating from '~/components/release/Rating';
 import ForSale from '~/components/release/ForSale';
-import { releaseToItem } from '~/lib/queue';
+import Videos from '~/components/release/Videos';
 
 interface RouteParams {
   id: number;
@@ -73,9 +72,7 @@ export default function Route() {
           numForSale={release.num_for_sale}
           to={`https://www.discogs.com/sell/release/${release.id}`}
         />
-      </div>
-      <div className="mb-4">
-        <AddToQueue item={releaseToItem(release)} text />
+        <Videos release={release} />
       </div>
       <div className="mb-4">
         <Collapsible

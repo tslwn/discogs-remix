@@ -14,7 +14,7 @@ export default function ForSale({
   to,
 }: ForSaleProps) {
   return (
-    <div className="border-l-4 border-neutral-300 px-4 py-2">
+    <div className="px-4 py-2">
       {lowestPrice !== null && numForSale > 0 ? (
         <>
           <ExternalLink

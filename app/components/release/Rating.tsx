@@ -12,7 +12,7 @@ export default function Rating({ average, count }: RatingProps) {
   const percentage = 100 * (average - Math.floor(average));
   const text = `Average rating ${average.toLocaleString()} out of 5`;
   return (
-    <div className="border-l-4 border-neutral-300 px-4 py-2">
+    <div className="px-4 py-2">
       <div
         aria-label={text}
         className="flex h-8 items-center -ml-1"
