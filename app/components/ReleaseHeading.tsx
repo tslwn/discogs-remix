@@ -1,9 +1,9 @@
 import { MusicNoteIcon } from "@heroicons/react/solid";
 import ArtistLinks from "~/components/ArtistLinks";
 import Chips from "~/components/Chips";
-import { formatReleaseArtists } from "~/lib/release";
+import LabelLinks from "~/components/LabelLinks";
 import type { Release } from "~/types/discojs";
-import LabelLinks from "./LabelLinks";
+import { formatReleaseArtists } from "~/util/release";
 
 interface ReleaseHeadingProps {
   id: number;

@@ -3,9 +3,9 @@ import { LoaderFunction, useLoaderData } from "remix";
 import invariant from "tiny-invariant";
 import ItemCard from "~/components/ItemCard";
 import Page from "~/components/Page";
-import { byYear, primaryOrFirstImage } from "~/lib/release";
 import type { Artist, ArtistReleases } from "~/types/discojs";
 import { getDiscogsClient } from "~/util/auth.server";
+import { byYear, primaryOrFirstImage } from "~/util/release";
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   const id = Number(params.id);

@@ -7,8 +7,8 @@ import YouTubePlayer from "~/components/YouTubePlayer";
 import WantlistForm from "~/components/forms/WantlistForm";
 import { usePlayer } from "~/contexts/PlayerContext";
 import { useQueue } from "~/contexts/QueueContext";
-import { decodeItem } from "~/lib/queue";
 import type { Release } from "~/types/discojs";
+import { decodeItem } from "~/util/queue";
 
 export default function BottomBar() {
   const { queue, dequeue } = useQueue();

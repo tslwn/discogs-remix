@@ -6,9 +6,9 @@ import Collapsible from "~/components/Collapsible";
 import Link from "~/components/Link";
 import Page from "~/components/Page";
 import ReleaseHeading from "~/components/ReleaseHeading";
-import { primaryOrFirstImage } from "~/lib/release";
 import type { Master, MasterVersions } from "~/types/discojs";
 import { getDiscogsClient, requireAuthSession } from "~/util/auth.server";
+import { primaryOrFirstImage } from "~/util/release";
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   const id = Number(params.id);

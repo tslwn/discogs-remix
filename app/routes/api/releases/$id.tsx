@@ -9,10 +9,10 @@ import Have from "~/components/release/Have";
 import Rating from "~/components/release/Rating";
 import Videos from "~/components/release/Videos";
 import Want from "~/components/release/Want";
-import { formatReleaseFormats, primaryOrFirstImage } from "~/lib/release";
-import { filterVideos } from "~/lib/videos.server";
 import type { Release } from "~/types/discojs";
 import { getDiscogsClient, requireAuthSession } from "~/util/auth.server";
+import { formatReleaseFormats, primaryOrFirstImage } from "~/util/release";
+import { availableVideos } from "~/util/youtube.server";
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   const id = Number(params.id);
@@ -25,8 +25,9 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   invariant(typeof currAbbr === "string", "expected curr_abbr");
 
   const release = await client.getRelease(id);
+  const videos = await availableVideos(release.videos);
 
-  return { currAbbr, release: await filterVideos(release) };
+  return { currAbbr, release: { ...release, videos } };
 };
 
 interface LoaderData {

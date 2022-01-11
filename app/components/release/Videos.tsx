@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import React from "react";
 import { useQueue } from "~/contexts/QueueContext";
-import { releaseToItem } from "~/lib/queue";
-import { Release } from "~/types/discojs";
+import type { Release } from "~/types/discojs";
+import { releaseToItem } from "~/util/queue";
 
 interface VideosProps {
   release: Release;

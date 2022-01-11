@@ -1,8 +1,8 @@
 import React from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useNavigate } from "remix";
-import { decodeItem, encodeItem } from "~/lib/queue";
-import { Queue, QueueItem } from "~/types/queue";
+import type { Queue, QueueItem } from "~/types/queue";
+import { decodeItem, encodeItem } from "~/util/queue";
 
 function useLocalStorage<Value>(key: string, defaultValue: Value) {
   const [value, setValue] = React.useState<Value>(defaultValue);
