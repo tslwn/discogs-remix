@@ -1,8 +1,8 @@
-import Link from '~/components/Link';
-import type { Release } from '~/types/discojs';
+import Link from "~/components/Link";
+import type { Release } from "~/types/discojs";
 
 interface LabelLinksProps {
-  labels: Release['labels'];
+  labels: Release["labels"];
 }
 
 export default function LabelLinks({ labels }: LabelLinksProps) {

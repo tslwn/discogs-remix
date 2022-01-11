@@ -1,20 +1,20 @@
-import { MusicNoteIcon } from '@heroicons/react/solid';
-import ArtistLinks from '~/components/ArtistLinks';
-import Chips from '~/components/Chips';
-import { formatReleaseArtists } from '~/lib/release';
-import type { Release } from '~/types/discojs';
-import LabelLinks from './LabelLinks';
+import { MusicNoteIcon } from "@heroicons/react/solid";
+import ArtistLinks from "~/components/ArtistLinks";
+import Chips from "~/components/Chips";
+import { formatReleaseArtists } from "~/lib/release";
+import type { Release } from "~/types/discojs";
+import LabelLinks from "./LabelLinks";
 
 interface ReleaseHeadingProps {
   id: number;
-  artists: Release['artists'];
+  artists: Release["artists"];
   title: string;
   src?: string;
   year: string | number;
   // TODO: separate master/release (again)?
   country?: string;
   formats?: string;
-  labels?: Release['labels'];
+  labels?: Release["labels"];
   genres?: string[];
   styles?: string[];
 }
@@ -55,7 +55,7 @@ export default function ReleaseHeading({
                 <ArtistLinks artists={artists} />
               </h3>
               <div className="flex items-baseline">
-                <span className="">{year !== 0 ? year : 'Unknown'}</span>
+                <span className="">{year !== 0 ? year : "Unknown"}</span>
                 {country !== undefined ? (
                   <>
                     <span className="mx-2 ">·</span>

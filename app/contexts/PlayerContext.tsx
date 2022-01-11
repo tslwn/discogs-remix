@@ -1,8 +1,8 @@
-import React from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
-import ReactPlayer from 'react-player/youtube';
-import { useDebouncedCallback } from 'use-debounce';
-import type { Video, Videos } from '~/types/discojs';
+import React from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import ReactPlayer from "react-player/youtube";
+import { useDebouncedCallback } from "use-debounce";
+import type { Video, Videos } from "~/types/discojs";
 
 interface Progress {
   loaded: number;
@@ -134,14 +134,14 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
     }
   }, DEBOUNCE_MS);
 
-  useHotkeys('space', (event) => {
+  useHotkeys("space", (event) => {
     event.preventDefault();
     handlePlayPause();
   });
-  useHotkeys('alt+left', handlePrevious);
-  useHotkeys('alt+right', handleNext);
-  useHotkeys('left', handleSkipBackward);
-  useHotkeys('right', handleSkipForward);
+  useHotkeys("alt+left", handlePrevious);
+  useHotkeys("alt+right", handleNext);
+  useHotkeys("left", handleSkipBackward);
+  useHotkeys("right", handleSkipForward);
 
   const value = {
     disabled,
@@ -167,8 +167,8 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
 
   // workaround for `failed to execute 'postMessage'`
   // https://github.com/cookpete/react-player/issues/508
-  const uri = video?.uri.includes('/watch?v=')
-    ? video?.uri.replace('/watch?v=', '/embed/')
+  const uri = video?.uri.includes("/watch?v=")
+    ? video?.uri.replace("/watch?v=", "/embed/")
     : video?.uri;
 
   return (
@@ -194,7 +194,7 @@ export function usePlayer() {
   const context = React.useContext(PlayerContext);
 
   if (context === null) {
-    throw new Error('usePlayer must be used within a PlayerProvider');
+    throw new Error("usePlayer must be used within a PlayerProvider");
   }
 
   return context;

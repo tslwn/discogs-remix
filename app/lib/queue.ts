@@ -1,6 +1,6 @@
-import { Release } from '~/types/discojs';
-import { QueueItem } from '~/types/queue';
-import { formatReleaseArtists, primaryOrFirstImage } from './release';
+import { Release } from "~/types/discojs";
+import { QueueItem } from "~/types/queue";
+import { formatReleaseArtists, primaryOrFirstImage } from "./release";
 
 export function encodeItem({ id, artists, title, src }: QueueItem) {
   return {

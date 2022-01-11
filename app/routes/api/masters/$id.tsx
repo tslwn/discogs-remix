@@ -1,13 +1,13 @@
-import clsx from 'clsx';
-import { useLoaderData } from 'remix';
-import type { LoaderFunction } from 'remix';
-import Collapsible from '~/components/Collapsible';
-import Link from '~/components/Link';
-import Page from '~/components/Page';
-import ReleaseHeading from '~/components/ReleaseHeading';
-import { getSessionAndClient } from '~/lib/client.server';
-import { primaryOrFirstImage } from '~/lib/release';
-import type { Master, MasterVersions } from '~/types/discojs';
+import clsx from "clsx";
+import { useLoaderData } from "remix";
+import type { LoaderFunction } from "remix";
+import Collapsible from "~/components/Collapsible";
+import Link from "~/components/Link";
+import Page from "~/components/Page";
+import ReleaseHeading from "~/components/ReleaseHeading";
+import { primaryOrFirstImage } from "~/lib/release";
+import type { Master, MasterVersions } from "~/types/discojs";
+import { getDiscogsClient, requireAuthSession } from "~/util/auth.server";
 
 interface RouteParams {
   id: number;
@@ -18,13 +18,14 @@ function isRouteParams(params: any): params is RouteParams {
 }
 
 export const loader: LoaderFunction = async ({ params, request }) => {
-  const { client, session } = await getSessionAndClient(request);
+  const session = await requireAuthSession(request);
+  const client = await getDiscogsClient(request);
 
   if (!isRouteParams(params)) {
-    throw new Error('Expected master ID parameter');
+    throw new Error("Expected master ID parameter");
   }
 
-  const currencyAbbreviation: string = session.get('curr_abbr');
+  const currencyAbbreviation: string = session.get("curr_abbr");
 
   const master = await client.getMaster(params.id);
 
@@ -72,7 +73,7 @@ export default function Route() {
                 >
                   <span
                     className={clsx(
-                      track.type_ !== 'track' && 'font-semibold my-2'
+                      track.type_ !== "track" && "font-semibold my-2"
                     )}
                   >
                     {track.title}
@@ -103,16 +104,16 @@ export default function Route() {
                   <tr key={version.id}>
                     <td>
                       <Link to={`/api/releases/${version.id}`} visited>
-                        {version.title !== master.title ? version.title : null}{' '}
+                        {version.title !== master.title ? version.title : null}{" "}
                         {version.major_formats}
-                      </Link>{' '}
+                      </Link>{" "}
                       <span className="text-xs">{version.format}</span>
                     </td>
                     <td>{version.label}</td>
                     <td>{version.catno}</td>
                     <td>{version.country}</td>
                     <td className="text-right">
-                      {version.released !== '0' ? version.released : 'Unknown'}
+                      {version.released !== "0" ? version.released : "Unknown"}
                     </td>
                   </tr>
                 ))}

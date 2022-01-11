@@ -1,4 +1,5 @@
-import NProgress from 'nprogress';
+import NProgress from "nprogress";
+import React from "react";
 import {
   Links,
   LiveReload,
@@ -8,27 +9,26 @@ import {
   ScrollRestoration,
   useCatch,
   useTransition,
-} from 'remix';
-import type { LinksFunction } from 'remix';
-import RouteChangeAnnouncement from '~/components/RouteChangeAnnouncement';
-import appStyles from '~/styles/app.css';
-import nProgressStyles from '~/styles/nprogress.css';
-import React from 'react';
-import { QueueProvider } from './contexts/QueueContext';
-import { PlayerProvider } from './contexts/PlayerContext';
+} from "remix";
+import type { LinksFunction, MetaFunction } from "remix";
+import RouteChangeAnnouncement from "~/components/RouteChangeAnnouncement";
+import appStyles from "~/styles/app.css";
+import nProgressStyles from "~/styles/nprogress.css";
+import { PlayerProvider } from "./contexts/PlayerContext";
+import { QueueProvider } from "./contexts/QueueContext";
 
-export const links: LinksFunction = () => {
-  return [
-    { rel: 'stylesheet', href: appStyles },
-    { rel: 'stylesheet', href: nProgressStyles },
-  ];
-};
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: appStyles },
+  { rel: "stylesheet", href: nProgressStyles },
+];
+
+export const meta: MetaFunction = () => ({ title: "Discogs Remix" });
 
 export default function App() {
   const transition = useTransition();
 
   React.useEffect(() => {
-    if (transition.state === 'idle') {
+    if (transition.state === "idle") {
       NProgress.done();
     } else {
       NProgress.start();
@@ -69,7 +69,7 @@ function Document({
         <RouteChangeAnnouncement />
         <ScrollRestoration />
         <Scripts />
-        {process.env.NODE_ENV === 'development' && <LiveReload />}
+        {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
   );

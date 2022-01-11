@@ -1,8 +1,8 @@
-import React from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useNavigate } from 'remix';
-import { decodeItem, encodeItem } from '~/lib/queue';
-import { Queue, QueueItem } from '~/types/queue';
+import React from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useNavigate } from "remix";
+import { decodeItem, encodeItem } from "~/lib/queue";
+import { Queue, QueueItem } from "~/types/queue";
 
 function useLocalStorage<Value>(key: string, defaultValue: Value) {
   const [value, setValue] = React.useState<Value>(defaultValue);
@@ -38,9 +38,9 @@ interface QueueContextValue {
 const QueueContext = React.createContext<QueueContextValue | null>(null);
 
 export function QueueProvider({ children }: React.PropsWithChildren<{}>) {
-  const [queue, setQueue] = useLocalStorage<Queue>('queue', []);
+  const [queue, setQueue] = useLocalStorage<Queue>("queue", []);
 
-  const [history, setHistory] = useLocalStorage<Queue>('history', []);
+  const [history, setHistory] = useLocalStorage<Queue>("history", []);
 
   const isEmpty = () => queue.length === 0;
 
@@ -68,10 +68,10 @@ export function QueueProvider({ children }: React.PropsWithChildren<{}>) {
 
   const navigate = useNavigate();
 
-  useHotkeys('q', () => {
-    navigate('/api/queue');
+  useHotkeys("q", () => {
+    navigate("/api/queue");
   });
-  useHotkeys('shift+alt+right', dequeue, [queue]);
+  useHotkeys("shift+alt+right", dequeue, [queue]);
 
   const value = {
     queue: queue.map((item) => decodeItem(item)),
@@ -92,7 +92,7 @@ export function useQueue() {
   const context = React.useContext(QueueContext);
 
   if (context === null) {
-    throw new Error('useQueue must be used within a QueueProvider');
+    throw new Error("useQueue must be used within a QueueProvider");
   }
 
   return context;

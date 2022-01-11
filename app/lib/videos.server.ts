@@ -1,5 +1,4 @@
-import { Release } from '~/types/discojs';
-import { envVar } from '~/lib/env.server';
+import { Release } from "~/types/discojs";
 
 const YOUTUBE_URL_REGEX =
   /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|&v(?:i)?=))([^#&?]*).*/;
@@ -14,9 +13,7 @@ export async function isVideoAvailable(url: string) {
   const id = matches[1];
 
   const response =
-    await fetch(`https://www.googleapis.com/youtube/v3/videos?part=status&id=${id}&key=${envVar(
-      'YOUTUBE_API_KEY'
-    )}
+    await fetch(`https://www.googleapis.com/youtube/v3/videos?part=status&id=${id}&key=${process.env.YOUTUBE_API_KEY}
   `);
 
   const json = await response.json();

@@ -1,5 +1,5 @@
-import React from 'react';
-import useEventListener from './useEventListener';
+import React from "react";
+import useEventListener from "./useEventListener";
 
 interface Size {
   height: number;
@@ -24,7 +24,7 @@ export default function useElementSize<T extends HTMLElement>(): [
     });
   }, [ref?.offsetHeight, ref?.offsetWidth]);
 
-  useEventListener('resize', handleResize);
+  useEventListener("resize", handleResize);
 
   React.useEffect(() => {
     handleResize();

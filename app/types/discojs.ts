@@ -1,4 +1,4 @@
-import { Discojs } from 'discojs';
+import { Discojs } from "discojs";
 
 const client = new Discojs();
 
@@ -10,9 +10,9 @@ export type Artist = Awaited<ReturnType<typeof client.getArtist>>;
 
 type _ArtistReleases = Awaited<ReturnType<typeof client.getArtistReleases>>;
 
-export type ArtistReleases = _ArtistReleases['pagination'] & {
-  releases: (_ArtistReleases['releases'][number] & {
-    type: 'master' | 'releases';
+export type ArtistReleases = _ArtistReleases["pagination"] & {
+  releases: (_ArtistReleases["releases"][number] & {
+    type: "master" | "releases";
   })[];
 };
 
@@ -20,9 +20,9 @@ export type Label = Awaited<ReturnType<typeof client.getLabel>>;
 
 type _LabelReleases = Awaited<ReturnType<typeof client.getLabelReleases>>;
 
-export type LabelReleases = _LabelReleases['pagination'] & {
-  releases: (_LabelReleases['releases'][number] & {
-    type: 'master' | 'releases';
+export type LabelReleases = _LabelReleases["pagination"] & {
+  releases: (_LabelReleases["releases"][number] & {
+    type: "master" | "releases";
   })[];
 };
 
@@ -34,6 +34,6 @@ export type MasterVersions = Awaited<
 
 export type Release = Awaited<ReturnType<typeof client.getRelease>>;
 
-export type Videos = Exclude<Release['videos'], undefined>;
+export type Videos = Exclude<Release["videos"], undefined>;
 
 export type Video = Videos[number];

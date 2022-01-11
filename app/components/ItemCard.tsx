@@ -1,7 +1,7 @@
-import { MusicNoteIcon } from '@heroicons/react/solid';
-import clsx from 'clsx';
-import React from 'react';
-import Link from '~/components/Link';
+import { MusicNoteIcon } from "@heroicons/react/solid";
+import clsx from "clsx";
+import React from "react";
+import Link from "~/components/Link";
 
 type ItemCardProps = {
   className?: string;
@@ -27,7 +27,7 @@ export default function ItemCard({
   visited,
 }: ItemCardProps) {
   return (
-    <div className={clsx('flex items-center', className)}>
+    <div className={clsx("flex items-center", className)}>
       {left !== undefined ? <div className="mr-4">{left}</div> : null}
       <div className="flex h-14 justify-center mr-4 overflow-hidden rounded w-14">
         {image.src !== undefined ? (
@@ -40,7 +40,7 @@ export default function ItemCard({
       </div>
       <div className="max-w-64 overflow-clip whitespace-nowrap">
         <div>
-          {typeof title === 'string' || title === undefined ? (
+          {typeof title === "string" || title === undefined ? (
             <span>{title}</span>
           ) : (
             <Link to={title.to} visited={visited}>
@@ -49,7 +49,7 @@ export default function ItemCard({
           )}
         </div>
         <div className="text-xs">
-          {typeof subtitle === 'string' || subtitle === undefined ? (
+          {typeof subtitle === "string" || subtitle === undefined ? (
             <span>{subtitle}</span>
           ) : (
             <Link to={subtitle.to} visited={visited}>

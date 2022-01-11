@@ -1,5 +1,5 @@
-import clsx from 'clsx';
-import React from 'react';
+import clsx from "clsx";
+import React from "react";
 
 type ExternalLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   // If true, conventional styles are applied to the link.
@@ -16,9 +16,9 @@ export default function ExternalLink({
     <a
       {...props}
       className={clsx(
-        visited && 'text-blue-600 visited:text-fuchsia-600',
-        'decoration-2 underline-offset-2',
-        'focus:outline-none focus:underline hover:underline',
+        visited && "text-blue-600 visited:text-fuchsia-600",
+        "decoration-2 underline-offset-2",
+        "focus:outline-none focus:underline hover:underline",
         className
       )}
       rel="noreferrer"

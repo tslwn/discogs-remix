@@ -1,17 +1,17 @@
-import { useLoaderData } from 'remix';
-import type { LoaderFunction } from 'remix';
-import Page from '~/components/Page';
-import { getSessionAndClient } from '~/lib/client.server';
-import { formatReleaseFormats, primaryOrFirstImage } from '~/lib/release';
-import { filterVideos } from '~/lib/videos.server';
-import type { Release } from '~/types/discojs';
-import Collapsible from '~/components/Collapsible';
-import ReleaseHeading from '~/components/ReleaseHeading';
-import Have from '~/components/release/Have';
-import Want from '~/components/release/Want';
-import Rating from '~/components/release/Rating';
-import ForSale from '~/components/release/ForSale';
-import Videos from '~/components/release/Videos';
+import { useLoaderData } from "remix";
+import type { LoaderFunction } from "remix";
+import Collapsible from "~/components/Collapsible";
+import Page from "~/components/Page";
+import ReleaseHeading from "~/components/ReleaseHeading";
+import ForSale from "~/components/release/ForSale";
+import Have from "~/components/release/Have";
+import Rating from "~/components/release/Rating";
+import Videos from "~/components/release/Videos";
+import Want from "~/components/release/Want";
+import { formatReleaseFormats, primaryOrFirstImage } from "~/lib/release";
+import { filterVideos } from "~/lib/videos.server";
+import type { Release } from "~/types/discojs";
+import { getDiscogsClient, requireAuthSession } from "~/util/auth.server";
 
 interface RouteParams {
   id: number;
@@ -22,13 +22,14 @@ function isRouteParams(params: any): params is RouteParams {
 }
 
 export const loader: LoaderFunction = async ({ params, request }) => {
-  const { client, session } = await getSessionAndClient(request);
+  const session = await requireAuthSession(request);
+  const client = await getDiscogsClient(request);
 
   if (!isRouteParams(params)) {
-    throw new Error('Expected release ID parameter');
+    throw new Error("Expected release ID parameter");
   }
 
-  const currencyAbbreviation: string = session.get('curr_abbr');
+  const currencyAbbreviation: string = session.get("curr_abbr");
 
   const release = await client.getRelease(params.id);
 
@@ -83,7 +84,7 @@ export default function Route() {
               <tbody>
                 {release.tracklist?.map((track) => (
                   <tr key={`${track.position} ${track.title}`}>
-                    {track.type_ !== 'track' ? (
+                    {track.type_ !== "track" ? (
                       <td className="font-semibold my-2" colSpan={3}>
                         {track.title}
                       </td>

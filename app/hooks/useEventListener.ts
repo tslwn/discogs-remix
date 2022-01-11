@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default function useEventListener<T extends HTMLElement>(
   name: keyof WindowEventMap | string,

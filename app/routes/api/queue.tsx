@@ -1,13 +1,13 @@
-import { Tab } from '@headlessui/react';
-import { PauseIcon, PlayIcon } from '@heroicons/react/solid';
-import clsx from 'clsx';
-import Button from '~/components/Button';
-import IconButton from '~/components/IconButton';
-import Page from '~/components/Page';
-import QueueItemCard from '~/components/QueueItemCard';
-import TopBar from '~/components/TopBar';
-import { usePlayer } from '~/contexts/PlayerContext';
-import { useQueue } from '~/contexts/QueueContext';
+import { Tab } from "@headlessui/react";
+import { PauseIcon, PlayIcon } from "@heroicons/react/solid";
+import clsx from "clsx";
+import Button from "~/components/Button";
+import IconButton from "~/components/IconButton";
+import Page from "~/components/Page";
+import QueueItemCard from "~/components/QueueItemCard";
+import TopBar from "~/components/TopBar";
+import { usePlayer } from "~/contexts/PlayerContext";
+import { useQueue } from "~/contexts/QueueContext";
 
 export default function Route() {
   const { queue, history, current, clear } = useQueue();
@@ -28,10 +28,10 @@ export default function Route() {
             <Tab
               className={({ selected }) =>
                 clsx(
-                  'decoration-2 underline-offset-2',
-                  'focus:outline-none focus:decoration-neutral-400 focus:text-neutral-400',
-                  'hover:decoration-neutral-400 hover:text-neutral-400',
-                  selected && 'underline'
+                  "decoration-2 underline-offset-2",
+                  "focus:outline-none focus:decoration-neutral-400 focus:text-neutral-400",
+                  "hover:decoration-neutral-400 hover:text-neutral-400",
+                  selected && "underline"
                 )
               }
             >
@@ -40,10 +40,10 @@ export default function Route() {
             <Tab
               className={({ selected }) =>
                 clsx(
-                  'decoration-2 underline-offset-2',
-                  'focus:outline-none focus:decoration-neutral-400 focus:text-neutral-400',
-                  'hover:decoration-neutral-400 hover:text-neutral-400',
-                  selected && 'underline'
+                  "decoration-2 underline-offset-2",
+                  "focus:outline-none focus:decoration-neutral-400 focus:text-neutral-400",
+                  "hover:decoration-neutral-400 hover:text-neutral-400",
+                  selected && "underline"
                 )
               }
             >
@@ -68,11 +68,11 @@ export default function Route() {
                         item={nowPlaying}
                         left={
                           <IconButton
-                            aria-label={playing ? 'Pause video' : 'Play video'}
+                            aria-label={playing ? "Pause video" : "Play video"}
                             className="p-0"
                             disabled={isPlayPauseDisabled}
                             onClick={handlePlayPause}
-                            title={playing ? 'Pause video' : 'Play video'}
+                            title={playing ? "Pause video" : "Play video"}
                           >
                             {playing ? (
                               <PauseIcon className="h-6 w-6" />
@@ -83,7 +83,7 @@ export default function Route() {
                         }
                       />
                     </li>
-                  </ul>{' '}
+                  </ul>{" "}
                 </div>
                 <div>
                   <h3 className="font-semibold mb-4 text-neutral-500 text-sm">

@@ -1,7 +1,7 @@
-import { Outlet } from 'remix';
-import { ClientOnly } from 'remix-utils';
-import BottomBar from '~/components/BottomBar';
-import Sidebar from '~/components/Sidebar';
+import { Outlet } from "remix";
+import { ClientOnly } from "remix-utils";
+import BottomBar from "~/components/BottomBar";
+import Sidebar from "~/components/Sidebar";
 
 export default function Route() {
   return (

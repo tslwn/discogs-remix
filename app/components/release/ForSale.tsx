@@ -1,4 +1,4 @@
-import ExternalLink from '~/components/ExternalLink';
+import ExternalLink from "~/components/ExternalLink";
 
 interface ForSaleProps {
   currency: string;
@@ -28,7 +28,7 @@ export default function ForSale({
             <span className="text-neutral-500">from </span>
             <span className="font-semibold text-orange-700">
               {new Intl.NumberFormat(undefined, {
-                style: 'currency',
+                style: "currency",
                 currency,
               }).format(lowestPrice)}
             </span>

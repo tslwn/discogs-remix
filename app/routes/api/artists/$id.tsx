@@ -1,10 +1,10 @@
-import { PhotographIcon } from '@heroicons/react/solid';
-import { LoaderFunction, useLoaderData } from 'remix';
-import ItemCard from '~/components/ItemCard';
-import Page from '~/components/Page';
-import { getSessionAndClient } from '~/lib/client.server';
-import { primaryOrFirstImage } from '~/lib/release';
-import type { Artist, ArtistReleases } from '~/types/discojs';
+import { PhotographIcon } from "@heroicons/react/solid";
+import { LoaderFunction, useLoaderData } from "remix";
+import ItemCard from "~/components/ItemCard";
+import Page from "~/components/Page";
+import { primaryOrFirstImage } from "~/lib/release";
+import type { Artist, ArtistReleases } from "~/types/discojs";
+import { getDiscogsClient } from "~/util/auth.server";
 
 interface RouteParams {
   id: number;
@@ -15,10 +15,10 @@ function isRouteParams(params: any): params is RouteParams {
 }
 
 export const loader: LoaderFunction = async ({ params, request }) => {
-  const { client } = await getSessionAndClient(request);
+  const client = await getDiscogsClient(request);
 
   if (!isRouteParams(params)) {
-    throw new Error('Expected artist ID parameter');
+    throw new Error("Expected artist ID parameter");
   }
 
   const artist = await client.getArtist(params.id);
@@ -66,7 +66,7 @@ export default function Route() {
                 : release.title;
 
             const to =
-              release.type === 'master'
+              release.type === "master"
                 ? `/api/masters/${release.id}`
                 : `/api/releases/${release.id}`;
 

@@ -1,10 +1,10 @@
-import React from 'react';
-import { useLocation } from 'remix';
+import React from "react";
+import { useLocation } from "remix";
 
 const RouteChangeAnnouncement = React.memo(() => {
   const [hydrated, setHydrated] = React.useState(false);
 
-  const [innerHtml, setInnerHtml] = React.useState('');
+  const [innerHtml, setInnerHtml] = React.useState("");
 
   const location = useLocation();
 
@@ -21,7 +21,7 @@ const RouteChangeAnnouncement = React.memo(() => {
       return;
     }
 
-    const pageTitle = location.pathname === '/' ? 'Home page' : document.title;
+    const pageTitle = location.pathname === "/" ? "Home page" : document.title;
 
     setInnerHtml(`Navigated to ${pageTitle}`);
   }, [location.pathname]);
@@ -37,17 +37,17 @@ const RouteChangeAnnouncement = React.memo(() => {
       aria-atomic
       id="route-change-region"
       style={{
-        border: '0',
-        clipPath: 'inset(100%)',
-        clip: 'rect(0 0 0 0)',
-        height: '1px',
-        margin: '-1px',
-        overflow: 'hidden',
-        padding: '0',
-        position: 'absolute',
-        width: '1px',
-        whiteSpace: 'nowrap',
-        wordWrap: 'normal',
+        border: "0",
+        clipPath: "inset(100%)",
+        clip: "rect(0 0 0 0)",
+        height: "1px",
+        margin: "-1px",
+        overflow: "hidden",
+        padding: "0",
+        position: "absolute",
+        width: "1px",
+        whiteSpace: "nowrap",
+        wordWrap: "normal",
       }}
     >
       {innerHtml}

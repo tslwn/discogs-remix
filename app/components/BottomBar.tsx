@@ -1,14 +1,14 @@
-import React from 'react';
-import { useFetcher } from 'remix';
-import Button from '~/components/Button';
-import LinkButton from '~/components/LinkButton';
-import QueueItemCard from '~/components/QueueItemCard';
-import YouTubePlayer from '~/components/YouTubePlayer';
-import WantlistForm from '~/components/forms/WantlistForm';
-import { useQueue } from '~/contexts/QueueContext';
-import type { Release } from '~/types/discojs';
-import { decodeItem } from '~/lib/queue';
-import { usePlayer } from '~/contexts/PlayerContext';
+import React from "react";
+import { useFetcher } from "remix";
+import Button from "~/components/Button";
+import LinkButton from "~/components/LinkButton";
+import QueueItemCard from "~/components/QueueItemCard";
+import YouTubePlayer from "~/components/YouTubePlayer";
+import WantlistForm from "~/components/forms/WantlistForm";
+import { usePlayer } from "~/contexts/PlayerContext";
+import { useQueue } from "~/contexts/QueueContext";
+import { decodeItem } from "~/lib/queue";
+import type { Release } from "~/types/discojs";
 
 export default function BottomBar() {
   const { queue, dequeue } = useQueue();
@@ -29,7 +29,7 @@ export default function BottomBar() {
   }, [item?.id]);
 
   React.useEffect(() => {
-    setDisabled(fetcher.state === 'loading');
+    setDisabled(fetcher.state === "loading");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetcher.state]);
 
@@ -40,7 +40,7 @@ export default function BottomBar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetcher.data]);
 
-  const isNextDisabled = fetcher.state === 'loading' || queue.length <= 1;
+  const isNextDisabled = fetcher.state === "loading" || queue.length <= 1;
 
   const handleNext = () => {
     dequeue();

@@ -1,6 +1,6 @@
-import React from 'react';
-import type { QueueItem } from '~/types/queue';
-import ItemCard from './ItemCard';
+import React from "react";
+import type { QueueItem } from "~/types/queue";
+import ItemCard from "./ItemCard";
 
 type QueueItemCardProps = {
   className?: string;

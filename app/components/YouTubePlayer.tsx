@@ -5,11 +5,11 @@ import {
   PauseIcon,
   PlayIcon,
   RewindIcon,
-} from '@heroicons/react/solid';
-import useElementSize from '~/hooks/useElementSize';
-import ExternalLink from '~/components/ExternalLink';
-import IconButton from '~/components/IconButton';
-import { usePlayer } from '~/contexts/PlayerContext';
+} from "@heroicons/react/solid";
+import ExternalLink from "~/components/ExternalLink";
+import IconButton from "~/components/IconButton";
+import { usePlayer } from "~/contexts/PlayerContext";
+import useElementSize from "~/hooks/useElementSize";
 
 export default function YouTubePlayer() {
   const [containerRef, { width: playerWidth }] = useElementSize();
@@ -53,11 +53,11 @@ export default function YouTubePlayer() {
           <RewindIcon className="h-5 w-5" />
         </IconButton>
         <IconButton
-          aria-label={playing ? 'Pause video' : 'Play video'}
+          aria-label={playing ? "Pause video" : "Play video"}
           className="p-0"
           disabled={isPlayPauseDisabled}
           onClick={handlePlayPause}
-          title={playing ? 'Pause video' : 'Play video'}
+          title={playing ? "Pause video" : "Play video"}
         >
           {playing ? (
             <PauseIcon className="h-10 w-10" />
@@ -100,7 +100,7 @@ export default function YouTubePlayer() {
               </div>
             </div>
             <div className="ml-2 text-xs w-8">
-              {duration ? formatSeconds(duration) : '--:--'}
+              {duration ? formatSeconds(duration) : "--:--"}
             </div>
           </div>
           <div
@@ -109,7 +109,7 @@ export default function YouTubePlayer() {
           >
             <ExternalLink href={video.uri}>{video.title}</ExternalLink>
             <span>
-              {' '}
+              {" "}
               ({index + 1} / {videos.length})
             </span>
           </div>
@@ -128,10 +128,10 @@ function formatSeconds(value: number) {
   const minutes = Math.floor((value - hours * 3600) / 60);
   const seconds = Math.round(value - hours * 3600 - minutes * 60);
 
-  let formatted = '';
-  formatted += hours > 0 ? hours.toString() + ':' : '';
-  formatted += minutes.toString() + ':';
-  formatted += seconds < 10 ? '0' : '';
+  let formatted = "";
+  formatted += hours > 0 ? hours.toString() + ":" : "";
+  formatted += minutes.toString() + ":";
+  formatted += seconds < 10 ? "0" : "";
   formatted += seconds.toString();
 
   return formatted;
