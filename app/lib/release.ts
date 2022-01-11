@@ -44,3 +44,10 @@ export function primaryOrFirstImage(images: Release["images"]) {
     (images && images[0])
   );
 }
+
+export const byYear = (a: { year: number }, b: { year: number }) => {
+  if (a.year === 0) {
+    return 1;
+  }
+  return a.year > b.year ? 1 : -1;
+};

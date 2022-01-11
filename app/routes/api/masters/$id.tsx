@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
+import invariant from "tiny-invariant";
 import Collapsible from "~/components/Collapsible";
 import Link from "~/components/Link";
 import Page from "~/components/Page";
@@ -9,41 +10,34 @@ import { primaryOrFirstImage } from "~/lib/release";
 import type { Master, MasterVersions } from "~/types/discojs";
 import { getDiscogsClient, requireAuthSession } from "~/util/auth.server";
 
-interface RouteParams {
-  id: number;
-}
-
-function isRouteParams(params: any): params is RouteParams {
-  return !Number.isNaN(Number(params.id));
-}
-
 export const loader: LoaderFunction = async ({ params, request }) => {
+  const id = Number(params.id);
+  invariant(typeof id === "number", "expected params.id");
+
   const session = await requireAuthSession(request);
   const client = await getDiscogsClient(request);
 
-  if (!isRouteParams(params)) {
-    throw new Error("Expected master ID parameter");
-  }
+  const currAbbr = session.get("curr_abbr");
+  invariant(typeof currAbbr === "string", "expected curr_abbr");
 
-  const currencyAbbreviation: string = session.get("curr_abbr");
-
-  const master = await client.getMaster(params.id);
-
-  const masterVersions = await client.getMasterVersions(params.id);
+  const master = await client.getMaster(id);
+  const masterVersions = await client.getMasterVersions(id);
 
   return {
-    currencyAbbreviation,
+    currAbbr,
     master,
     masterVersions,
   };
 };
 
+interface LoaderData {
+  currAbbr: string;
+  master: Master;
+  masterVersions: MasterVersions;
+}
+
 export default function Route() {
-  const { master, masterVersions } = useLoaderData<{
-    currencyAbbreviation: string;
-    master: Master;
-    masterVersions: MasterVersions;
-  }>();
+  const { master, masterVersions } = useLoaderData<LoaderData>();
 
   const src = primaryOrFirstImage(master.images)?.uri;
 

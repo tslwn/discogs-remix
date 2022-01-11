@@ -1,32 +1,21 @@
 import { PhotographIcon } from "@heroicons/react/solid";
 import { LoaderFunction, useLoaderData } from "remix";
+import invariant from "tiny-invariant";
 import ItemCard from "~/components/ItemCard";
 import Page from "~/components/Page";
-import { primaryOrFirstImage } from "~/lib/release";
+import { byYear, primaryOrFirstImage } from "~/lib/release";
 import type { Artist, ArtistReleases } from "~/types/discojs";
 import { getDiscogsClient } from "~/util/auth.server";
 
-interface RouteParams {
-  id: number;
-}
-
-function isRouteParams(params: any): params is RouteParams {
-  return !Number.isNaN(Number(params.id));
-}
-
 export const loader: LoaderFunction = async ({ params, request }) => {
+  const id = Number(params.id);
+  invariant(typeof id === "number", "expected params.id");
+
   const client = await getDiscogsClient(request);
 
-  if (!isRouteParams(params)) {
-    throw new Error("Expected artist ID parameter");
-  }
-
-  const artist = await client.getArtist(params.id);
-
-  // TODO: what kind of release? remove duplicates (credits)
-  const artistReleases = await client.getArtistReleases(params.id);
-
-  artistReleases.releases.sort((a, b) => (a.year > b.year ? 1 : -1));
+  const artist = await client.getArtist(id);
+  const artistReleases = await client.getArtistReleases(id);
+  artistReleases.releases.sort(byYear);
 
   return {
     artist,
@@ -34,11 +23,12 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   };
 };
 
+type LoaderData = { artist: Artist & { name: string } } & {
+  artistReleases: ArtistReleases;
+};
+
 export default function Route() {
-  // TODO: is the return type of `getArtist` correct?
-  const { artist, artistReleases } = useLoaderData<
-    { artist: Artist & { name: string } } & { artistReleases: ArtistReleases }
-  >();
+  const { artist, artistReleases } = useLoaderData<LoaderData>();
 
   const src = primaryOrFirstImage(artist.images)?.uri;
 

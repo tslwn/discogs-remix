@@ -1,5 +1,6 @@
 import { useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
+import invariant from "tiny-invariant";
 import Collapsible from "~/components/Collapsible";
 import Page from "~/components/Page";
 import ReleaseHeading from "~/components/ReleaseHeading";
@@ -13,32 +14,28 @@ import { filterVideos } from "~/lib/videos.server";
 import type { Release } from "~/types/discojs";
 import { getDiscogsClient, requireAuthSession } from "~/util/auth.server";
 
-interface RouteParams {
-  id: number;
-}
-
-function isRouteParams(params: any): params is RouteParams {
-  return !Number.isNaN(Number(params.id));
-}
-
 export const loader: LoaderFunction = async ({ params, request }) => {
+  const id = Number(params.id);
+  invariant(typeof id === "number", "expected params.id");
+
   const session = await requireAuthSession(request);
   const client = await getDiscogsClient(request);
 
-  if (!isRouteParams(params)) {
-    throw new Error("Expected release ID parameter");
-  }
+  const currAbbr = session.get("curr_abbr");
+  invariant(typeof currAbbr === "string", "expected curr_abbr");
 
-  const currencyAbbreviation: string = session.get("curr_abbr");
+  const release = await client.getRelease(id);
 
-  const release = await client.getRelease(params.id);
-
-  return { currencyAbbreviation, release: await filterVideos(release) };
+  return { currAbbr, release: await filterVideos(release) };
 };
 
+interface LoaderData {
+  currAbbr: string;
+  release: Release;
+}
+
 export default function Route() {
-  const { currencyAbbreviation, release } =
-    useLoaderData<{ currencyAbbreviation: string; release: Release }>();
+  const { currAbbr, release } = useLoaderData<LoaderData>();
 
   const src = primaryOrFirstImage(release.images)?.uri;
 
@@ -68,7 +65,7 @@ export default function Route() {
           count={release.community.rating.count}
         />
         <ForSale
-          currency={currencyAbbreviation}
+          currency={currAbbr}
           lowestPrice={release.lowest_price}
           numForSale={release.num_for_sale}
           to={`https://www.discogs.com/sell/release/${release.id}`}

@@ -1,37 +1,21 @@
 import { PhotographIcon } from "@heroicons/react/solid";
 import { LoaderFunction, useLoaderData } from "remix";
+import invariant from "tiny-invariant";
 import ItemCard from "~/components/ItemCard";
 import Page from "~/components/Page";
-import { primaryOrFirstImage } from "~/lib/release";
+import { byYear, primaryOrFirstImage } from "~/lib/release";
 import type { Label, LabelReleases } from "~/types/discojs";
 import { getDiscogsClient } from "~/util/auth.server";
 
-interface RouteParams {
-  id: number;
-}
-
-function isRouteParams(params: any): params is RouteParams {
-  return !Number.isNaN(Number(params.id));
-}
-
 export const loader: LoaderFunction = async ({ params, request }) => {
-  if (!isRouteParams(params)) {
-    throw new Error("Expected artist ID parameter");
-  }
+  const id = Number(params.id);
+  invariant(typeof id === "number", "expected params.id");
 
   const client = await getDiscogsClient(request);
 
-  const label = await client.getLabel(params.id);
-
-  // TODO: what kind of release? remove duplicates (credits)
-  const labelReleases = await client.getLabelReleases(params.id);
-
-  labelReleases.releases.sort((a, b) => {
-    if (a.year === 0) {
-      return 1;
-    }
-    return a.year > b.year ? 1 : -1;
-  });
+  const label = await client.getLabel(id);
+  const labelReleases = await client.getLabelReleases(id);
+  labelReleases.releases.sort(byYear);
 
   return {
     label,
@@ -39,11 +23,13 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   };
 };
 
+interface LoaderData {
+  label: Label;
+  labelReleases: LabelReleases;
+}
+
 export default function Route() {
-  const { label, labelReleases } = useLoaderData<{
-    label: Label;
-    labelReleases: LabelReleases;
-  }>();
+  const { label, labelReleases } = useLoaderData<LoaderData>();
 
   const src = primaryOrFirstImage(label.images)?.uri;
 
