@@ -1,31 +1,12 @@
 import { PhotographIcon } from "@heroicons/react/solid";
-import { LoaderFunction, useLoaderData } from "remix";
-import invariant from "tiny-invariant";
+import { useLoaderData } from "remix";
 import ItemCard from "~/components/ItemCard";
 import Page from "~/components/Page";
-import type { Artist, ArtistReleases } from "~/types/discojs";
-import { getDiscogsClient } from "~/util/auth.server";
-import { byYear, primaryOrFirstImage } from "~/util/release";
+import PageControls from "~/components/PageControls";
+import type { LoaderData } from "~/loaders/artist.server";
+import { primaryOrFirstImage } from "~/util/release";
 
-export const loader: LoaderFunction = async ({ params, request }) => {
-  const id = Number(params.id);
-  invariant(typeof id === "number", "expected params.id");
-
-  const client = await getDiscogsClient(request);
-
-  const artist = await client.getArtist(id);
-  const artistReleases = await client.getArtistReleases(id);
-  artistReleases.releases.sort(byYear);
-
-  return {
-    artist,
-    artistReleases,
-  };
-};
-
-type LoaderData = { artist: Artist & { name: string } } & {
-  artistReleases: ArtistReleases;
-};
+export { loader } from "~/loaders/artist.server";
 
 export default function Route() {
   const { artist, artistReleases } = useLoaderData<LoaderData>();
@@ -47,7 +28,16 @@ export default function Route() {
         <h2 className="font-semibold text-3xl">{artist.name}</h2>
       </div>
       <div>
-        <h4 className="font-semibold mb-2">Releases</h4>
+        <div className="mb-4">
+          <PageControls
+            items={artistReleases.pagination.items}
+            pagination={{
+              page: artistReleases.pagination.page,
+              perPage: artistReleases.pagination.per_page,
+            }}
+            url={`/api/artists/${artist.id}`}
+          />
+        </div>
         <ul>
           {artistReleases.releases.map((release) => {
             const text =

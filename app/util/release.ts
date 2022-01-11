@@ -1,4 +1,4 @@
-import { Release } from "~/types/discojs";
+import type { Release } from "~/types/discojs";
 
 export function formatReleaseArtists(artists: Release["artists"]) {
   return artists

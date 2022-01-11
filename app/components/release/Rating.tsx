@@ -20,10 +20,10 @@ export default function Rating({ average, count }: RatingProps) {
       >
         <svg aria-hidden="true" className="absolute h-0 w-0" focusable="false">
           <linearGradient id="rating-gradient" x2="1" y2="0">
-            <stop offset="0%" stop-color={AMBER_500} />
-            <stop offset={`${percentage}%`} stop-color={AMBER_500} />
-            <stop offset={`${percentage + 1}%`} stop-color={NEUTRAL_300} />
-            <stop offset="100%" stop-color={NEUTRAL_300} />
+            <stop offset="0%" stopColor={AMBER_500} />
+            <stop offset={`${percentage}%`} stopColor={AMBER_500} />
+            <stop offset={`${percentage + 1}%`} stopColor={NEUTRAL_300} />
+            <stop offset="100%" stopColor={NEUTRAL_300} />
           </linearGradient>
         </svg>
         <StarIcon

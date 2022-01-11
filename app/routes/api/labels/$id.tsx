@@ -1,32 +1,12 @@
 import { PhotographIcon } from "@heroicons/react/solid";
-import { LoaderFunction, useLoaderData } from "remix";
-import invariant from "tiny-invariant";
+import { useLoaderData } from "remix";
 import ItemCard from "~/components/ItemCard";
 import Page from "~/components/Page";
-import type { Label, LabelReleases } from "~/types/discojs";
-import { getDiscogsClient } from "~/util/auth.server";
-import { byYear, primaryOrFirstImage } from "~/util/release";
+import PageControls from "~/components/PageControls";
+import type { LoaderData } from "~/loaders/label.server";
+import { primaryOrFirstImage } from "~/util/release";
 
-export const loader: LoaderFunction = async ({ params, request }) => {
-  const id = Number(params.id);
-  invariant(typeof id === "number", "expected params.id");
-
-  const client = await getDiscogsClient(request);
-
-  const label = await client.getLabel(id);
-  const labelReleases = await client.getLabelReleases(id);
-  labelReleases.releases.sort(byYear);
-
-  return {
-    label,
-    labelReleases,
-  };
-};
-
-interface LoaderData {
-  label: Label;
-  labelReleases: LabelReleases;
-}
+export { loader } from "~/loaders/label.server";
 
 export default function Route() {
   const { label, labelReleases } = useLoaderData<LoaderData>();
@@ -48,7 +28,16 @@ export default function Route() {
         <h2 className="font-semibold text-3xl">{label.name}</h2>
       </div>
       <div>
-        <h4 className="mb-4 text-lg">Releases</h4>
+        <div className="mb-4">
+          <PageControls
+            items={labelReleases.pagination.items}
+            pagination={{
+              page: labelReleases.pagination.page,
+              perPage: labelReleases.pagination.per_page,
+            }}
+            url={`/api/labels/${label.id}`}
+          />
+        </div>
         <ul>
           {labelReleases.releases.map((release) => {
             const text = `${release.artist} - ${release.title}`;

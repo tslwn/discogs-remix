@@ -10,7 +10,7 @@ export type Artist = Awaited<ReturnType<typeof client.getArtist>>;
 
 type _ArtistReleases = Awaited<ReturnType<typeof client.getArtistReleases>>;
 
-export type ArtistReleases = _ArtistReleases["pagination"] & {
+export type ArtistReleases = Pick<_ArtistReleases, "pagination"> & {
   releases: (_ArtistReleases["releases"][number] & {
     type: "master" | "releases";
   })[];
@@ -20,7 +20,7 @@ export type Label = Awaited<ReturnType<typeof client.getLabel>>;
 
 type _LabelReleases = Awaited<ReturnType<typeof client.getLabelReleases>>;
 
-export type LabelReleases = _LabelReleases["pagination"] & {
+export type LabelReleases = Pick<_LabelReleases, "pagination"> & {
   releases: (_LabelReleases["releases"][number] & {
     type: "master" | "releases";
   })[];
