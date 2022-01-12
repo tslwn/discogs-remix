@@ -1,12 +1,12 @@
-import type { LoaderFunction } from "remix";
+import { DataFunctionArgs } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
-import type { Label, LabelReleases } from "~/types/discojs";
 import { getDiscogsClient } from "~/util/auth.server";
 import { getPagination } from "~/util/pagination";
+import { primaryOrFirstImage } from "~/util/release";
 
 // anti-colocation but fixes esbuild import problems
 
-export const loader: LoaderFunction = async ({ params, request }) => {
+export const loader = async ({ params, request }: DataFunctionArgs) => {
   const id = Number(params.id);
   invariant(typeof id === "number", "expected params.id");
 
@@ -14,13 +14,36 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
   const client = await getDiscogsClient(request);
 
+  const [label, releases] = await Promise.all([
+    client.getLabel(id),
+    client.getLabelReleases(id, pagination),
+  ]);
+
   return {
-    label: await client.getLabel(id),
-    labelReleases: await client.getLabelReleases(id, pagination),
+    label: {
+      id,
+      name: label.name,
+      src: primaryOrFirstImage(label.images)?.uri,
+    },
+    releases: {
+      pagination: {
+        items: releases.pagination.items,
+        page: releases.pagination.page,
+        perPage: releases.pagination.per_page,
+      },
+      releases: releases.releases.map(
+        // @ts-ignore type does exist
+        ({ artist, id, thumb, title, type, year }) => ({
+          artist,
+          id,
+          thumb,
+          title,
+          type,
+          year,
+        })
+      ),
+    },
   };
 };
 
-export interface LoaderData {
-  label: Label;
-  labelReleases: LabelReleases;
-}
+export type LoaderData = Awaited<ReturnType<typeof loader>>;

@@ -4,21 +4,18 @@ import ItemCard from "~/components/ItemCard";
 import Page from "~/components/Page";
 import PageControls from "~/components/PageControls";
 import type { LoaderData } from "~/loaders/label.server";
-import { primaryOrFirstImage } from "~/util/release";
 
 export { loader } from "~/loaders/label.server";
 
 export default function Route() {
-  const { label, labelReleases } = useLoaderData<LoaderData>();
-
-  const src = primaryOrFirstImage(label.images)?.uri;
+  const { label, releases } = useLoaderData<LoaderData>();
 
   return (
     <Page>
       <div className="flex mb-8">
         <div className="mr-4 overflow-hidden rounded">
-          {src !== undefined ? (
-            <img alt={label.name} className="h-56" src={src}></img>
+          {label.src !== undefined ? (
+            <img alt={label.name} className="h-56" src={label.src}></img>
           ) : (
             <div className="bg-neutral-200 flex h-56 items-center justify-center w-56">
               <PhotographIcon className="text-neutral-500 h-5 w-5" />
@@ -30,16 +27,16 @@ export default function Route() {
       <div>
         <div className="mb-4">
           <PageControls
-            items={labelReleases.pagination.items}
+            items={releases.pagination.items}
             pagination={{
-              page: labelReleases.pagination.page,
-              perPage: labelReleases.pagination.per_page,
+              page: releases.pagination.page,
+              perPage: releases.pagination.perPage,
             }}
             url={`/api/labels/${label.id}`}
           />
         </div>
         <ul>
-          {labelReleases.releases.map((release) => {
+          {releases.releases.map((release) => {
             const text = `${release.artist} - ${release.title}`;
 
             const to =

@@ -31,7 +31,8 @@ export default function PageControls({
     <div className="font-semibold space-x-4">
       <span>
         {((page - 1) * perPage + 1).toLocaleString()} –{" "}
-        {(page * perPage).toLocaleString()} of {items.toLocaleString()}
+        {Math.min(items, page * perPage).toLocaleString()} of{" "}
+        {items.toLocaleString()}
       </span>
       {isPrevious ? (
         <Link to={previousUrl} visited>
