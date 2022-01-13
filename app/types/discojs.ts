@@ -37,3 +37,13 @@ export type Release = Awaited<ReturnType<typeof client.getRelease>>;
 export type Videos = Exclude<Release["videos"], undefined>;
 
 export type Video = Videos[number];
+
+export type Role =
+  | "Main"
+  | "Remix"
+  | "Producer"
+  | "Co-producer"
+  | "Mixed by"
+  | "Appearance"
+  | "TrackAppearance"
+  | "UnofficialRelease";

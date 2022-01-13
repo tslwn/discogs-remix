@@ -1,11 +1,20 @@
 import { DataFunctionArgs } from "@remix-run/server-runtime";
 import { ReleaseSortEnum, SortOrdersEnum } from "discojs";
 import invariant from "tiny-invariant";
+import type { Role } from "~/types/discojs";
 import { getDiscogsClient } from "~/util/auth.server";
 import { getPagination } from "~/util/pagination";
 import { primaryOrFirstImage } from "~/util/release";
 
 // anti-colocation but fixes esbuild import problems
+
+function groupByRole<Element extends { role: Role }>(array: Element[]) {
+  return array.reduce((grouped, element) => {
+    const { role, ...rest } = element;
+    grouped[role] = (grouped[role] || []).concat(rest);
+    return grouped;
+  }, {} as Record<Role, Omit<Element, "role">[]>);
+}
 
 export const loader = async ({ params, request }: DataFunctionArgs) => {
   const id = Number(params.id);
@@ -25,8 +34,6 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
     ),
   ]);
 
-  console.log(artist);
-
   return {
     id,
     // @ts-ignore name does exist
@@ -38,16 +45,19 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
         page: pagination.page,
         perPage: pagination.per_page,
       },
-      releases: releases.map(
-        // @ts-ignore type does exist
-        ({ artist, id, thumb, title, type, year }) => ({
-          artist,
-          id,
-          thumb,
-          title,
-          type,
-          year,
-        })
+      releases: groupByRole(
+        releases.map(
+          // @ts-ignore type does exist
+          ({ artist, id, role, thumb, title, type, year }) => ({
+            artist,
+            id,
+            role,
+            thumb,
+            title,
+            type,
+            year,
+          })
+        )
       ),
     },
   };

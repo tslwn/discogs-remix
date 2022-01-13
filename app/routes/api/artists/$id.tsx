@@ -35,33 +35,48 @@ export default function Route() {
             url={`/api/artists/${id}`}
           />
         </div>
-        <ul>
-          {releases.releases.map((release) => {
-            const text =
-              release.artist !== name
-                ? `${release.artist} - ${release.title}`
-                : release.title;
+        {Object.entries(releases.releases).map(([role, releases]) => (
+          <div className="mb-8">
+            <h4 className="bg-neutral-200 font-semibold mb-4 px-4 py-2 rounded-lg w-full">
+              {role}
+            </h4>
+            <ul>
+              {releases.map((release) => {
+                const text =
+                  release.artist !== name
+                    ? `${release.artist} - ${release.title}`
+                    : release.title;
 
-            const to =
-              release.type === "master"
-                ? `/api/masters/${release.id}`
-                : `/api/releases/${release.id}`;
+                const to =
+                  release.type === "master"
+                    ? `/api/masters/${release.id}`
+                    : `/api/releases/${release.id}`;
 
-            return (
-              <li className="mb-4" key={release.id}>
-                <ItemCard
-                  title={{ text, to }}
-                  subtitle={release.year?.toString()}
-                  image={{
-                    alt: text,
-                    src: release.thumb,
-                  }}
-                  visited
-                />
-              </li>
-            );
-          })}
-        </ul>
+                return (
+                  <li className="mb-4" key={release.id}>
+                    <ItemCard
+                      title={{ text, to }}
+                      subtitle={release.year?.toString()}
+                      image={{
+                        alt: text,
+                        src: release.thumb,
+                      }}
+                      visited
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+        <PageControls
+          items={releases.pagination.items}
+          pagination={{
+            page: releases.pagination.page,
+            perPage: releases.pagination.perPage,
+          }}
+          url={`/api/artists/${id}`}
+        />
       </div>
     </Page>
   );
