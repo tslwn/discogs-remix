@@ -10,28 +10,26 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
   const id = Number(params.id);
   invariant(typeof id === "number", "expected params.id");
 
-  const pagination = getPagination(request);
-
   const client = await getDiscogsClient(request);
 
-  const [label, releases] = await Promise.all([
+  const [{ images, name }, { pagination, releases }] = await Promise.all([
     client.getLabel(id),
-    client.getLabelReleases(id, pagination),
+    client.getLabelReleases(id, getPagination(request)),
   ]);
 
   return {
     label: {
       id,
-      name: label.name,
-      src: primaryOrFirstImage(label.images)?.uri,
+      name,
+      src: primaryOrFirstImage(images)?.uri,
     },
     releases: {
       pagination: {
-        items: releases.pagination.items,
-        page: releases.pagination.page,
-        perPage: releases.pagination.per_page,
+        items: pagination.items,
+        page: pagination.page,
+        perPage: pagination.per_page,
       },
-      releases: releases.releases.map(
+      releases: releases.map(
         // @ts-ignore type does exist
         ({ artist, id, thumb, title, type, year }) => ({
           artist,

@@ -1,33 +1,56 @@
+import { DataFunctionArgs } from "@remix-run/server-runtime";
 import { ReleaseSortEnum, SortOrdersEnum } from "discojs";
-import type { LoaderFunction } from "remix";
 import invariant from "tiny-invariant";
-import type { Artist, ArtistReleases } from "~/types/discojs";
 import { getDiscogsClient } from "~/util/auth.server";
 import { getPagination } from "~/util/pagination";
+import { primaryOrFirstImage } from "~/util/release";
 
 // anti-colocation but fixes esbuild import problems
 
-export const loader: LoaderFunction = async ({ params, request }) => {
+export const loader = async ({ params, request }: DataFunctionArgs) => {
   const id = Number(params.id);
   invariant(typeof id === "number", "expected params.id");
 
-  const pagination = getPagination(request);
-
   const client = await getDiscogsClient(request);
 
-  return {
-    artist: await client.getArtist(id),
-    artistReleases: await client.getArtistReleases(
+  const [artist, { pagination, releases }] = await Promise.all([
+    client.getArtist(id),
+    client.getArtistReleases(
       id,
       {
         by: ReleaseSortEnum.YEAR,
         order: SortOrdersEnum.ASC,
       },
-      pagination
+      getPagination(request)
     ),
+  ]);
+
+  console.log(artist);
+
+  return {
+    id,
+    // @ts-ignore name does exist
+    name: artist.name,
+    src: primaryOrFirstImage(artist.images)?.uri,
+    releases: {
+      pagination: {
+        items: pagination.items,
+        page: pagination.page,
+        perPage: pagination.per_page,
+      },
+      releases: releases.map(
+        // @ts-ignore type does exist
+        ({ artist, id, thumb, title, type, year }) => ({
+          artist,
+          id,
+          thumb,
+          title,
+          type,
+          year,
+        })
+      ),
+    },
   };
 };
 
-export type LoaderData = { artist: Artist & { name: string } } & {
-  artistReleases: ArtistReleases;
-};
+export type LoaderData = Awaited<ReturnType<typeof loader>>;

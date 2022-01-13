@@ -4,44 +4,41 @@ import ItemCard from "~/components/ItemCard";
 import Page from "~/components/Page";
 import PageControls from "~/components/PageControls";
 import type { LoaderData } from "~/loaders/artist.server";
-import { primaryOrFirstImage } from "~/util/release";
 
 export { loader } from "~/loaders/artist.server";
 
 export default function Route() {
-  const { artist, artistReleases } = useLoaderData<LoaderData>();
-
-  const src = primaryOrFirstImage(artist.images)?.uri;
+  const { id, name, src, releases } = useLoaderData<LoaderData>();
 
   return (
     <Page>
       <div className="flex mb-8">
         <div className="mr-4 overflow-hidden rounded">
           {src !== undefined ? (
-            <img alt={artist.name} className="h-56" src={src}></img>
+            <img alt={name} className="h-56" src={src}></img>
           ) : (
             <div className="bg-neutral-200 flex h-56 items-center justify-center">
               <PhotographIcon className="text-neutral-500 h-5 w-5" />
             </div>
           )}
         </div>
-        <h2 className="font-semibold text-3xl">{artist.name}</h2>
+        <h2 className="font-semibold text-3xl">{name}</h2>
       </div>
       <div>
         <div className="mb-4">
           <PageControls
-            items={artistReleases.pagination.items}
+            items={releases.pagination.items}
             pagination={{
-              page: artistReleases.pagination.page,
-              perPage: artistReleases.pagination.per_page,
+              page: releases.pagination.page,
+              perPage: releases.pagination.perPage,
             }}
-            url={`/api/artists/${artist.id}`}
+            url={`/api/artists/${id}`}
           />
         </div>
         <ul>
-          {artistReleases.releases.map((release) => {
+          {releases.releases.map((release) => {
             const text =
-              release.artist !== artist.name
+              release.artist !== name
                 ? `${release.artist} - ${release.title}`
                 : release.title;
 
