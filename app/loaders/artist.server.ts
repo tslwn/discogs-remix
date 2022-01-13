@@ -62,6 +62,11 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
     // @ts-ignore name does exist
     name: artist.name,
     src: primaryOrFirstImage(artist.images)?.uri,
+    members: artist.members?.map(({ active, id, name }) => ({
+      active,
+      id,
+      name,
+    })),
     releases: {
       pagination: {
         items: pagination.items,

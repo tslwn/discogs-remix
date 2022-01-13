@@ -1,6 +1,8 @@
 import { PhotographIcon } from "@heroicons/react/solid";
 import { useLoaderData } from "remix";
+import Collapsible from "~/components/Collapsible";
 import ItemCard from "~/components/ItemCard";
+import Link from "~/components/Link";
 import Page from "~/components/Page";
 import PageControls from "~/components/PageControls";
 import type { LoaderData } from "~/loaders/artist.server";
@@ -8,7 +10,7 @@ import type { LoaderData } from "~/loaders/artist.server";
 export { loader } from "~/loaders/artist.server";
 
 export default function Route() {
-  const { id, name, src, releases } = useLoaderData<LoaderData>();
+  const { id, name, src, members, releases } = useLoaderData<LoaderData>();
 
   return (
     <Page>
@@ -22,7 +24,26 @@ export default function Route() {
             </div>
           )}
         </div>
-        <h2 className="font-semibold text-3xl">{name}</h2>
+        <div className="w-full">
+          <h2 className="font-semibold mb-4 text-3xl">{name}</h2>
+          {members !== undefined && members.length > 0 ? (
+            <Collapsible
+              heading="Members"
+              panel={
+                <div>
+                  {members?.map((member, index) => (
+                    <>
+                      <Link to={`/api/artists/${member.id}`} visited>
+                        {member.name}
+                      </Link>
+                      {index < members.length - 1 ? <span>, </span> : null}
+                    </>
+                  ))}
+                </div>
+              }
+            />
+          ) : null}
+        </div>
       </div>
       <div>
         <div className="mb-4">
