@@ -1,19 +1,42 @@
 import { DataFunctionArgs } from "@remix-run/server-runtime";
 import { ReleaseSortEnum, SortOrdersEnum } from "discojs";
 import invariant from "tiny-invariant";
-import type { Role } from "~/types/discojs";
+import type { ArtistReleases, Role } from "~/types/discojs";
 import { getDiscogsClient } from "~/util/auth.server";
 import { getPagination } from "~/util/pagination";
 import { primaryOrFirstImage } from "~/util/release";
 
 // anti-colocation but fixes esbuild import problems
 
-function groupByRole<Element extends { role: Role }>(array: Element[]) {
-  return array.reduce((grouped, element) => {
-    const { role, ...rest } = element;
-    grouped[role] = (grouped[role] || []).concat(rest);
-    return grouped;
-  }, {} as Record<Role, Omit<Element, "role">[]>);
+type Release = ArtistReleases["releases"][number] & { role: Role };
+
+function releasesByRole(releases: Release[]) {
+  const releasesByRole = new Map<Role, Omit<Release, "role">[]>();
+
+  for (const release of releases) {
+    const role = releasesByRole.get(release.role);
+    if (role === undefined) {
+      releasesByRole.set(release.role, [release]);
+    } else {
+      role.push(release);
+    }
+  }
+
+  return Array.from(releasesByRole, ([role, releases]) => ({
+    role: displayRole(role),
+    releases,
+  }));
+}
+
+function displayRole(role: Role): string {
+  switch (role) {
+    case "TrackAppearance":
+      return "Track appearance";
+    case "UnofficialRelease":
+      return "Unofficial release";
+    default:
+      return role;
+  }
 }
 
 export const loader = async ({ params, request }: DataFunctionArgs) => {
@@ -45,20 +68,7 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
         page: pagination.page,
         perPage: pagination.per_page,
       },
-      releases: groupByRole(
-        releases.map(
-          // @ts-ignore type does exist
-          ({ artist, id, role, thumb, title, type, year }) => ({
-            artist,
-            id,
-            role,
-            thumb,
-            title,
-            type,
-            year,
-          })
-        )
-      ),
+      releases: releasesByRole(releases as Release[]),
     },
   };
 };

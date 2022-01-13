@@ -35,7 +35,7 @@ export default function Route() {
             url={`/api/artists/${id}`}
           />
         </div>
-        {Object.entries(releases.releases).map(([role, releases]) => (
+        {releases.releases.map(({ role, releases }) => (
           <div className="mb-8">
             <h4 className="bg-neutral-200 font-semibold mb-4 px-4 py-2 rounded-lg w-full">
               {role}
