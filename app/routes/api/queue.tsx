@@ -83,7 +83,7 @@ export default function Route() {
                         }
                       />
                     </li>
-                  </ul>{" "}
+                  </ul>
                 </div>
                 <div>
                   <h3 className="font-semibold mb-4 text-neutral-500 text-sm">
@@ -91,7 +91,7 @@ export default function Route() {
                   </h3>
                   <ul>
                     {queue.slice(1).map((item, index) => (
-                      <li className="mb-2" key={index}>
+                      <li className="mb-2" key={item.id}>
                         <QueueItemCard
                           item={item}
                           left={
@@ -109,8 +109,8 @@ export default function Route() {
           </Tab.Panel>
           <Tab.Panel className="focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-4">
             <ul>
-              {history.reverse().map((item, index) => (
-                <li className="mb-2" key={index}>
+              {[...history].reverse().map((item) => (
+                <li className="mb-2" key={item.id}>
                   <QueueItemCard item={item} />
                 </li>
               ))}

@@ -33,11 +33,11 @@ export default function ReleaseHeading({
 }: ReleaseHeadingProps) {
   return (
     <div className="flex">
-      <div className="mr-4 overflow-hidden rounded">
+      <div className="shrink-0 mr-4 overflow-hidden rounded">
         {src !== undefined ? (
           <img
             alt={`${formatReleaseArtists(artists)} - ${title}`}
-            className="h-56 w-56"
+            className="h-56 min-w-56 w-56"
             src={src}
           ></img>
         ) : (

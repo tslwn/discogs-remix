@@ -25,7 +25,7 @@ export function releaseToItem({
   artists,
   title,
   images,
-}: Release): QueueItem {
+}: Pick<Release, "id" | "artists" | "title" | "images">): QueueItem {
   return {
     id,
     artists: formatReleaseArtists(artists),
