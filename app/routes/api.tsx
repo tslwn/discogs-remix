@@ -3,12 +3,12 @@ import { ClientOnly } from "remix-utils";
 import BottomBar from "~/components/BottomBar";
 import Link from "~/components/Link";
 import NavLink from "~/components/NavLink";
-import type { ListsLoaderData as LoaderData } from "~/loaders/lists.server";
+import type { Lists } from "~/loaders/lists.server";
 
-export { listsLoader as loader } from "~/loaders/lists.server";
+export { lists as loader } from "~/loaders/lists.server";
 
 export default function Route() {
-  const { lists, username } = useLoaderData<LoaderData>();
+  const { lists, username } = useLoaderData<Lists>();
 
   return (
     <div className="bg-neutral-50 flex flex-col h-screen text-neutral-900">
@@ -22,7 +22,6 @@ export default function Route() {
             </div>
             <div className="mb-8">
               <div className="font-semibold mb-4">
-                {/* <Link to={`/api/users/${username}/lists`}>Lists</Link> */}
                 <span>Lists</span>
               </div>
               <ul className="text-sm ">

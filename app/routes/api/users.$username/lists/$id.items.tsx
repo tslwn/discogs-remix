@@ -4,28 +4,18 @@ import Page from "~/components/Page";
 import QueueItemCard from "~/components/QueueItemCard";
 import TopBar from "~/components/TopBar";
 import { useQueue } from "~/contexts/QueueContext";
-import type { ListItemsLoaderData } from "~/loaders/lists.server";
+import type { ListItems } from "~/loaders/lists.server";
 
-export { listItemsLoader as loader } from "~/loaders/lists.server";
+export { listItems as loader } from "~/loaders/lists.server";
 
 export default function Route() {
-  const { list, items } = useLoaderData<ListItemsLoaderData>();
-
-  const queueItems = items.map((item) => {
-    const { artists, title } = deformatDisplayTitle(item.display_title);
-    return {
-      id: item.id,
-      artists,
-      title,
-      src: item.image_url,
-    };
-  });
+  const { list, items } = useLoaderData<ListItems>();
 
   const { enqueue } = useQueue();
 
-  // what about items w/ no videos?
+  // TODO: what if item has no videos?
   const handleClick = () => {
-    for (const item of queueItems) {
+    for (const item of items) {
       enqueue(item);
     }
   };
@@ -38,7 +28,7 @@ export default function Route() {
       />
       <Page>
         <ul>
-          {queueItems.map((item, index) => {
+          {items.map((item, index) => {
             return (
               <li className="mb-2" key={item.id}>
                 <QueueItemCard
@@ -54,9 +44,4 @@ export default function Route() {
       </Page>
     </>
   );
-}
-
-function deformatDisplayTitle(displayTitle: string) {
-  const [artists, title] = displayTitle.split(" - ");
-  return { artists, title };
 }

@@ -1,8 +1,9 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
+import { LoaderData } from "~/types/loaders";
 import { getDiscogsClient } from "~/util/auth.server";
 
-export const listsLoader = async ({ request }: DataFunctionArgs) => {
+export const lists = async ({ request }: DataFunctionArgs) => {
   const client = await getDiscogsClient(request);
 
   const [{ username }, { lists }] = await Promise.all([
@@ -13,12 +14,9 @@ export const listsLoader = async ({ request }: DataFunctionArgs) => {
   return { lists, username };
 };
 
-export type ListsLoaderData = Awaited<ReturnType<typeof listsLoader>>;
+export type Lists = LoaderData<typeof lists>;
 
-export const listsForUserLoader = async ({
-  params,
-  request,
-}: DataFunctionArgs) => {
+export const userLists = async ({ params, request }: DataFunctionArgs) => {
   const username = params.username;
   invariant(typeof username === "string", "expected params.username");
 
@@ -29,40 +27,9 @@ export const listsForUserLoader = async ({
   return { lists, username };
 };
 
-export type ListsForUserLoaderData = Awaited<
-  ReturnType<typeof listsForUserLoader>
->;
+export type UserLists = LoaderData<typeof userLists>;
 
-export const listForUserLoader = async ({
-  params,
-  request,
-}: DataFunctionArgs) => {
-  const username = params.username;
-  invariant(typeof username === "string", "expected params.username");
-
-  const id = Number(params.id);
-  invariant(typeof id === "number", "expected params.id");
-
-  const client = await getDiscogsClient(request);
-
-  const { lists } = await client.getListsForUser(username);
-
-  const list = lists.find((list) => list.id === id);
-  if (list === undefined) {
-    throw new Response("Not found", { status: 404 });
-  }
-
-  return { list, username };
-};
-
-export type ListForUserLoaderData = Awaited<
-  ReturnType<typeof listForUserLoader>
->;
-
-export const listItemsLoader = async ({
-  params,
-  request,
-}: DataFunctionArgs) => {
+export const listItems = async ({ params, request }: DataFunctionArgs) => {
   const username = params.username;
   invariant(typeof username === "string", "expected params.username");
 
@@ -81,7 +48,27 @@ export const listItemsLoader = async ({
     throw new Response("Not found", { status: 404 });
   }
 
-  return { list, items };
+  return {
+    list: {
+      name: list.name,
+    },
+    items: items.map((item) => {
+      const { artists, title } = deformatDisplayTitle(item.display_title);
+      return {
+        id: item.id,
+        artists,
+        title,
+        src: item.image_url,
+        type: item.type,
+      };
+    }),
+  };
 };
 
-export type ListItemsLoaderData = Awaited<ReturnType<typeof listItemsLoader>>;
+// TODO: doesn't work if either contains " - "
+function deformatDisplayTitle(displayTitle: string) {
+  const [artists, title] = displayTitle.split(" - ");
+  return { artists, title };
+}
+
+export type ListItems = LoaderData<typeof listItems>;

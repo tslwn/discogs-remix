@@ -18,7 +18,7 @@ export default function QueueItemCard({
   return (
     <ItemCard
       className={className}
-      title={{ text: item.title, to: `/api/releases/${item.id}` }}
+      title={{ text: item.title, to: `/api/${item.type}s/${item.id}` }}
       subtitle={item.artists}
       image={{ alt: `${item.artists} - ${item.title}`, src: item.src }}
       left={left}
