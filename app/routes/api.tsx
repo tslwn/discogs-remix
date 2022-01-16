@@ -1,6 +1,6 @@
 import { Outlet, useLoaderData } from "remix";
 import { ClientOnly } from "remix-utils";
-import BottomBar from "~/components/BottomBar";
+import QueuePlayer from "~/components/QueuePlayer";
 import Link from "~/components/common/Link";
 import NavLink from "~/components/common/NavLink";
 import type { Lists } from "~/loaders/lists.server";
@@ -46,7 +46,7 @@ export default function Route() {
         </div>
       </div>
       <ClientOnly>
-        <BottomBar />
+        <QueuePlayer />
       </ClientOnly>
     </div>
   );

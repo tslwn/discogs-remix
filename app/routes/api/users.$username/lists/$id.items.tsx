@@ -1,5 +1,5 @@
 import { useLoaderData } from "remix";
-import QueueItemCard from "~/components/QueueItemCard";
+import QueueListItem from "~/components/QueueListItem";
 import Button from "~/components/common/Button";
 import Page from "~/components/common/Page";
 import { useQueue } from "~/contexts/QueueContext";
@@ -37,7 +37,7 @@ export default function Route() {
         {items.map((item, index) => {
           return (
             <li className="mb-2" key={item.id}>
-              <QueueItemCard
+              <QueueListItem
                 item={item}
                 left={
                   <div className="text-center text-md w-6">{index + 1}</div>

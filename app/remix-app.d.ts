@@ -1,7 +1,5 @@
 declare global {
-  interface Window {
-    ENV: {};
-  }
+  interface Window {}
 }
 
 export {};

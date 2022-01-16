@@ -40,3 +40,7 @@ export function releaseToItem({
     type,
   };
 }
+
+export function getItemUrl(item: QueueItem): string {
+  return "/api/" + item.type + "s/" + item.id.toString();
+}

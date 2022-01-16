@@ -12,10 +12,10 @@ import {
 } from "remix";
 import type { LinksFunction, MetaFunction } from "remix";
 import RouteChangeAnnouncement from "~/components/RouteChangeAnnouncement";
+import { PlayerProvider } from "~/contexts/PlayerContext";
+import { QueueProvider } from "~/contexts/QueueContext";
 import appStyles from "~/styles/app.css";
 import nProgressStyles from "~/styles/nprogress.css";
-import { PlayerProvider } from "./contexts/PlayerContext";
-import { QueueProvider } from "./contexts/QueueContext";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: appStyles },

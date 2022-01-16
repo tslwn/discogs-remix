@@ -1,17 +1,22 @@
 import { PhotographIcon } from "@heroicons/react/solid";
+import clsx from "clsx";
 
 interface ImageProps {
   alt: string;
+  className?: string;
+  size: 14 | 56;
   src?: string;
 }
 
-export default function Image({ alt, src }: ImageProps) {
+export default function Image({ alt, className, size, src }: ImageProps) {
   return (
-    <div className="shrink-0 mr-4 overflow-hidden rounded">
+    <div className={clsx("shrink-0 overflow-hidden rounded", className)}>
       {src !== undefined ? (
-        <img alt={alt} className="h-56 min-w-56 w-56" src={src}></img>
+        <img alt={alt} className={`h-${size} w-${size}`} src={src}></img>
       ) : (
-        <div className="bg-neutral-200 flex h-56 items-center justify-center w-56">
+        <div
+          className={`bg-neutral-200 flex h-${size} items-center justify-center w-${size}`}
+        >
           <PhotographIcon className="text-neutral-500 h-5 w-5" />
         </div>
       )}
