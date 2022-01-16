@@ -1,6 +1,6 @@
 import { Form } from "remix";
-import Button from "~/components/Button";
-import Link from "~/components/Link";
+import Button from "~/components/common/Button";
+import Link from "~/components/common/Link";
 
 export { signoutAction as action } from "~/util/auth.server";
 

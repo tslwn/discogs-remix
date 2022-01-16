@@ -1,11 +1,11 @@
-import Link from "~/components/Link";
+import Link from "~/components/common/Link";
 import type { Release } from "~/types/discojs";
 
-interface LabelLinksProps {
+interface LabelsProps {
   labels: Release["labels"];
 }
 
-export default function LabelLinks({ labels }: LabelLinksProps) {
+export default function Labels({ labels }: LabelsProps) {
   return (
     <>
       {labels.map((label, index) => (

@@ -1,11 +1,11 @@
 import { Tab } from "@headlessui/react";
 import { PauseIcon, PlayIcon } from "@heroicons/react/solid";
 import clsx from "clsx";
-import Button from "~/components/Button";
-import IconButton from "~/components/IconButton";
-import Page from "~/components/Page";
 import QueueItemCard from "~/components/QueueItemCard";
 import TopBar from "~/components/TopBar";
+import Button from "~/components/common/Button";
+import IconButton from "~/components/common/IconButton";
+import Page from "~/components/common/Page";
 import { usePlayer } from "~/contexts/PlayerContext";
 import { useQueue } from "~/contexts/QueueContext";
 

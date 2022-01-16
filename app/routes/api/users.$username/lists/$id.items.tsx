@@ -1,7 +1,7 @@
 import { useLoaderData } from "remix";
-import Button from "~/components/Button";
-import Page from "~/components/Page";
 import QueueItemCard from "~/components/QueueItemCard";
+import Button from "~/components/common/Button";
+import Page from "~/components/common/Page";
 import { useQueue } from "~/contexts/QueueContext";
 import type { ListItems } from "~/loaders/lists.server";
 import { formatDate } from "~/util/date";

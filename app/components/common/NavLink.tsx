@@ -7,12 +7,12 @@ type NavLinkProps = RemixNavLinkProps & {};
 export default function Link({ children, className, ...props }: NavLinkProps) {
   return (
     <RemixNavLink
+      // TODO: "Too Many Requests"
       prefetch="intent"
       {...props}
       className={({ isActive }) =>
         clsx(
-          "decoration-2 underline-offset-2",
-          "focus:outline-none focus:underline hover:underline",
+          "decoration-2 focus:outline-none focus:underline hover:underline underline-offset-2",
           isActive && "underline",
           className
         )

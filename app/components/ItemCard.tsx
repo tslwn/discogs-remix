@@ -1,7 +1,7 @@
 import { MusicNoteIcon } from "@heroicons/react/solid";
 import clsx from "clsx";
 import React from "react";
-import Link from "~/components/Link";
+import Link from "~/components/common/Link";
 
 type ItemCardProps = {
   className?: string;

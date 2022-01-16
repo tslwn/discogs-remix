@@ -31,8 +31,7 @@ export default function Videos({ release }: VideosProps) {
     <button
       className={clsx(
         "flex flex-col focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 px-4 py-2 rounded",
-        !isDisabled && "hover:bg-neutral-100",
-        isDisabled && "cursor-not-allowed"
+        isDisabled ? "cursor-not-allowed" : "hover:bg-neutral-100"
       )}
       disabled={isDisabled}
       onClick={handleClick}

@@ -2,13 +2,12 @@ import clsx from "clsx";
 import { useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
 import invariant from "tiny-invariant";
-import Collapsible from "~/components/Collapsible";
-import Link from "~/components/Link";
-import Page from "~/components/Page";
-import ReleaseHeading from "~/components/ReleaseHeading";
+import Collapsible from "~/components/common/Collapsible";
+import Link from "~/components/common/Link";
+import Page from "~/components/common/Page";
+import HeadingMasters from "~/components/release/HeadingMasters";
 import type { Master, MasterVersions } from "~/types/discojs";
 import { getDiscogsClient, requireAuthSession } from "~/util/auth.server";
-import { primaryOrFirstImage } from "~/util/release";
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   const id = Number(params.id);
@@ -39,16 +38,13 @@ interface LoaderData {
 export default function Route() {
   const { master, masterVersions } = useLoaderData<LoaderData>();
 
-  const src = primaryOrFirstImage(master.images)?.uri;
-
   return (
     <Page>
       <div className="mb-8">
-        <ReleaseHeading
-          id={master.id}
+        <HeadingMasters
           artists={master.artists}
           title={master.title}
-          src={src}
+          images={master.images}
           year={master.year}
           genres={master.genres}
           styles={master.styles}

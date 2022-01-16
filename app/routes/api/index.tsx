@@ -1,6 +1,6 @@
 import { useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
-import Link from "~/components/Link";
+import Link from "~/components/common/Link";
 import { Identity } from "~/types/discojs";
 import { getDiscogsClient } from "~/util/auth.server";
 

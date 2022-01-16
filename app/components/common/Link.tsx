@@ -15,12 +15,12 @@ export default function Link({
 }: LinkProps) {
   return (
     <RemixLink
+      // TODO: "Too Many Requests"
       prefetch="intent"
       {...props}
       className={clsx(
+        "decoration-2 focus:outline-none focus:underline hover:underline underline-offset-2",
         visited && "text-blue-600 visited:text-fuchsia-600",
-        "decoration-2 underline-offset-2",
-        "focus:outline-none focus:underline hover:underline",
         className
       )}
     >

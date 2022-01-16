@@ -12,10 +12,10 @@ export default function IconButton({
     <button
       {...props}
       className={clsx(
-        !props.disabled && "hover:text-neutral-600",
-        "focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2",
-        "p-1 rounded-full",
-        props.disabled && "cursor-not-allowed opacity-50",
+        "focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 p-1 rounded-full",
+        props.disabled
+          ? "cursor-not-allowed opacity-50"
+          : "hover:text-neutral-600",
         className
       )}
     >

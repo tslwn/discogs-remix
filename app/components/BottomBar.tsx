@@ -1,9 +1,9 @@
 import React from "react";
 import { useFetcher } from "remix";
-import Button from "~/components/Button";
-import LinkButton from "~/components/LinkButton";
 import QueueItemCard from "~/components/QueueItemCard";
 import YouTubePlayer from "~/components/YouTubePlayer";
+import Button from "~/components/common/Button";
+import LinkButton from "~/components/common/LinkButton";
 import WantlistForm from "~/components/forms/WantlistForm";
 import { usePlayer } from "~/contexts/PlayerContext";
 import { useQueue } from "~/contexts/QueueContext";

@@ -1,10 +1,10 @@
 import { PhotographIcon } from "@heroicons/react/solid";
 import { useLoaderData } from "remix";
-import Collapsible from "~/components/Collapsible";
 import ItemCard from "~/components/ItemCard";
-import Link from "~/components/Link";
-import Page from "~/components/Page";
-import PageControls from "~/components/PageControls";
+import Collapsible from "~/components/common/Collapsible";
+import Link from "~/components/common/Link";
+import Page from "~/components/common/Page";
+import PageControls from "~/components/common/PageControls";
 import type { LoaderData } from "~/loaders/artist.server";
 
 export { loader } from "~/loaders/artist.server";

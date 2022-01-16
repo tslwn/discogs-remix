@@ -1,8 +1,8 @@
 import { PhotographIcon } from "@heroicons/react/solid";
 import { useLoaderData } from "remix";
 import ItemCard from "~/components/ItemCard";
-import Page from "~/components/Page";
-import PageControls from "~/components/PageControls";
+import Page from "~/components/common/Page";
+import PageControls from "~/components/common/PageControls";
 import type { LoaderData } from "~/loaders/label.server";
 
 export { loader } from "~/loaders/label.server";

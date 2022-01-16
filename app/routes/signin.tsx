@@ -1,5 +1,5 @@
 import { Form } from "remix";
-import Button from "~/components/Button";
+import Button from "~/components/common/Button";
 
 export {
   signinAction as action,

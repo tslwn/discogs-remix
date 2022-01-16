@@ -6,8 +6,8 @@ import {
   PlayIcon,
   RewindIcon,
 } from "@heroicons/react/solid";
-import ExternalLink from "~/components/ExternalLink";
-import IconButton from "~/components/IconButton";
+import ExternalLink from "~/components/common/ExternalLink";
+import IconButton from "~/components/common/IconButton";
 import { usePlayer } from "~/contexts/PlayerContext";
 import useElementSize from "~/hooks/useElementSize";
 

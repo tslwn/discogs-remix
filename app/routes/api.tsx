@@ -1,8 +1,8 @@
 import { Outlet, useLoaderData } from "remix";
 import { ClientOnly } from "remix-utils";
 import BottomBar from "~/components/BottomBar";
-import Link from "~/components/Link";
-import NavLink from "~/components/NavLink";
+import Link from "~/components/common/Link";
+import NavLink from "~/components/common/NavLink";
 import type { Lists } from "~/loaders/lists.server";
 
 export { lists as loader } from "~/loaders/lists.server";
