@@ -51,6 +51,10 @@ export const listItems = async ({ params, request }: DataFunctionArgs) => {
   return {
     list: {
       name: list.name,
+      description: list.description,
+      public: list.public,
+      dateAdded: list.date_added,
+      dateChanged: list.date_changed,
     },
     items: items.map((item) => {
       const { artists, title } = deformatDisplayTitle(item.display_title);
@@ -62,6 +66,7 @@ export const listItems = async ({ params, request }: DataFunctionArgs) => {
         type: item.type,
       };
     }),
+    username,
   };
 };
 

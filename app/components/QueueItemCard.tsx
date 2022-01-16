@@ -7,6 +7,7 @@ type QueueItemCardProps = {
   item: QueueItem;
   left?: React.ReactNode;
   right?: React.ReactNode;
+  textClassName?: string;
 };
 
 export default function QueueItemCard({
@@ -14,6 +15,7 @@ export default function QueueItemCard({
   item,
   left,
   right,
+  textClassName,
 }: QueueItemCardProps) {
   return (
     <ItemCard
@@ -23,6 +25,7 @@ export default function QueueItemCard({
       image={{ alt: `${item.artists} - ${item.title}`, src: item.src }}
       left={left}
       right={right}
+      textClassName={textClassName}
     />
   );
 }

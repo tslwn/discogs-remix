@@ -13,6 +13,7 @@ type ItemCardProps = {
   };
   left?: React.ReactNode;
   right?: React.ReactNode;
+  textClassName?: string;
   // If true, conventional styles are applied to the links.
   visited?: boolean;
 };
@@ -24,6 +25,7 @@ export default function ItemCard({
   image,
   left,
   right,
+  textClassName,
   visited,
 }: ItemCardProps) {
   return (
@@ -38,7 +40,7 @@ export default function ItemCard({
           </div>
         )}
       </div>
-      <div className="w-64 overflow-hidden whitespace-nowrap">
+      <div className={textClassName}>
         <div>
           {typeof title === "string" || title === undefined ? (
             <span className="text-ellipsis">{title}</span>

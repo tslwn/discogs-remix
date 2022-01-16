@@ -50,7 +50,11 @@ export default function BottomBar() {
     <div className="bg-neutral-100 flex flex-none h-28 items-center justify-between px-4">
       <div className="w-96">
         {item !== null ? (
-          <QueueItemCard item={item} right={<WantlistForm id={item.id} />} />
+          <QueueItemCard
+            item={item}
+            right={<WantlistForm id={item.id} />}
+            textClassName="w-64 overflow-hidden whitespace-nowrap"
+          />
         ) : null}
       </div>
       <YouTubePlayer />
