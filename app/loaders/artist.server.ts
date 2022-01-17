@@ -2,7 +2,7 @@ import { DataFunctionArgs } from "@remix-run/server-runtime";
 import { ReleaseSortEnum, SortOrdersEnum } from "discojs";
 import invariant from "tiny-invariant";
 import type { ArtistReleases, Role } from "~/types/discojs";
-import { getDiscogsClient } from "~/util/auth.server";
+import { getDiscojs } from "~/util/auth.server";
 import { getPagination } from "~/util/pagination";
 import { primaryOrFirstImage } from "~/util/release";
 
@@ -43,7 +43,7 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
   const id = Number(params.id);
   invariant(typeof id === "number", "expected params.id");
 
-  const client = await getDiscogsClient(request);
+  const client = await getDiscojs(request);
 
   const [artist, { pagination, releases }] = await Promise.all([
     client.getArtist(id),

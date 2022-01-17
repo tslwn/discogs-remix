@@ -10,7 +10,7 @@ import Rating from "~/components/release/Rating";
 import Videos from "~/components/release/Videos";
 import Want from "~/components/release/Want";
 import type { Release } from "~/types/discojs";
-import { getDiscogsClient, requireAuthSession } from "~/util/auth.server";
+import { getDiscojs, requireAuthSession } from "~/util/auth.server";
 import { availableVideos } from "~/util/youtube.server";
 
 export const loader: LoaderFunction = async ({ params, request }) => {
@@ -18,7 +18,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   invariant(typeof id === "number", "expected params.id");
 
   const session = await requireAuthSession(request);
-  const client = await getDiscogsClient(request);
+  const client = await getDiscojs(request);
 
   const currAbbr = session.get("curr_abbr");
   invariant(typeof currAbbr === "string", "expected curr_abbr");

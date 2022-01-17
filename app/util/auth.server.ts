@@ -2,6 +2,7 @@
 import { Discojs } from "discojs";
 import { createCookieSessionStorage, json, redirect } from "remix";
 import type { ActionFunction, LoaderFunction, Session } from "remix";
+import DiscogsClient from "~/util/discogs";
 
 // prevent start-up if any environment variable is undefined
 if (typeof process.env.DISCOGS_CONSUMER_KEY !== "string")
@@ -213,8 +214,21 @@ export async function fetchAccessToken(session: Session, url: string) {
   };
 }
 
-export async function getDiscogsClient(request: Request): Promise<Discojs> {
+export async function getDiscogsClient(request: Request) {
   const session = await getAuthSession(request);
+
+  return new DiscogsClient({
+    consumerKey: process.env.DISCOGS_CONSUMER_KEY!,
+    consumerSecret: process.env.DISCOGS_CONSUMER_SECRET!,
+    oAuthToken: session?.get("oauth_access_token"),
+    oAuthTokenSecret: session?.get("oauth_access_token_secret"),
+    userAgent: process.env.DISCOGS_USER_AGENT!,
+  });
+}
+
+export async function getDiscojs(request: Request) {
+  const session = await getAuthSession(request);
+
   return new Discojs({
     consumerKey: process.env.DISCOGS_CONSUMER_KEY,
     consumerSecret: process.env.DISCOGS_CONSUMER_SECRET,

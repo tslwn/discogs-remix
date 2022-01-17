@@ -7,14 +7,14 @@ import Link from "~/components/common/Link";
 import Page from "~/components/common/Page";
 import HeadingMasters from "~/components/release/HeadingMasters";
 import type { Master, MasterVersions } from "~/types/discojs";
-import { getDiscogsClient, requireAuthSession } from "~/util/auth.server";
+import { getDiscojs, requireAuthSession } from "~/util/auth.server";
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   const id = Number(params.id);
   invariant(typeof id === "number", "expected params.id");
 
   const session = await requireAuthSession(request);
-  const client = await getDiscogsClient(request);
+  const client = await getDiscojs(request);
 
   const currAbbr = session.get("curr_abbr");
   invariant(typeof currAbbr === "string", "expected curr_abbr");

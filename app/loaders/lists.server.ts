@@ -1,10 +1,10 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
 import { LoaderData } from "~/types/loaders";
-import { getDiscogsClient } from "~/util/auth.server";
+import { getDiscojs } from "~/util/auth.server";
 
 export const lists = async ({ request }: DataFunctionArgs) => {
-  const client = await getDiscogsClient(request);
+  const client = await getDiscojs(request);
 
   const [{ username }, { lists }] = await Promise.all([
     client.getIdentity(),
@@ -20,7 +20,7 @@ export const userLists = async ({ params, request }: DataFunctionArgs) => {
   const username = params.username;
   invariant(typeof username === "string", "expected params.username");
 
-  const client = await getDiscogsClient(request);
+  const client = await getDiscojs(request);
 
   const { lists } = await client.getListsForUser(username);
 
@@ -36,7 +36,7 @@ export const listItems = async ({ params, request }: DataFunctionArgs) => {
   const id = Number(params.id);
   invariant(typeof id === "number", "expected params.id");
 
-  const client = await getDiscogsClient(request);
+  const client = await getDiscojs(request);
 
   const [{ lists }, { items }] = await Promise.all([
     client.getListsForUser(username),

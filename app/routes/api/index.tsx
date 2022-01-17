@@ -6,6 +6,7 @@ import { getDiscogsClient } from "~/util/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const client = await getDiscogsClient(request);
+
   return client.getIdentity();
 };
 
