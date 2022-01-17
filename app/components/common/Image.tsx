@@ -1,7 +1,7 @@
 import { PhotographIcon } from "@heroicons/react/solid";
 import clsx from "clsx";
 
-interface ImageProps {
+export interface ImageProps {
   alt: string;
   className?: string;
   size: 14 | 56;

@@ -1,3 +1,4 @@
+import type { SearchTypeEnum } from "discojs";
 import type { Release } from "~/types/discojs";
 
 export function formatReleaseArtists(artists: Release["artists"]) {
@@ -51,3 +52,10 @@ export const byYear = (a: { year: number }, b: { year: number }) => {
   }
   return a.year > b.year ? 1 : -1;
 };
+
+export function getResourceUrl(resource: {
+  id: number;
+  type: SearchTypeEnum;
+}): string {
+  return "/api/" + resource.type + "s/" + resource.id.toString();
+}

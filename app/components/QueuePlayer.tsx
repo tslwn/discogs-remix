@@ -8,7 +8,7 @@ import WantlistForm from "~/components/forms/WantlistForm";
 import { usePlayer } from "~/contexts/PlayerContext";
 import { useQueue } from "~/contexts/QueueContext";
 import type { Release } from "~/types/discojs";
-import { getItemUrl } from "~/util/queue";
+import { getResourceUrl } from "~/util/release";
 
 export default function QueuePlayer() {
   const { handleNext, isNextDisabled, item } = useQueuePlayer();
@@ -48,7 +48,7 @@ function useQueuePlayer() {
 
   React.useEffect(() => {
     if (item !== null) {
-      fetcher.load(getItemUrl(item));
+      fetcher.load(getResourceUrl(item));
     } else {
       setVideos([]);
     }

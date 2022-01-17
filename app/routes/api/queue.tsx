@@ -46,7 +46,7 @@ export default function Route() {
                         left={
                           <IconButton
                             aria-label={playing ? "Pause video" : "Play video"}
-                            className="p-0"
+                            className="p-0 w-10"
                             disabled={isPlayPauseDisabled}
                             onClick={handlePlayPause}
                             title={playing ? "Pause video" : "Play video"}
@@ -72,7 +72,7 @@ export default function Route() {
                         <QueueListItem
                           item={item}
                           left={
-                            <div className="text-center text-md w-6">
+                            <div className="text-center text-md w-10">
                               {index + 1}
                             </div>
                           }

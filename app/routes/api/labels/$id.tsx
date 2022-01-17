@@ -1,9 +1,10 @@
 import { PhotographIcon } from "@heroicons/react/solid";
 import { useLoaderData } from "remix";
-import ItemCard from "~/components/ItemCard";
+import ImageListItem from "~/components/common/ImageListItem";
 import Page from "~/components/common/Page";
 import PageControls from "~/components/common/PageControls";
 import type { LoaderData } from "~/loaders/label.server";
+import { getResourceUrl } from "~/util/release";
 
 export { loader } from "~/loaders/label.server";
 
@@ -37,23 +38,23 @@ export default function Route() {
         </div>
         <ul>
           {releases.releases.map((release) => {
-            const text = `${release.artist} - ${release.title}`;
-
-            const to =
-              release.type === "master"
-                ? `/api/masters/${release.id}`
-                : `/api/releases/${release.id}`;
+            const text = release.artist + " - " + release.title;
 
             return (
               <li className="mb-4" key={release.id}>
-                <ItemCard
-                  title={{ text, to }}
-                  subtitle={release.year !== 0 ? release.year.toString() : ""}
-                  image={{
+                <ImageListItem
+                  imageProps={{
                     alt: text,
                     src: release.thumb,
                   }}
-                  visited
+                  linkProps={{
+                    children: text,
+                    to: getResourceUrl(release),
+                    visited: true,
+                  }}
+                  subtitle={
+                    release.year !== 0 ? release.year.toString() : "Unknown"
+                  }
                 />
               </li>
             );

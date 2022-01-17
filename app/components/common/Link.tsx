@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { Link as RemixLink } from "remix";
 import type { LinkProps as RemixLinkProps } from "remix";
 
-type LinkProps = RemixLinkProps & {
+export type LinkProps = RemixLinkProps & {
   // If true, conventional styles are applied to the link.
   visited?: boolean;
 };

@@ -1,11 +1,12 @@
 import { PhotographIcon } from "@heroicons/react/solid";
 import { useLoaderData } from "remix";
-import ItemCard from "~/components/ItemCard";
 import Collapsible from "~/components/common/Collapsible";
+import ImageListItem from "~/components/common/ImageListItem";
 import Link from "~/components/common/Link";
 import Page from "~/components/common/Page";
 import PageControls from "~/components/common/PageControls";
 import type { LoaderData } from "~/loaders/artist.server";
+import { getResourceUrl } from "~/util/release";
 
 export { loader } from "~/loaders/artist.server";
 
@@ -68,21 +69,19 @@ export default function Route() {
                     ? `${release.artist} - ${release.title}`
                     : release.title;
 
-                const to =
-                  release.type === "master"
-                    ? `/api/masters/${release.id}`
-                    : `/api/releases/${release.id}`;
-
                 return (
                   <li className="mb-4" key={release.id}>
-                    <ItemCard
-                      title={{ text, to }}
-                      subtitle={release.year?.toString()}
-                      image={{
+                    <ImageListItem
+                      imageProps={{
                         alt: text,
                         src: release.thumb,
                       }}
-                      visited
+                      linkProps={{
+                        children: text,
+                        to: getResourceUrl(release),
+                        visited: true,
+                      }}
+                      subtitle={release.year?.toString()}
                     />
                   </li>
                 );

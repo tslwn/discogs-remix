@@ -40,7 +40,7 @@ export default function Route() {
               <QueueListItem
                 item={item}
                 left={
-                  <div className="text-center text-md w-6">{index + 1}</div>
+                  <div className="text-center text-md w-10">{index + 1}</div>
                 }
               />
             </li>

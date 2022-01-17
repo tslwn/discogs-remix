@@ -21,6 +21,8 @@ export default function HeadingMasters({
     <div className="flex">
       <Image
         alt={`${formatReleaseArtists(artists)} - ${title}`}
+        className="mr-4"
+        size={56}
         src={primaryOrFirstImage(images)?.uri}
       />
       <div className="flex flex-col">
