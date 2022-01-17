@@ -16,7 +16,7 @@ export default function Route() {
   return (
     <Page>
       <div className="flex mb-8">
-        <div className="mr-4 overflow-hidden rounded">
+        <div className="mr-4 overflow-hidden rounded shrink-0">
           {src !== undefined ? (
             <img alt={name} className="h-56" src={src}></img>
           ) : (
