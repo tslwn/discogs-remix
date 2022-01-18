@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 import { useQueue } from "~/contexts/QueueContext";
+import useIsHydrated from "~/hooks/useIsHydrated";
 import type { Release } from "~/types/discojs";
 import { releaseToItem } from "~/util/queue";
 
@@ -21,11 +22,7 @@ export default function Videos({ release }: VideosProps) {
     enqueue(releaseToItem(release));
   };
 
-  const [isClient, setIsClient] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const isHydrated = useIsHydrated();
 
   return (
     <button
@@ -37,7 +34,7 @@ export default function Videos({ release }: VideosProps) {
       onClick={handleClick}
       type="button"
     >
-      {isClient ? (
+      {isHydrated ? (
         <span
           className={clsx(
             "font-semibold text-2xl",
