@@ -1,6 +1,6 @@
-import { PhotographIcon } from "@heroicons/react/solid";
 import { useLoaderData } from "remix";
 import Collapsible from "~/components/common/Collapsible";
+import Image from "~/components/common/Image";
 import ImageListItem from "~/components/common/ImageListItem";
 import Link from "~/components/common/Link";
 import Page from "~/components/common/Page";
@@ -16,15 +16,7 @@ export default function Route() {
   return (
     <Page>
       <div className="flex mb-8">
-        <div className="mr-4 overflow-hidden rounded shrink-0">
-          {src !== undefined ? (
-            <img alt={name} className="h-56" src={src}></img>
-          ) : (
-            <div className="bg-neutral-200 flex h-56 items-center justify-center">
-              <PhotographIcon className="text-neutral-500 h-5 w-5" />
-            </div>
-          )}
-        </div>
+        <Image alt={name} className="mr-4" size={56} square={false} src={src} />
         <div className="w-full">
           <h2 className="font-semibold mb-4 text-3xl">{name}</h2>
           {members !== undefined && members.length > 0 ? (

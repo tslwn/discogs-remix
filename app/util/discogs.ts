@@ -60,12 +60,19 @@ export default class DiscogsClient {
     return this.fetch<Identity>("/oauth/identity");
   }
 
-  public async getArtist(id: number) {
-    throw new Error("Not implemented");
+  public async getArtist(artistId: number) {
+    return this.fetch<Artist>(`/artists/${artistId}`);
   }
 
-  public async getArtistReleases(id: number) {
-    throw new Error("Not implemented");
+  public async getArtistReleases(
+    artistId: number,
+    options: PageParams & SortParams<ReleaseSortField>
+  ) {
+    const searchParams = getSearchParams(options);
+
+    return this.fetch<ArtistReleases>(
+      `/artists/${artistId}/releases?${searchParams}`
+    );
   }
 
   public async getLabel(id: number) {
@@ -118,9 +125,133 @@ function getHeader(obj: Record<string, string | number | boolean>): string {
   return header.slice(0, -1);
 }
 
-interface Identity {
+function getSearchParams<Field extends string>(
+  options: PageParams & SortParams<Field>
+): URLSearchParams {
+  const searchParams = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(options)) {
+    if (value !== undefined) {
+      searchParams.append(key, value.toString());
+    }
+  }
+
+  return searchParams;
+}
+
+export enum ArtistReleaseRole {
+  MAIN = "Main",
+  REMIX = "Remix",
+  PRODUCER = "Producer",
+  CO_PRODUCER = "Co-producer",
+  MIXED_BY = "Mixed by",
+  APPEARANCE = "Appearance",
+  TRACK_APPEARANCE = "TrackAppearance",
+  UNOFFICIAL_RELEASE = "UnofficialRelease",
+}
+
+export enum DataQuality {
+  NEEDS_VOTE = "Needs Vote",
+  NEEDS_MINOR_CHANGES = "Needs Minor Changes",
+  CORRECT = "Correct",
+}
+
+export enum ImageType {
+  PRIMARY = "primary",
+  SECONDARY = "secondary",
+}
+
+export enum ReleaseType {
+  MASTER = "master",
+  RELEASE = "release",
+}
+
+export enum SortOrder {
+  ASC = "asc",
+  DESC = "desc",
+}
+
+export enum ReleaseSortField {
+  YEAR = "year",
+  TITLE = "title",
+  FORMAT = "format",
+}
+
+export interface SortParams<Field extends string> {
+  sort?: Field;
+  sort_order?: SortOrder;
+}
+
+export interface PageParams {
+  page?: number;
+  per_page?: number;
+}
+
+export interface Pagination {
+  per_page: number;
+  items: number;
+  page: number;
+  urls: {
+    first: string;
+    next: string;
+    prev: string;
+    last: string;
+  };
+  pages: number;
+}
+
+export interface Identity {
   id: number;
   username: string;
   resource_url: string;
   consumer_name: string;
+}
+
+export interface ArtistImage {
+  height: number;
+  resource_url: string;
+  type: ImageType;
+  uri: string;
+  uri150: string;
+  width: number;
+}
+
+export interface ArtistMember {
+  active: boolean;
+  id: number;
+  name: string;
+  resource_url: string;
+}
+
+export interface Artist {
+  // Not in example response body
+  // https://www.discogs.com/developers#page:database,header:database-artist
+  name: string;
+  namevariations: string[];
+  profile: string;
+  releases_url: string;
+  resource_url: string;
+  uri: string;
+  urls: string[];
+  data_quality: DataQuality;
+  id: number;
+  images: ArtistImage[];
+  members: ArtistMember[];
+}
+
+export interface ArtistRelease {
+  artist: string;
+  id: number;
+  main_release: number;
+  resource_url: string;
+  role: ArtistReleaseRole;
+  thumb: string;
+  title: string;
+  type: ReleaseType;
+  year: number;
+}
+
+export interface ArtistReleases {
+  pagination: Pagination;
+  releases: ArtistRelease[];
 }

@@ -1,5 +1,5 @@
-import { PhotographIcon } from "@heroicons/react/solid";
 import { useLoaderData } from "remix";
+import Image from "~/components/common/Image";
 import ImageListItem from "~/components/common/ImageListItem";
 import Page from "~/components/common/Page";
 import PageControls from "~/components/common/PageControls";
@@ -14,15 +14,7 @@ export default function Route() {
   return (
     <Page>
       <div className="flex mb-8">
-        <div className="mr-4 overflow-hidden rounded">
-          {label.src !== undefined ? (
-            <img alt={label.name} className="h-56" src={label.src}></img>
-          ) : (
-            <div className="bg-neutral-200 flex h-56 items-center justify-center w-56">
-              <PhotographIcon className="text-neutral-500 h-5 w-5" />
-            </div>
-          )}
-        </div>
+        <Image alt={label.name} className="mr-4" size={56} src={label.src} />
         <h2 className="font-semibold text-3xl">{label.name}</h2>
       </div>
       <div>

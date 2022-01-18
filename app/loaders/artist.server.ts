@@ -1,17 +1,22 @@
 import { DataFunctionArgs } from "@remix-run/server-runtime";
-import { ReleaseSortEnum, SortOrdersEnum } from "discojs";
 import invariant from "tiny-invariant";
-import type { ArtistReleases, Role } from "~/types/discojs";
-import { getDiscojs } from "~/util/auth.server";
+import { getDiscogsClient } from "~/util/auth.server";
+import {
+  ArtistRelease,
+  ArtistReleaseRole,
+  ReleaseSortField,
+  SortOrder,
+} from "~/util/discogs";
 import { getPagination } from "~/util/pagination";
 import { primaryOrFirstImage } from "~/util/release";
 
 // anti-colocation but fixes esbuild import problems
 
-type Release = ArtistReleases["releases"][number] & { role: Role };
-
-function releasesByRole(releases: Release[]) {
-  const releasesByRole = new Map<Role, Omit<Release, "role">[]>();
+function releasesByRole(releases: ArtistRelease[]) {
+  const releasesByRole = new Map<
+    ArtistReleaseRole,
+    Omit<ArtistRelease, "role">[]
+  >();
 
   for (const release of releases) {
     const role = releasesByRole.get(release.role);
@@ -28,7 +33,7 @@ function releasesByRole(releases: Release[]) {
   }));
 }
 
-function displayRole(role: Role): string {
+function displayRole(role: ArtistReleaseRole): string {
   switch (role) {
     case "TrackAppearance":
       return "Track appearance";
@@ -43,23 +48,22 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
   const id = Number(params.id);
   invariant(typeof id === "number", "expected params.id");
 
-  const client = await getDiscojs(request);
+  const client = await getDiscogsClient(request);
+
+  const { page, perPage } = getPagination(request);
 
   const [artist, { pagination, releases }] = await Promise.all([
     client.getArtist(id),
-    client.getArtistReleases(
-      id,
-      {
-        by: ReleaseSortEnum.YEAR,
-        order: SortOrdersEnum.ASC,
-      },
-      getPagination(request)
-    ),
+    client.getArtistReleases(id, {
+      page,
+      per_page: perPage,
+      sort: ReleaseSortField.YEAR,
+      sort_order: SortOrder.ASC,
+    }),
   ]);
 
   return {
     id,
-    // @ts-ignore name does exist
     name: artist.name,
     src: primaryOrFirstImage(artist.images)?.uri,
     members: artist.members?.map(({ active, id, name }) => ({
@@ -73,7 +77,7 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
         page: pagination.page,
         perPage: pagination.per_page,
       },
-      releases: releasesByRole(releases as Release[]),
+      releases: releasesByRole(releases),
     },
   };
 };
