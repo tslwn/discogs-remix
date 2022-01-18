@@ -1,4 +1,3 @@
-import { SearchTypeEnum } from "discojs";
 import type { Release } from "~/types/discojs";
 import type { QueueItem } from "~/types/queue";
 import { formatReleaseArtists, primaryOrFirstImage } from "~/util/release";
@@ -30,13 +29,13 @@ export function releaseToItem({
   images,
   type,
 }: Pick<Release, "id" | "artists" | "title" | "images"> & {
-  type: SearchTypeEnum;
+  type?: "master" | "release";
 }): QueueItem {
   return {
     id,
     artists: formatReleaseArtists(artists),
     title,
     src: primaryOrFirstImage(images)?.uri,
-    type,
+    type: type || "release",
   };
 }

@@ -1,11 +1,9 @@
-import { SearchTypeEnum } from "discojs";
-
 export interface QueueItem {
   id: number;
   artists: string;
   title: string;
   src?: string;
-  type: SearchTypeEnum;
+  type: "master" | "release";
 }
 
 export type Queue = QueueItem[];
