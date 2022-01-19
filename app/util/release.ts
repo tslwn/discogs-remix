@@ -55,7 +55,7 @@ export const byYear = (a: { year: number }, b: { year: number }) => {
 
 export function getResourceUrl(resource: {
   id: number;
-  type: SearchType;
+  type?: SearchType;
 }): string {
-  return "/api/" + resource.type + "s/" + resource.id.toString();
+  return "/api/" + (resource.type ?? "release") + "s/" + resource.id.toString();
 }

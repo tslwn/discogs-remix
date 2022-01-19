@@ -29,17 +29,13 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
         page: pagination.page,
         perPage: pagination.per_page,
       },
-      releases: releases.map(
-        // @ts-ignore type does exist
-        ({ artist, id, thumb, title, type, year }) => ({
-          artist,
-          id,
-          thumb,
-          title,
-          type,
-          year,
-        })
-      ),
+      releases: releases.map(({ artist, id, thumb, title, year }) => ({
+        artist,
+        id,
+        thumb,
+        title,
+        year,
+      })),
     },
   };
 };

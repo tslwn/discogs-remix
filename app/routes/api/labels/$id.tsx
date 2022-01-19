@@ -14,7 +14,13 @@ export default function Route() {
   return (
     <Page>
       <div className="flex mb-8">
-        <Image alt={label.name} className="mr-4" size={56} src={label.src} />
+        <Image
+          alt={label.name}
+          className="mr-4"
+          size={56}
+          square={false}
+          src={label.src}
+        />
         <h2 className="font-semibold text-3xl">{label.name}</h2>
       </div>
       <div>

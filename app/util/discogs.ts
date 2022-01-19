@@ -280,7 +280,7 @@ export interface ArtistRelease {
   role: ArtistReleaseRole;
   thumb: string;
   title: string;
-  type: ReleaseType;
+  type: SearchType;
   year: number;
 }
 
