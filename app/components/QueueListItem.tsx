@@ -19,14 +19,14 @@ export default function QueueListItem({
   return (
     <ImageListItem
       imageProps={{
-        alt: item.artists + " - " + item.title,
+        alt: item.title,
         src: item.src,
       }}
       linkProps={{
-        children: item.artists,
+        children: item.title,
         to: getResourceUrl(item),
       }}
-      subtitle={item.title}
+      subtitle={item.artists}
       left={left}
       right={right}
       textWidth={textWidth}
