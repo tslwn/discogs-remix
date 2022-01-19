@@ -8,7 +8,7 @@ import type { Lists } from "~/loaders/lists.server";
 export { lists as loader } from "~/loaders/lists.server";
 
 export default function Route() {
-  const { lists, username } = useLoaderData<Lists>();
+  const { lists } = useLoaderData<Lists>();
 
   return (
     <div className="bg-neutral-50 flex flex-col h-screen text-neutral-900">
@@ -27,9 +27,7 @@ export default function Route() {
               <ul className="text-sm ">
                 {lists.map((list) => (
                   <li className="overflow-hidden text-ellipsis whitespace-nowrap">
-                    <NavLink
-                      to={`/api/users/${username}/lists/${list.id}/items`}
-                    >
+                    <NavLink to={`/api/lists/${list.id}/items`}>
                       {list.name}
                     </NavLink>
                   </li>

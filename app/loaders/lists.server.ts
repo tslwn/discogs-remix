@@ -1,52 +1,27 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
 import { LoaderData } from "~/types/loaders";
-import { getDiscojs } from "~/util/auth.server";
+import { getDiscogsClient } from "~/util/auth.server";
 
 export const lists = async ({ request }: DataFunctionArgs) => {
-  const client = await getDiscojs(request);
+  const client = await getDiscogsClient(request);
 
-  const [{ username }, { lists }] = await Promise.all([
-    client.getIdentity(),
-    client.getLists(),
-  ]);
+  const { username } = await client.getIdentity();
 
-  return { lists, username };
+  const { lists } = await client.getUserLists(username);
+
+  return { lists };
 };
 
 export type Lists = LoaderData<typeof lists>;
 
-export const userLists = async ({ params, request }: DataFunctionArgs) => {
-  const username = params.username;
-  invariant(typeof username === "string", "expected params.username");
-
-  const client = await getDiscojs(request);
-
-  const { lists } = await client.getListsForUser(username);
-
-  return { lists, username };
-};
-
-export type UserLists = LoaderData<typeof userLists>;
-
-export const listItems = async ({ params, request }: DataFunctionArgs) => {
-  const username = params.username;
-  invariant(typeof username === "string", "expected params.username");
-
+export const list = async ({ params, request }: DataFunctionArgs) => {
   const id = Number(params.id);
   invariant(typeof id === "number", "expected params.id");
 
-  const client = await getDiscojs(request);
+  const client = await getDiscogsClient(request);
 
-  const [{ lists }, { items }] = await Promise.all([
-    client.getListsForUser(username),
-    client.getListItems(id),
-  ]);
-
-  const list = lists.find((list) => list.id === id);
-  if (list === undefined) {
-    throw new Response("Not found", { status: 404 });
-  }
+  const list = await client.getList(id);
 
   return {
     list: {
@@ -56,7 +31,7 @@ export const listItems = async ({ params, request }: DataFunctionArgs) => {
       dateAdded: list.date_added,
       dateChanged: list.date_changed,
     },
-    items: items.map((item) => {
+    items: list.items.map((item) => {
       const { artists, title } = deformatDisplayTitle(item.display_title);
       return {
         id: item.id,
@@ -66,14 +41,13 @@ export const listItems = async ({ params, request }: DataFunctionArgs) => {
         type: item.type,
       };
     }),
-    username,
   };
 };
+
+export type List = LoaderData<typeof list>;
 
 // TODO: doesn't work if either contains " - "
 function deformatDisplayTitle(displayTitle: string) {
   const [artists, title] = displayTitle.split(" - ");
   return { artists, title };
 }
-
-export type ListItems = LoaderData<typeof listItems>;

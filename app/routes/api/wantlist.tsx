@@ -1,15 +1,17 @@
 import { json } from "remix";
 import type { ActionFunction } from "remix";
-import { getDiscojs } from "~/util/auth.server";
+import { getDiscogsClient } from "~/util/auth.server";
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
 
   const id = Number(formData.get("id"));
 
-  const client = await getDiscojs(request);
+  const client = await getDiscogsClient(request);
 
-  const response = await client.addToWantlist(id);
+  const { username } = await client.getIdentity();
 
-  return json(response);
+  const want = await client.addToWantlist(username, id);
+
+  return json(want);
 };

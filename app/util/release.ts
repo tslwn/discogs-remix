@@ -1,5 +1,5 @@
-import type { SearchTypeEnum } from "discojs";
 import type { Release } from "~/types/discojs";
+import { SearchType } from "./discogs";
 
 export function formatReleaseArtists(artists: Release["artists"]) {
   return artists
@@ -55,7 +55,7 @@ export const byYear = (a: { year: number }, b: { year: number }) => {
 
 export function getResourceUrl(resource: {
   id: number;
-  type: SearchTypeEnum;
+  type: SearchType;
 }): string {
   return "/api/" + resource.type + "s/" + resource.id.toString();
 }

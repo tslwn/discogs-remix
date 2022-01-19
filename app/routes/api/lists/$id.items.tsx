@@ -3,13 +3,13 @@ import QueueListItem from "~/components/QueueListItem";
 import Page from "~/components/common/Page";
 import QuadImage from "~/components/common/QuadImage";
 import { useQueue } from "~/contexts/QueueContext";
-import type { ListItems } from "~/loaders/lists.server";
+import type { List } from "~/loaders/lists.server";
 import { formatDate } from "~/util/date";
 
-export { listItems as loader } from "~/loaders/lists.server";
+export { list as loader } from "~/loaders/lists.server";
 
 export default function Route() {
-  const { list, items, username } = useLoaderData<ListItems>();
+  const { list, items } = useLoaderData<List>();
 
   const { enqueue } = useQueue();
 
@@ -27,7 +27,6 @@ export default function Route() {
         <div className="flex flex-col">
           <h2 className="font-semibold text-3xl">{list.name}</h2>
           <div className="mb-2 text-lg">
-            <h3>{username}</h3>
             <div className="text-neutral-500">{`Updated ${formatDate(
               list.dateChanged
             )}`}</div>
