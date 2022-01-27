@@ -1,8 +1,8 @@
 import Link from "~/components/common/Link";
-import type { Release } from "~/types/discojs";
+import type { ReleaseLabel } from "~/util/discogs";
 
 interface LabelsProps {
-  labels: Release["labels"];
+  labels: ReleaseLabel[];
 }
 
 export default function Labels({ labels }: LabelsProps) {

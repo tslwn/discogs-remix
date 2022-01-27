@@ -1,6 +1,7 @@
-import type { Release } from "~/types/discojs";
 import type { QueueItem } from "~/types/queue";
 import { formatReleaseArtists, primaryOrFirstImage } from "~/util/release";
+import type { Release } from "./discogs";
+import { SearchType } from "./discogs";
 
 export function encodeItem({ id, artists, title, src, type }: QueueItem) {
   return {
@@ -29,13 +30,13 @@ export function releaseToItem({
   images,
   type,
 }: Pick<Release, "id" | "artists" | "title" | "images"> & {
-  type?: "master" | "release";
+  type?: SearchType;
 }): QueueItem {
   return {
     id,
     artists: formatReleaseArtists(artists),
     title,
     src: primaryOrFirstImage(images)?.uri,
-    type: type || "release",
+    type: type || SearchType.RELEASE,
   };
 }

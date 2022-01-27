@@ -56,8 +56,51 @@ export default class DiscogsClient {
     throw new Error(body);
   }
 
-  public async getIdentity() {
-    return this.fetch<Identity>("/oauth/identity");
+  /// Database
+
+  public async getRelease(releaseId: number, currAbbr?: CurrencyAbbreviation) {
+    const searchParams = getSearchParams({ currAbbr });
+    return this.fetch<Release>(`/releases/${releaseId}?${searchParams}`);
+  }
+
+  public async getReleaseRatingByUser() {
+    throw new Error("Not implemented");
+  }
+
+  public async updateReleaseRatingByUser() {
+    throw new Error("Not implemented");
+  }
+
+  public async deleteReleaseRatingByUser() {
+    throw new Error("Not implemented");
+  }
+
+  public async getCommunityReleaseRating() {
+    throw new Error("Not implemented");
+  }
+
+  public async getReleaseStats() {
+    throw new Error("Not implemented");
+  }
+
+  public async getMasterRelease(masterId: number) {
+    return this.fetch<MasterRelease>(`/masters/${masterId}`);
+  }
+
+  public async getMasterReleaseVersions(
+    masterId: number,
+    params?: PageParams &
+      SortParams<MasterReleaseVersionSortField> & {
+        format?: string;
+        label?: string;
+        released?: string;
+        country?: string;
+      }
+  ) {
+    const searchParams = getSearchParams(params);
+    return this.fetch<MasterReleaseVersions>(
+      `/masters/${masterId}/versions?${searchParams}`
+    );
   }
 
   public async getArtist(artistId: number) {
@@ -85,17 +128,27 @@ export default class DiscogsClient {
     );
   }
 
-  public async getMaster() {
+  public async search() {
     throw new Error("Not implemented");
   }
 
-  public async getMasterVersions() {
-    throw new Error("Not implemented");
+  /// Inventory export
+
+  /// Inventory upload
+
+  /// User identity
+
+  public async getIdentity() {
+    return this.fetch<Identity>("/oauth/identity");
   }
 
-  public async getRelease() {
-    throw new Error("Not implemented");
+  public async getProfile(username: string) {
+    return this.fetch<Profile>(`/users/${username}`);
   }
+
+  /// User collection
+
+  /// User wantlist
 
   public async getUserWants(username: string, params?: PageParams) {
     const searchParams = getSearchParams(params);
@@ -115,6 +168,8 @@ export default class DiscogsClient {
     );
   }
 
+  /// User lists
+
   public async getUserLists(username: string, params?: PageParams) {
     const searchParams = getSearchParams(params);
     return this.fetch<UserLists>(`/users/${username}/lists?${searchParams}`);
@@ -124,6 +179,8 @@ export default class DiscogsClient {
     return this.fetch<List>(`/lists/${listId}`);
   }
 }
+
+/// Utils
 
 function getHeader(obj: Record<string, string | number | boolean>): string {
   let header = "";
@@ -155,6 +212,8 @@ function getSearchParams(params?: {}): string {
   return searchParams.toString();
 }
 
+/// Types
+
 export enum ArtistReleaseRole {
   MAIN = "Main",
   REMIX = "Remix",
@@ -168,6 +227,21 @@ export enum ArtistReleaseRole {
 
 export enum CommunityStatus {
   ACCEPTED = "Accepted",
+}
+
+export enum CurrencyAbbreviation {
+  USD = "USD",
+  GBP = "GBP",
+  EUR = "EUR",
+  CAD = "CAD",
+  AUD = "AUD",
+  JPY = "JPY",
+  CHF = "CHF",
+  MXN = "MXN",
+  BRL = "BRL",
+  NZD = "NZD",
+  SEK = "SEK",
+  ZAR = "ZAR",
 }
 
 export enum DataQuality {
@@ -205,6 +279,15 @@ export enum ReleaseSortField {
   FORMAT = "format",
 }
 
+export enum MasterReleaseVersionSortField {
+  RELEASED = "released",
+  TITLE = "title",
+  FORMAT = "format",
+  LABEL = "label",
+  CATNO = "catno",
+  COUNTRY = "country",
+}
+
 export interface SortParams<Field extends string> {
   sort?: Field;
   sort_order?: SortOrder;
@@ -228,25 +311,79 @@ export interface Pagination {
   pages: number;
 }
 
-export interface Identity {
-  id: number;
-  username: string;
-  resource_url: string;
-  consumer_name: string;
-}
-
 export interface Image {
-  height: number;
-  resource_url: string;
   type: ImageType;
   uri: string;
+  resource_url: string;
   uri150: string;
   width: number;
+  height: number;
 }
 
 export interface Stats {
   in_wantlist: number;
   in_collection: number;
+}
+
+export interface Video {
+  uri: string;
+  title: string;
+  description: string;
+  duration: number;
+  embed: boolean;
+}
+
+export interface Track {
+  position: string;
+  type_: "track" | string;
+  title: string;
+  duration: string;
+  extraartists?: ReleaseArtist[];
+}
+
+export interface MasterRelease {
+  id: number;
+  main_release: number;
+  most_recent_release: number;
+  resource_url: string;
+  uri: string;
+  versions_url: string;
+  main_release_url: string;
+  most_recent_release_url: string;
+  num_for_sale: number;
+  lowest_price: number;
+  images: Image[];
+  genres: string[];
+  styles: string[];
+  year: number;
+  tracklist: Track[];
+  artists: ReleaseArtist[];
+  title: string;
+  data_quality: DataQuality;
+  videos: Video[];
+}
+
+export interface MasterReleaseVersion {
+  status: CommunityStatus;
+  stats: {
+    user: Stats;
+    community: Stats;
+  };
+  thumb: string;
+  format: string;
+  country: string;
+  title: string;
+  label: string;
+  released: string;
+  major_formats: string[];
+  catno: string;
+  resource_url: string;
+  id: number;
+}
+
+export interface MasterReleaseVersions {
+  pagination: Pagination;
+  versions: MasterReleaseVersion[];
 }
 
 export interface ArtistMember {
@@ -257,8 +394,6 @@ export interface ArtistMember {
 }
 
 export interface Artist {
-  // Not in the documentation
-  // https://www.discogs.com/developers#page:database,header:database-artist
   name: string;
   namevariations: string[];
   profile: string;
@@ -326,6 +461,47 @@ export interface LabelReleases {
   releases: LabelRelease[];
 }
 
+export interface Identity {
+  id: number;
+  username: string;
+  resource_url: string;
+  consumer_name: string;
+}
+
+export interface Profile {
+  profile: string;
+  wantlist_url: string;
+  rank: number;
+  num_pending: number;
+  id: number;
+  num_for_sale: number;
+  home_page: string;
+  location: string;
+  collection_folders_url: string;
+  username: string;
+  collection_fields_url: string;
+  releases_contributed: number;
+  registered: string;
+  rating_avg: number;
+  num_collection: number;
+  releases_rated: number;
+  num_lists: number;
+  name: string;
+  num_wantlist: number;
+  inventory_url: string;
+  avatar_url: string;
+  banner_url: string;
+  uri: string;
+  resource_url: string;
+  buyer_rating: number;
+  buyer_rating_stars: number;
+  buyer_num_ratings: number;
+  seller_rating: number;
+  seller_rating_stars: number;
+  seller_num_ratings: number;
+  curr_abbr: CurrencyAbbreviation;
+}
+
 export interface UserList {
   date_added: string;
   date_changed: string;
@@ -341,9 +517,6 @@ export interface UserLists {
   pagination: Pagination;
   lists: UserList[];
 }
-
-// The example response body in the documentation is not up to date
-// https://www.discogs.com/developers#page:user-lists,header:user-lists-list
 
 export interface ListItemStats {
   community: Stats;
@@ -381,28 +554,31 @@ export interface List {
 }
 
 export interface ReleaseArtist {
-  join: string;
   name: string;
   anv: string;
-  tracks: string;
+  join: string;
   role: string;
-  resource_url: string;
+  tracks: string;
   id: number;
+  resource_url: string;
+  thumbnail_url: string;
 }
 
 export interface ReleaseFormat {
-  qty: string;
-  descriptions: string[];
   name: string;
+  qty: string;
+  text: string;
+  descriptions: string[];
 }
 
 export interface ReleaseLabel {
   name: string;
-  entity_type: string;
   catno: string;
-  resource_url: string;
-  id: number;
+  entity_type: string;
   entity_type_name: string;
+  id: number;
+  resource_url: string;
+  thumbnail_url: string;
 }
 
 export interface Want {
@@ -431,4 +607,56 @@ export interface Want {
 export interface UserWants {
   pagination: Pagination;
   wants: Want[];
+}
+
+export interface Release {
+  id: number;
+  status: CommunityStatus;
+  year: number;
+  resource_url: string;
+  uri: string;
+  artists: ReleaseArtist[];
+  artists_sort: string;
+  labels: ReleaseLabel[];
+  series: string[];
+  companies: string[];
+  formats: ReleaseFormat[];
+  data_quality: DataQuality;
+  community: {
+    have: number;
+    want: number;
+    rating: {
+      count: number;
+      average: number;
+    };
+    submitter: {
+      username: string;
+      resource_url: string;
+    };
+    contributors: [];
+    data_quality: DataQuality;
+    status: CommunityStatus;
+  };
+  format_quantity: number;
+  date_added: string;
+  date_changed: string;
+  num_for_sale: number;
+  lowest_price: number | null;
+  master_id: number;
+  master_url: string;
+  title: string;
+  country: string;
+  released: string;
+  notes: string;
+  released_formatted: string;
+  identifiers: [];
+  videos: Video[];
+  genres: string[];
+  styles: string[];
+  tracklist: Track[];
+  extraartists: string[];
+  images: Image[];
+  thumb: string;
+  estimated_weight: number;
+  blocked_from_sale: boolean;
 }

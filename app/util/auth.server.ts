@@ -1,5 +1,4 @@
 // https://github.com/ryanflorence/remix-planner/blob/main/app/util/auth.server.tsx
-import { Discojs } from "discojs";
 import { createCookieSessionStorage, json, redirect } from "remix";
 import type { ActionFunction, LoaderFunction, Session } from "remix";
 import DiscogsClient from "~/util/discogs";
@@ -82,18 +81,6 @@ export const callbackLoader: LoaderFunction = async ({ request }) => {
   session.set("oauth_access_token_secret", secret);
   session.unset("oauth_request_token");
   session.unset("oauth_request_token_secret");
-
-  const discojs = new Discojs({
-    consumerKey: process.env.DISCOGS_CONSUMER_KEY,
-    consumerSecret: process.env.DISCOGS_CONSUMER_SECRET,
-    oAuthToken: token,
-    oAuthTokenSecret: secret,
-    userAgent: process.env.DISCOGS_USER_AGENT,
-  });
-
-  const { username, curr_abbr } = await discojs.getProfile();
-  session.set("username", username);
-  session.set("curr_abbr", curr_abbr);
 
   return redirect("/api", {
     headers: { "Set-Cookie": await authSession.commitSession(session) },
@@ -223,17 +210,5 @@ export async function getDiscogsClient(request: Request) {
     oAuthToken: session?.get("oauth_access_token"),
     oAuthTokenSecret: session?.get("oauth_access_token_secret"),
     userAgent: process.env.DISCOGS_USER_AGENT!,
-  });
-}
-
-export async function getDiscojs(request: Request) {
-  const session = await getAuthSession(request);
-
-  return new Discojs({
-    consumerKey: process.env.DISCOGS_CONSUMER_KEY,
-    consumerSecret: process.env.DISCOGS_CONSUMER_SECRET,
-    oAuthToken: session?.get("oauth_access_token"),
-    oAuthTokenSecret: session?.get("oauth_access_token_secret"),
-    userAgent: process.env.DISCOGS_USER_AGENT,
   });
 }

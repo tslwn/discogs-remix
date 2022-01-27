@@ -3,7 +3,7 @@ import Artists from "~/components/release/Artists";
 import Formats from "~/components/release/Formats";
 import GenresAndStyles from "~/components/release/GenresAndStyles";
 import Labels from "~/components/release/Labels";
-import type { Release } from "~/types/discojs";
+import type { Release } from "~/util/discogs";
 import { formatReleaseArtists, primaryOrFirstImage } from "~/util/release";
 
 type HeadingReleasesProps = Pick<

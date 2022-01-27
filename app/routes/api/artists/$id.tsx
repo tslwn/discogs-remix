@@ -5,7 +5,7 @@ import ImageListItem from "~/components/common/ImageListItem";
 import Link from "~/components/common/Link";
 import Page from "~/components/common/Page";
 import PageControls from "~/components/common/PageControls";
-import type { LoaderData } from "~/loaders/artist.server";
+import { LoaderData } from "~/loaders/artist.server";
 import { getResourceUrl } from "~/util/release";
 
 export { loader } from "~/loaders/artist.server";

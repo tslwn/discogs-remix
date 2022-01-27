@@ -7,10 +7,9 @@ export const lists = async ({ request }: DataFunctionArgs) => {
   const client = await getDiscogsClient(request);
 
   const { username } = await client.getIdentity();
-
   const { lists } = await client.getUserLists(username);
 
-  return { lists };
+  return { lists, username };
 };
 
 export type Lists = LoaderData<typeof lists>;

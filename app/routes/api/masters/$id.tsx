@@ -1,53 +1,43 @@
+import type { DataFunctionArgs } from "@remix-run/server-runtime";
 import clsx from "clsx";
 import { useLoaderData } from "remix";
-import type { LoaderFunction } from "remix";
 import invariant from "tiny-invariant";
 import Collapsible from "~/components/common/Collapsible";
 import Link from "~/components/common/Link";
 import Page from "~/components/common/Page";
 import HeadingMasters from "~/components/release/HeadingMasters";
-import type { Master, MasterVersions } from "~/types/discojs";
-import { getDiscojs, requireAuthSession } from "~/util/auth.server";
+import type { LoaderData } from "~/types/loaders";
+import { getDiscogsClient } from "~/util/auth.server";
 
-export const loader: LoaderFunction = async ({ params, request }) => {
+export const loader = async ({ params, request }: DataFunctionArgs) => {
   const id = Number(params.id);
   invariant(typeof id === "number", "expected params.id");
 
-  const session = await requireAuthSession(request);
-  const client = await getDiscojs(request);
+  const client = await getDiscogsClient(request);
 
-  const currAbbr = session.get("curr_abbr");
-  invariant(typeof currAbbr === "string", "expected curr_abbr");
-
-  const master = await client.getMaster(id);
-  const masterVersions = await client.getMasterVersions(id);
+  const masterRelease = await client.getMasterRelease(id);
+  const masterReleaseVersions = await client.getMasterReleaseVersions(id);
 
   return {
-    currAbbr,
-    master,
-    masterVersions,
+    masterRelease,
+    masterReleaseVersions,
   };
 };
 
-interface LoaderData {
-  currAbbr: string;
-  master: Master;
-  masterVersions: MasterVersions;
-}
-
 export default function Route() {
-  const { master, masterVersions } = useLoaderData<LoaderData>();
+  const { masterRelease, masterReleaseVersions } =
+    useLoaderData<LoaderData<typeof loader>>();
 
   return (
     <Page>
       <div className="mb-8">
         <HeadingMasters
-          artists={master.artists}
-          title={master.title}
-          images={master.images}
-          year={master.year}
-          genres={master.genres}
-          styles={master.styles}
+          artists={masterRelease.artists}
+          title={masterRelease.title}
+          images={masterRelease.images}
+          year={masterRelease.year}
+          genres={masterRelease.genres}
+          styles={masterRelease.styles}
         />
       </div>
       <div className="mb-4">
@@ -56,7 +46,7 @@ export default function Route() {
           heading="Tracklist"
           panel={
             <ul className="mb-2">
-              {master.tracklist.map((track) => (
+              {masterRelease.tracklist.map((track) => (
                 <li
                   className="flex justify-between"
                   key={`${track.position} ${track.title}`}
@@ -90,11 +80,13 @@ export default function Route() {
                 </tr>
               </thead>
               <tbody>
-                {masterVersions.versions.map((version) => (
+                {masterReleaseVersions.versions.map((version) => (
                   <tr key={version.id}>
                     <td>
                       <Link to={`/api/releases/${version.id}`} visited>
-                        {version.title !== master.title ? version.title : null}{" "}
+                        {version.title !== masterRelease.title
+                          ? version.title
+                          : null}{" "}
                         {version.major_formats}
                       </Link>{" "}
                       <span className="text-xs">{version.format}</span>

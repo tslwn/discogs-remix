@@ -1,19 +1,15 @@
-interface Format {
-  name: string;
-  qty: string;
-  descriptions?: string[];
-}
+import type { ReleaseFormat } from "~/util/discogs";
 
 interface FormatsProps {
   className?: string;
-  formats: Format[];
+  formats: ReleaseFormat[];
 }
 
 export default function Formats({ className, formats }: FormatsProps) {
   return <div className={className}>{getDisplayFormats(formats)}</div>;
 }
 
-function getDisplayFormats(formats: Format[]): string {
+function getDisplayFormats(formats: ReleaseFormat[]): string {
   const formatStrings = [];
   for (const format of formats) {
     let string = "";

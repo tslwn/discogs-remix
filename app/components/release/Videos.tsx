@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQueue } from "~/contexts/QueueContext";
 import useIsHydrated from "~/hooks/useIsHydrated";
-import type { Release } from "~/types/discojs";
+import type { Release } from "~/util/discogs";
 import { releaseToItem } from "~/util/queue";
 
 interface VideosProps {

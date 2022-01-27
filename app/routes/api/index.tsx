@@ -1,17 +1,17 @@
+import type { DataFunctionArgs } from "@remix-run/server-runtime";
 import { useLoaderData } from "remix";
-import type { LoaderFunction } from "remix";
 import Link from "~/components/common/Link";
-import { Identity } from "~/types/discojs";
+import { LoaderData } from "~/types/loaders";
 import { getDiscogsClient } from "~/util/auth.server";
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: DataFunctionArgs) => {
   const client = await getDiscogsClient(request);
 
   return client.getIdentity();
 };
 
 export default function Route() {
-  const data = useLoaderData<Identity>();
+  const data = useLoaderData<LoaderData<typeof loader>>();
 
   return (
     <div className="p-4">

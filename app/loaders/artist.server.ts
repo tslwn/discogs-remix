@@ -1,5 +1,6 @@
 import { DataFunctionArgs } from "@remix-run/server-runtime";
 import invariant from "tiny-invariant";
+import { LoaderData as GenericLoaderData } from "~/types/loaders";
 import { getDiscogsClient } from "~/util/auth.server";
 import {
   ArtistRelease,
@@ -82,4 +83,4 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
   };
 };
 
-export type LoaderData = Awaited<ReturnType<typeof loader>>;
+export type LoaderData = GenericLoaderData<typeof loader>;

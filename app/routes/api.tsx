@@ -1,14 +1,35 @@
-import { Outlet, useLoaderData } from "remix";
+import type { DataFunctionArgs } from "@remix-run/server-runtime";
+import { Outlet, useLoaderData, useMatches } from "remix";
 import { ClientOnly } from "remix-utils";
+import invariant from "tiny-invariant";
 import QueuePlayer from "~/components/QueuePlayer";
 import Link from "~/components/common/Link";
 import NavLink from "~/components/common/NavLink";
-import type { Lists } from "~/loaders/lists.server";
+import { LoaderData } from "~/types/loaders";
+import { getDiscogsClient } from "~/util/auth.server";
 
-export { lists as loader } from "~/loaders/lists.server";
+export const loader = async ({ request }: DataFunctionArgs) => {
+  const client = await getDiscogsClient(request);
+
+  const { username } = await client.getIdentity();
+  const { curr_abbr } = await client.getProfile(username);
+  const { lists } = await client.getUserLists(username);
+
+  return { curr_abbr, lists, username };
+};
+
+export function useRouteData() {
+  const matches = useMatches();
+
+  const match = matches.find((match) => match.pathname === "/api");
+
+  invariant(match !== undefined, "expected /api match");
+
+  return match.data as LoaderData<typeof loader>;
+}
 
 export default function Route() {
-  const { lists } = useLoaderData<Lists>();
+  const { lists } = useLoaderData<LoaderData<typeof loader>>();
 
   return (
     <div className="bg-neutral-50 flex flex-col h-screen text-neutral-900">

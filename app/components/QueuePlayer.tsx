@@ -7,7 +7,7 @@ import LinkButton from "~/components/common/LinkButton";
 import WantlistForm from "~/components/forms/WantlistForm";
 import { usePlayer } from "~/contexts/PlayerContext";
 import { useQueue } from "~/contexts/QueueContext";
-import type { Release } from "~/types/discojs";
+import type { Release } from "~/util/discogs";
 import { getResourceUrl } from "~/util/release";
 
 export default function QueuePlayer() {

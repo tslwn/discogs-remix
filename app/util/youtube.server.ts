@@ -1,4 +1,4 @@
-import { Release } from "~/types/discojs";
+import { Video } from "./discogs";
 
 export async function isVideoAvailable(url: string) {
   const matches = url.match(
@@ -18,7 +18,7 @@ export async function isVideoAvailable(url: string) {
   return json.pageInfo.totalResults === 1;
 }
 
-export async function availableVideos(videos: Release["videos"]) {
+export async function availableVideos(videos: Video[]) {
   const available = [];
   if (videos !== undefined) {
     for (const video of videos) {

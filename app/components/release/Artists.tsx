@@ -1,5 +1,5 @@
 import Link from "~/components/common/Link";
-import type { Release } from "~/types/discojs";
+import type { Release } from "~/util/discogs";
 
 const VARIOUS_ARTISTS_ID = 194;
 

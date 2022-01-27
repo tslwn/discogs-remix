@@ -1,11 +1,11 @@
 import Image from "~/components/common/Image";
 import Artists from "~/components/release/Artists";
 import GenresAndStyles from "~/components/release/GenresAndStyles";
-import type { Release } from "~/types/discojs";
+import type { MasterRelease } from "~/util/discogs";
 import { formatReleaseArtists, primaryOrFirstImage } from "~/util/release";
 
 type HeadingMastersProps = Pick<
-  Release,
+  MasterRelease,
   "artists" | "genres" | "images" | "styles" | "title" | "year"
 >;
 

@@ -1,7 +1,6 @@
-import type { Release } from "~/types/discojs";
-import { SearchType } from "./discogs";
+import { Image, ReleaseArtist, SearchType } from "./discogs";
 
-export function formatReleaseArtists(artists: Release["artists"]) {
+export function formatReleaseArtists(artists: ReleaseArtist[]) {
   return artists
     .reduce(
       (artists, artist) =>
@@ -39,7 +38,7 @@ export function formatReleaseLabels(labels: { name: string; catno: string }[]) {
   return labelStrings.join(", ");
 }
 
-export function primaryOrFirstImage(images: Release["images"]) {
+export function primaryOrFirstImage(images: Image[]) {
   return (
     images?.filter((image) => image.type === "primary")[0] ??
     (images && images[0])
