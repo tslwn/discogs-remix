@@ -3,14 +3,13 @@ import { useLoaderData } from "remix";
 import invariant from "tiny-invariant";
 import Collapsible from "~/components/common/Collapsible";
 import Page from "~/components/common/Page";
+import Stat from "~/components/common/Stat";
 import ForSale from "~/components/release/ForSale";
-import Have from "~/components/release/Have";
 import HeadingReleases from "~/components/release/HeadingReleases";
 import Rating from "~/components/release/Rating";
 import Videos from "~/components/release/Videos";
-import Want from "~/components/release/Want";
 import { useRouteData } from "~/routes/api";
-import { LoaderData } from "~/types/loaders";
+import type { LoaderData } from "~/types/loaders";
 import { getDiscogsClient } from "~/util/auth.server";
 import { formatReleaseArtistsAndTitle } from "~/util/release";
 import { availableVideos } from "~/util/youtube.server";
@@ -51,8 +50,16 @@ export default function Route() {
         />
       </div>
       <div className="flex items-center mb-4 space-x-8">
-        <Have have={release.community.have} />
-        <Want want={release.community.want} />
+        <Stat
+          className="border-green-600"
+          text="have"
+          value={release.community.have}
+        />
+        <Stat
+          className="border-red-600"
+          text="want"
+          value={release.community.want}
+        />
         <Rating
           average={release.community.rating.average}
           count={release.community.rating.count}

@@ -5,7 +5,7 @@ import invariant from "tiny-invariant";
 import QueuePlayer from "~/components/QueuePlayer";
 import Link from "~/components/common/Link";
 import NavLink from "~/components/common/NavLink";
-import { LoaderData } from "~/types/loaders";
+import type { LoaderData } from "~/types/loaders";
 import { getDiscogsClient } from "~/util/auth.server";
 
 export const loader = async ({ request }: DataFunctionArgs) => {

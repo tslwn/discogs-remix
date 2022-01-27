@@ -4,7 +4,7 @@ import invariant from "tiny-invariant";
 import ImageListItem from "~/components/common/ImageListItem";
 import Page from "~/components/common/Page";
 import PageControls from "~/components/common/PageControls";
-import { LoaderData } from "~/types/loaders";
+import type { LoaderData } from "~/types/loaders";
 import { getDiscogsClient } from "~/util/auth.server";
 import { SearchType } from "~/util/discogs";
 import { getPagination } from "~/util/pagination";

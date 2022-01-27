@@ -1,7 +1,7 @@
 import type { DataFunctionArgs } from "@remix-run/server-runtime";
 import { useLoaderData } from "remix";
 import Link from "~/components/common/Link";
-import { LoaderData } from "~/types/loaders";
+import type { LoaderData } from "~/types/loaders";
 import { getDiscogsClient } from "~/util/auth.server";
 
 export const loader = async ({ request }: DataFunctionArgs) => {
