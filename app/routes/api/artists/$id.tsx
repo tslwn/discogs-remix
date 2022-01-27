@@ -10,6 +10,8 @@ import { getResourceUrl } from "~/util/release";
 
 export { loader } from "~/loaders/artist.server";
 
+export const meta = ({ data }: { data: LoaderData }) => ({ title: data.name });
+
 export default function Route() {
   const { id, name, src, members, releases } = useLoaderData<LoaderData>();
 

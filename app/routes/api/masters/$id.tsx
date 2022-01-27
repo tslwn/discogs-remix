@@ -8,6 +8,7 @@ import Page from "~/components/common/Page";
 import HeadingMasters from "~/components/release/HeadingMasters";
 import type { LoaderData } from "~/types/loaders";
 import { getDiscogsClient } from "~/util/auth.server";
+import { formatReleaseArtistsAndTitle } from "~/util/release";
 
 export const loader = async ({ params, request }: DataFunctionArgs) => {
   const id = Number(params.id);
@@ -23,6 +24,13 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
     masterReleaseVersions,
   };
 };
+
+export const meta = ({ data }: { data: LoaderData<typeof loader> }) => ({
+  title: formatReleaseArtistsAndTitle(
+    data.masterRelease.artists,
+    data.masterRelease.title
+  ),
+});
 
 export default function Route() {
   const { masterRelease, masterReleaseVersions } =

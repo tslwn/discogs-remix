@@ -12,6 +12,13 @@ export function formatReleaseArtists(artists: ReleaseArtist[]) {
     .trim();
 }
 
+export function formatReleaseArtistsAndTitle(
+  artists: ReleaseArtist[],
+  title: string
+) {
+  return formatReleaseArtists(artists) + " - " + title;
+}
+
 export function formatReleaseFormats(
   formats: { name: string; qty: string; descriptions: string[] }[]
 ) {

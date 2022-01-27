@@ -8,6 +8,10 @@ import { getResourceUrl } from "~/util/release";
 
 export { loader } from "~/loaders/label.server";
 
+export const meta = ({ data }: { data: LoaderData }) => ({
+  title: data.label.name,
+});
+
 export default function Route() {
   const { label, releases } = useLoaderData<LoaderData>();
 

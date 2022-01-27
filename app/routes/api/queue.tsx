@@ -9,6 +9,10 @@ import Page from "~/components/common/Page";
 import { usePlayer } from "~/contexts/PlayerContext";
 import { useQueue } from "~/contexts/QueueContext";
 
+export const meta = () => ({
+  title: "Queue",
+});
+
 export default function Route() {
   const { queue, history, current, clear } = useQueue();
 

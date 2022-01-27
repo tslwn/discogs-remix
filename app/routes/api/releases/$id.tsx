@@ -12,6 +12,7 @@ import Want from "~/components/release/Want";
 import { useRouteData } from "~/routes/api";
 import { LoaderData } from "~/types/loaders";
 import { getDiscogsClient } from "~/util/auth.server";
+import { formatReleaseArtistsAndTitle } from "~/util/release";
 import { availableVideos } from "~/util/youtube.server";
 
 export const loader = async ({ params, request }: DataFunctionArgs) => {
@@ -24,6 +25,10 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
 
   return { release: { ...release, videos } };
 };
+
+export const meta = ({ data }: { data: LoaderData<typeof loader> }) => ({
+  title: formatReleaseArtistsAndTitle(data.release.artists, data.release.title),
+});
 
 export default function Route() {
   const { release } = useLoaderData<LoaderData<typeof loader>>();

@@ -23,6 +23,10 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
   return { pagination, username, wants };
 };
 
+export const meta = ({ data }: { data: LoaderData<typeof loader> }) => ({
+  title: data.username + " / Wantlist",
+});
+
 export default function Route() {
   const { pagination, username, wants } =
     useLoaderData<LoaderData<typeof loader>>();

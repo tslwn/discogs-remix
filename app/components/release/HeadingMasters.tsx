@@ -2,7 +2,10 @@ import Image from "~/components/common/Image";
 import Artists from "~/components/release/Artists";
 import GenresAndStyles from "~/components/release/GenresAndStyles";
 import type { MasterRelease } from "~/util/discogs";
-import { formatReleaseArtists, primaryOrFirstImage } from "~/util/release";
+import {
+  formatReleaseArtistsAndTitle,
+  primaryOrFirstImage,
+} from "~/util/release";
 
 type HeadingMastersProps = Pick<
   MasterRelease,
@@ -20,7 +23,7 @@ export default function HeadingMasters({
   return (
     <div className="flex">
       <Image
-        alt={`${formatReleaseArtists(artists)} - ${title}`}
+        alt={formatReleaseArtistsAndTitle(artists, title)}
         className="mr-4"
         size={56}
         src={primaryOrFirstImage(images)?.uri}

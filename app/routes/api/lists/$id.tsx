@@ -8,6 +8,8 @@ import { formatDate } from "~/util/date";
 
 export { list as loader } from "~/loaders/lists.server";
 
+export const meta = ({ data }: { data: List }) => ({ title: data.list.name });
+
 export default function Route() {
   const { list, items } = useLoaderData<List>();
 
