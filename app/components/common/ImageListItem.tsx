@@ -30,21 +30,14 @@ export default function ImageListItem({
         className={clsx("mr-4", imageProps.className)}
         size={14}
       />
-      <div
-        className={clsx(
-          "mr-4 overflow-hidden whitespace-nowrap",
-          textWidth && "w-" + textWidth.toString()
-        )}
-      >
-        <div>
-          <Link
-            {...linkProps}
-            className={clsx("text-ellipsis", linkProps.className)}
-          >
-            {linkProps.children}
-          </Link>
-        </div>
-        <div className="text-xs">{subtitle}</div>
+      <div className={clsx("mr-4", textWidth && "w-64")}>
+        <Link
+          {...linkProps}
+          className={clsx("block truncate", linkProps.className)}
+        >
+          {linkProps.children}
+        </Link>
+        <span className="block text-xs truncate">{subtitle}</span>
       </div>
       {right !== undefined ? right : null}
     </div>

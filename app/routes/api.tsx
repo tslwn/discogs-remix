@@ -22,14 +22,13 @@ export function useRouteData() {
   const matches = useMatches();
 
   const match = matches.find((match) => match.pathname === "/api");
-
   invariant(match !== undefined, "expected /api match");
 
   return match.data as LoaderData<typeof loader>;
 }
 
 export default function Route() {
-  const { lists } = useLoaderData<LoaderData<typeof loader>>();
+  const { lists, username } = useLoaderData<LoaderData<typeof loader>>();
 
   return (
     <div className="bg-neutral-50 flex flex-col h-screen text-neutral-900">
@@ -40,6 +39,9 @@ export default function Route() {
               <Link className="font-semibold" to="/api">
                 Home
               </Link>
+            </div>
+            <div className="font-semibold mb-8">
+              <NavLink to={`/api/users/${username}/wants`}>Wantlist</NavLink>
             </div>
             <div className="mb-8">
               <div className="font-semibold mb-4">

@@ -15,7 +15,6 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
   invariant(typeof username === "string", "expected params.username");
 
   const client = await getDiscogsClient(request);
-
   const { pagination, wants } = await client.getUserWants(
     username,
     getPagination(request)
@@ -24,10 +23,9 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
   return { pagination, username, wants };
 };
 
-type Wants = LoaderData<typeof loader>;
-
 export default function Route() {
-  const { pagination, username, wants } = useLoaderData<Wants>();
+  const { pagination, username, wants } =
+    useLoaderData<LoaderData<typeof loader>>();
 
   return (
     <Page>

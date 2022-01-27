@@ -18,7 +18,12 @@ export default function Image({
 }: ImageProps) {
   return (
     <div
-      className={clsx("max-w-56 overflow-hidden rounded shrink-0", className)}
+      className={clsx(
+        "overflow-hidden rounded shrink-0",
+        size === 14 && "max-w-14",
+        size === 56 && "max-w-56",
+        className
+      )}
     >
       {src !== undefined ? (
         <img
