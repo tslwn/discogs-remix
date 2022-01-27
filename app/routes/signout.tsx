@@ -1,8 +1,11 @@
 import { Form } from "remix";
+import type { MetaFunction } from "remix";
 import Button from "~/components/common/Button";
 import Link from "~/components/common/Link";
 
 export { signoutAction as action } from "~/util/auth.server";
+
+export const meta: MetaFunction = () => ({ title: "Sign out" });
 
 export default function SignoutRoute() {
   return (
