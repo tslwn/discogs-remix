@@ -16,7 +16,7 @@
     "prepare": "husky install",
     "migrate:db": "source .env && cross-env DATABASE_URL_CONNECTION_POOL=$DATABASE_URL prisma migrate dev",
     "push:db": "source .env && cross-env DATABASE_URL_CONNECTION_POOL=$DATABASE_URL prisma db push",
-    "build:vercel": "cross-env DATABASE_URL_CONNECTION_POOL=$DATABASE_URL prisma generate && prisma migrate deploy && npm run build:remix"
+    "build:vercel": "cross-env DATABASE_URL_CONNECTION_POOL=$DATABASE_URL prisma generate && prisma migrate deploy && npm run build"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.2",
