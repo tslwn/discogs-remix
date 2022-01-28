@@ -90,8 +90,8 @@ export default function Route() {
           </Tab.Panel>
           <Tab.Panel className="focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-4">
             <ul className="space-y-2">
-              {[...history].reverse().map((item) => (
-                <li key={item.id}>
+              {[...history].reverse().map((item, index) => (
+                <li key={index}>
                   <QueueListItem item={item} />
                 </li>
               ))}
