@@ -88,16 +88,19 @@ export default function YouTubePlayer() {
             <div className="mr-2 text-xs w-8">
               {formatSeconds(progress.playedSeconds)}
             </div>
-            <div className="bg-neutral-200 h-1 w-full">
+            <div className="bg-neutral-200 h-1 relative w-full">
               <div
-                className="bg-neutral-300 h-1"
-                style={{ width: `${progress.loaded * 100}%` }}
-              >
-                <div
-                  className="bg-neutral-900 h-1"
-                  style={{ width: `${progress.played * 100}%` }}
-                ></div>
-              </div>
+                className="absolute bg-neutral-300 h-1 left-0 top-0"
+                style={{
+                  width: `${progress.loaded * 100}%`,
+                }}
+              ></div>
+              <div
+                className="absolute bg-neutral-900 h-1 left-0 top-0"
+                style={{
+                  width: `${progress.played * 100}%`,
+                }}
+              ></div>
             </div>
             <div className="ml-2 text-xs w-8">
               {duration ? formatSeconds(duration) : "--:--"}

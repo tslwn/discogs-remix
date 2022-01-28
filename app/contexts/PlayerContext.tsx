@@ -2,7 +2,7 @@ import React from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import ReactPlayer from "react-player/youtube";
 import { useDebouncedCallback } from "use-debounce";
-import type { Video, Videos } from "~/types/discojs";
+import type { Video } from "~/util/discogs";
 
 interface Progress {
   loaded: number;
@@ -37,9 +37,9 @@ interface PlayerContextValue {
   playing: boolean;
   progress: Progress;
   setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
-  setVideos: React.Dispatch<React.SetStateAction<Videos>>;
+  setVideos: React.Dispatch<React.SetStateAction<Video[]>>;
   video: Video | undefined;
-  videos: Videos;
+  videos: Video[];
 }
 
 const PlayerContext = React.createContext<PlayerContextValue | null>(null);
@@ -53,11 +53,13 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
 
   const [disabled, setDisabled] = React.useState(false);
 
-  const [videos, setVideos] = React.useState<Videos>([]);
+  const [videos, setVideos] = React.useState<Video[]>([]);
 
   const [index, setIndex] = React.useState(0);
 
   const video = videos.length > 0 ? videos[index] : undefined;
+
+  const duration = video?.duration ?? null;
 
   React.useEffect(() => {
     setIndex(0);
@@ -71,22 +73,15 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
     setProgress(value);
   };
 
-  const [duration, setDuration] = React.useState<number | null>(null);
-
-  React.useEffect(() => {
-    setDuration(playerRef.current?.getDuration() ?? null);
-  }, [index, progress]);
-
   const isPlayPauseDisabled = disabled || videos.length === 0;
 
   const isPreviousDisabled = disabled || index <= 0;
 
   const isNextDisabled = disabled || index >= videos.length - 1;
 
-  const isSkipBackwardDisabled =
-    disabled || duration === null || progress.playedSeconds - SKIP_SECONDS < 0;
+  const isSkipBackwardDisabled = disabled;
 
-  const isSkipForwardDisabled = disabled || duration === null;
+  const isSkipForwardDisabled = disabled;
 
   const handleEnded = () => {
     if (!isNextDisabled) {
@@ -116,21 +111,29 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
     }
   }, DEBOUNCE_MS);
 
+  const optimisticSeekTo = (seconds: number) => {
+    setProgress((prev) => ({
+      ...prev,
+      played: (prev.played * seconds) / prev.playedSeconds,
+      playedSeconds: seconds,
+    }));
+    playerRef.current?.seekTo(seconds);
+  };
+
   const handleSkipBackward = useDebouncedCallback(() => {
     if (!isSkipBackwardDisabled) {
       const seconds = Math.max(progress.playedSeconds - SKIP_SECONDS, 0);
-      playerRef.current?.seekTo(seconds);
+      optimisticSeekTo(seconds);
     }
   }, DEBOUNCE_MS);
 
   const handleSkipForward = useDebouncedCallback(() => {
     if (!isSkipForwardDisabled) {
-      const seconds = progress.playedSeconds + SKIP_SECONDS;
-      if (seconds >= duration) {
-        handleNext();
-      } else {
-        playerRef.current?.seekTo(Math.min(seconds, progress.loadedSeconds));
-      }
+      const seconds = Math.min(
+        progress.playedSeconds + SKIP_SECONDS,
+        progress.loadedSeconds
+      );
+      optimisticSeekTo(seconds);
     }
   }, DEBOUNCE_MS);
 
@@ -181,6 +184,7 @@ export function PlayerProvider({ children }: React.PropsWithChildren<{}>) {
           onEnded={handleEnded}
           onProgress={handleProgress}
           playing={playing}
+          progressInterval={100}
           ref={playerRef}
           url={uri}
           width={200}
