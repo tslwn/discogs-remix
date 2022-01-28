@@ -30,7 +30,7 @@ export default function ImageListItem({
         className={clsx("mr-4", imageProps.className)}
         size={14}
       />
-      <div className={clsx("mr-4", textWidth && "w-64")}>
+      <div className={clsx("mr-4", textWidth && "max-w-64")}>
         <Link
           {...linkProps}
           className={clsx("block truncate", linkProps.className)}
