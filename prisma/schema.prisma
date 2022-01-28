@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_CONNECTION_POOL")
+}
+
+model User {
+  id         String   @id @unique @default(cuid())
+  insertedAt DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  username String @unique
+
+  QueueItem    QueueItem[]
+  QueueHistory QueueHistory[]
+}
+
+enum QueueItemType {
+  MASTER
+  RELEASE
+}
+
+model QueueItem {
+  id         String   @id @unique @default(cuid())
+  insertedAt DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  type      QueueItemType
+  discogsId Int
+
+  artists String
+  title   String
+  thumb   String?
+}
+
+model QueueHistory {
+  id         String   @id @unique @default(cuid())
+  insertedAt DateTime @default(now())
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  type      QueueItemType
+  discogsId Int
+}

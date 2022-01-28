@@ -1,6 +1,7 @@
 // https://github.com/ryanflorence/remix-planner/blob/main/app/util/auth.server.tsx
 import { createCookieSessionStorage, json, redirect } from "remix";
 import type { ActionFunction, LoaderFunction, Session } from "remix";
+import { createOrUpdateUser } from "~/models/user";
 import DiscogsClient from "~/util/discogs";
 
 // prevent start-up if any environment variable is undefined
@@ -81,6 +82,17 @@ export const callbackLoader: LoaderFunction = async ({ request }) => {
   session.set("oauth_access_token_secret", secret);
   session.unset("oauth_request_token");
   session.unset("oauth_request_token_secret");
+
+  const client = new DiscogsClient({
+    consumerKey: process.env.DISCOGS_CONSUMER_KEY!,
+    consumerSecret: process.env.DISCOGS_CONSUMER_SECRET!,
+    oAuthToken: token,
+    oAuthTokenSecret: secret,
+    userAgent: process.env.DISCOGS_USER_AGENT!,
+  });
+  const { username } = await client.getIdentity();
+
+  await createOrUpdateUser(username);
 
   return redirect("/api", {
     headers: { "Set-Cookie": await authSession.commitSession(session) },
