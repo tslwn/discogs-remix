@@ -36,7 +36,7 @@ export default function Route() {
         <div className="bg-neutral-100 flex flex-col flex-none justify-between sidebar w-52">
           <div className="px-4 py-6">
             <div className="mb-8">
-              <Link className="font-semibold" to="/api">
+              <Link className="font-semibold" to={`/api/users/${username}`}>
                 Home
               </Link>
             </div>
