@@ -22,15 +22,15 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
   const release = await client.getRelease(id);
   const videos = await availableVideos(release.videos);
 
-  return { release: { ...release, videos } };
+  return { ...release, videos };
 };
 
 export const meta = ({ data }: { data: LoaderData<typeof loader> }) => ({
-  title: formatReleaseArtistsAndTitle(data.release.artists, data.release.title),
+  title: formatReleaseArtistsAndTitle(data.artists, data.title),
 });
 
 export default function Route() {
-  const { release } = useLoaderData<LoaderData<typeof loader>>();
+  const release = useLoaderData<LoaderData<typeof loader>>();
 
   const { curr_abbr } = useRouteData();
 

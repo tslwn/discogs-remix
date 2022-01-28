@@ -16,36 +16,33 @@ export const loader = async ({ params, request }: DataFunctionArgs) => {
 
   const client = await getDiscogsClient(request);
 
-  const masterRelease = await client.getMasterRelease(id);
-  const masterReleaseVersions = await client.getMasterReleaseVersions(id);
+  const master = await client.getMasterRelease(id);
+  const { versions } = await client.getMasterReleaseVersions(id);
 
   return {
-    masterRelease,
-    masterReleaseVersions,
+    ...master,
+    versions,
   };
 };
 
 export const meta = ({ data }: { data: LoaderData<typeof loader> }) => ({
-  title: formatReleaseArtistsAndTitle(
-    data.masterRelease.artists,
-    data.masterRelease.title
-  ),
+  title: formatReleaseArtistsAndTitle(data.artists, data.title),
 });
 
 export default function Route() {
-  const { masterRelease, masterReleaseVersions } =
+  const { artists, genres, images, styles, title, tracklist, versions, year } =
     useLoaderData<LoaderData<typeof loader>>();
 
   return (
     <Page>
       <div className="mb-8">
         <HeadingMasters
-          artists={masterRelease.artists}
-          title={masterRelease.title}
-          images={masterRelease.images}
-          year={masterRelease.year}
-          genres={masterRelease.genres}
-          styles={masterRelease.styles}
+          artists={artists}
+          title={title}
+          images={images}
+          year={year}
+          genres={genres}
+          styles={styles}
         />
       </div>
       <div className="mb-4">
@@ -54,7 +51,7 @@ export default function Route() {
           heading="Tracklist"
           panel={
             <ul className="mb-2">
-              {masterRelease.tracklist.map((track) => (
+              {tracklist.map((track) => (
                 <li
                   className="flex justify-between"
                   key={`${track.position} ${track.title}`}
@@ -88,13 +85,11 @@ export default function Route() {
                 </tr>
               </thead>
               <tbody>
-                {masterReleaseVersions.versions.map((version) => (
+                {versions.map((version) => (
                   <tr key={version.id}>
                     <td>
                       <Link to={`/api/releases/${version.id}`} visited>
-                        {version.title !== masterRelease.title
-                          ? version.title
-                          : null}{" "}
+                        {version.title !== title ? version.title : null}{" "}
                         {version.major_formats}
                       </Link>{" "}
                       <span className="text-xs">{version.format}</span>

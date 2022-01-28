@@ -7,7 +7,7 @@ import LinkButton from "~/components/common/LinkButton";
 import WantlistForm from "~/components/forms/WantlistForm";
 import { usePlayer } from "~/contexts/PlayerContext";
 import { useQueue } from "~/contexts/QueueContext";
-import type { Release } from "~/util/discogs";
+import type { Video } from "~/util/discogs";
 import { getResourceUrl } from "~/util/release";
 
 export default function QueuePlayer() {
@@ -42,7 +42,7 @@ function useQueuePlayer() {
 
   const item = queue.length > 0 ? queue[0] : null;
 
-  const fetcher = useFetcher<{ release: Release } | null>();
+  const fetcher = useFetcher<{ videos: Video[] } | null>();
 
   const { setDisabled, setVideos } = usePlayer();
 
@@ -62,7 +62,7 @@ function useQueuePlayer() {
 
   React.useEffect(() => {
     if (fetcher.data) {
-      setVideos(fetcher.data.release.videos ?? []);
+      setVideos(fetcher.data.videos ?? []);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetcher.data]);
