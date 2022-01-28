@@ -49,7 +49,10 @@ export default function Route() {
               </div>
               <ul className="text-sm">
                 {lists.map((list) => (
-                  <li className="overflow-hidden text-ellipsis whitespace-nowrap">
+                  <li
+                    className="overflow-hidden text-ellipsis whitespace-nowrap"
+                    key={list.id}
+                  >
                     <NavLink to={`/api/lists/${list.id}`}>{list.name}</NavLink>
                   </li>
                 ))}
